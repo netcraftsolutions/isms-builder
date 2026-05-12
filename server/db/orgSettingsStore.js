@@ -124,8 +124,8 @@ const DEFAULTS = {
 
   // Sprach-Konfiguration
   languageConfig: {
-    available: ['de', 'en', 'fr', 'nl'],   // aktivierte Sprachen
-    default:   'en',                        // Standardsprache auf Login-Seite
+    available: ['cs', 'de', 'en', 'fr', 'nl'],   // aktivierte Sprachen (cs first = primary)
+    default:   'cs',                        // Standardsprache auf Login-Seite
   },
 
   // Navigations-Reihenfolge (array der Section-IDs; fehlende landen am Ende)

@@ -6,15 +6,17 @@
 
   // ── Language storage ─────────────────────────────────────────────────────
   const STORAGE_KEY = 'isms_lang';
-  const SUPPORTED   = ['en', 'de', 'fr', 'nl'];
-  const DEFAULT     = 'en';
+  const SUPPORTED   = ['cs', 'de', 'en', 'fr', 'nl'];
+  const DEFAULT     = 'cs';
 
   function detectBrowserLang() {
-    const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    const nav = (navigator.language || navigator.userLanguage || 'cs').toLowerCase();
+    if (nav.startsWith('cs') || nav.startsWith('sk')) return 'cs';
     if (nav.startsWith('de')) return 'de';
     if (nav.startsWith('fr')) return 'fr';
     if (nav.startsWith('nl')) return 'nl';
-    return 'en';
+    if (nav.startsWith('en')) return 'en';
+    return 'cs';
   }
 
   function getLang() {

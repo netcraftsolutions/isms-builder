@@ -359,6 +359,7 @@
       <span id="langCurrentLabel">–</span>
     </div>
     <div class="lang-btns">
+      <button class="lang-btn" data-lang="cs" onclick="switchLoginLang('cs')">CS</button>
       <button class="lang-btn" data-lang="de" onclick="switchLoginLang('de')">DE</button>
       <button class="lang-btn" data-lang="en" onclick="switchLoginLang('en')">EN</button>
       <button class="lang-btn" data-lang="fr" onclick="switchLoginLang('fr')">FR</button>
@@ -476,6 +477,7 @@
   <script>
     // ── i18n for login page ──────────────────────────────────────────────
     const LANG_META = {
+      cs: { flag: '🇨🇿', name: 'Čeština' },
       de: { flag: '🇩🇪', name: 'Deutsch' },
       en: { flag: '🇬🇧', name: 'English' },
       fr: { flag: '🇫🇷', name: 'Français' },
