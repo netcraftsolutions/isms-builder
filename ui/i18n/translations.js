@@ -725,6 +725,13 @@
     msg_savedModules:          { de: 'Gespeichert. Sidebar und SoA werden aktualisiert…', en: 'Saved. Sidebar and SoA are being updated…', fr: 'Enregistré. La barre latérale et la DdA sont mises à jour…', nl: 'Opgeslagen. Zijbalk en VvT worden bijgewerkt…', cs: 'Uloženo. Boční panel a SoA se aktualizují…' },
     soa_customFramework:       { de: 'Eigene Controls',     en: 'Custom Controls',             fr: 'Contrôles personnalisés', nl: 'Aangepaste beheersmaatregelen', cs: 'Vlastní opatření' },
 
+    // ── Training module — status + category labels (was hardcoded in app.js) ─
+    training_statusCancelled:  { de: 'Abgesagt',            en: 'Cancelled',                   fr: 'Annulée',                 nl: 'Geannuleerd',                  cs: 'Zrušeno' },
+    training_catTechnical:     { de: 'Technisch',           en: 'Technical',                   fr: 'Technique',               nl: 'Technisch',                    cs: 'Technické' },
+    training_catManagement:    { de: 'Management',          en: 'Management',                  fr: 'Management',              nl: 'Management',                   cs: 'Management' },
+    training_catOther:         { de: 'Sonstige',            en: 'Other',                       fr: 'Autre',                   nl: 'Overig',                       cs: 'Jiné' },
+    training_due:              { de: 'Fällig:',             en: 'Due:',                        fr: 'Échéance :',              nl: 'Vervalt:',                     cs: 'Termín:' },
+
     // ── Admin — Language Configuration ───────────────────────────────────────
     admin_langConfig:    { de: 'Sprachkonfiguration',       en: 'Language Configuration',     fr: 'Configuration des langues', nl: 'Taalconfiguratie' , cs: 'Konfigurace jazyků' },
     admin_langConfigDesc:{ de: 'Sprachen systemweit aktivieren oder deaktivieren. Die Standardsprache wird auf der Login-Seite verwendet.', en: 'Enable or disable languages system-wide. The default language is shown on the login page for users without a stored preference.', fr: 'Activez ou désactivez les langues à l\'échelle du système. La langue par défaut est affichée sur la page de connexion.', nl: 'Schakel talen systeem breed in of uit. De standaardtaal wordt weergegeven op de aanmeldpagina.' , cs: 'Aktivace nebo deaktivace jazyků pro celý systém. Výchozí jazyk se použije na přihlašovací stránce, dokud uživatel jazyk nezvolí.' },

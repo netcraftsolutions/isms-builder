@@ -10372,19 +10372,23 @@ function showModal(id, innerHtml) {
 
 // ── Training & Schulungen ─────────────────────────────────────────
 
-const TRAINING_CAT_LABELS = {
-  security_awareness: 'Security Awareness',
-  iso27001:           'ISO 27001',
-  gdpr:               'GDPR',
-  technical:          'Technical',
-  management:         'Management',
-  other:              'Other'
+function getTrainingCatLabels() {
+  return {
+    security_awareness: 'Security Awareness',
+    iso27001:           'ISO 27001',
+    gdpr:               'GDPR',
+    technical:          t('training_catTechnical'),
+    management:         t('training_catManagement'),
+    other:              t('training_catOther'),
+  }
 }
-const TRAINING_STATUS_LABELS = {
-  planned:     'Planned',
-  in_progress: 'In Progress',
-  completed:   'Completed',
-  cancelled:   'Cancelled'
+function getTrainingStatusLabels() {
+  return {
+    planned:     t('kpi_planned'),
+    in_progress: t('kpi_inProgress'),
+    completed:   t('kpi_completed'),
+    cancelled:   t('training_statusCancelled'),
+  }
 }
 const TRAINING_STATUS_CLS = {
   planned:     'badge-draft',
@@ -10458,11 +10462,11 @@ async function renderTrainingOverview(el) {
 
   el.innerHTML = `
     <div class="training-kpi-row">
-      <div class="training-kpi"><span class="training-kpi-val">${summary.total}</span><span class="training-kpi-label">Total</span></div>
-      <div class="training-kpi planned"><span class="training-kpi-val">${summary.planned}</span><span class="training-kpi-label">Planned</span></div>
-      <div class="training-kpi inprogress"><span class="training-kpi-val">${summary.inProgress}</span><span class="training-kpi-label">In Progress</span></div>
-      <div class="training-kpi completed"><span class="training-kpi-val">${summary.completed}</span><span class="training-kpi-label">Completed</span></div>
-      <div class="training-kpi overdue"><span class="training-kpi-val">${summary.overdue}</span><span class="training-kpi-label">Overdue</span></div>
+      <div class="training-kpi"><span class="training-kpi-val">${summary.total}</span><span class="training-kpi-label">${t('kpi_total')}</span></div>
+      <div class="training-kpi planned"><span class="training-kpi-val">${summary.planned}</span><span class="training-kpi-label">${t('kpi_planned')}</span></div>
+      <div class="training-kpi inprogress"><span class="training-kpi-val">${summary.inProgress}</span><span class="training-kpi-label">${t('kpi_inProgress')}</span></div>
+      <div class="training-kpi completed"><span class="training-kpi-val">${summary.completed}</span><span class="training-kpi-label">${t('kpi_completed')}</span></div>
+      <div class="training-kpi overdue"><span class="training-kpi-val">${summary.overdue}</span><span class="training-kpi-label">${t('kpi_overdue')}</span></div>
       <div class="training-kpi rate"><span class="training-kpi-val">${summary.completionRate}%</span><span class="training-kpi-label">${t('training_completionRate')}</span></div>
     </div>
     <h3 style="margin:20px 0 10px;font-size:.95rem;color:var(--text-subtle)">${t('training_overdueUpcoming')}</h3>
@@ -10473,10 +10477,10 @@ async function renderTrainingOverview(el) {
           const diff = i.dueDate ? Math.ceil((new Date(i.dueDate)-new Date())/86400000) : null
           const urgency = i.overdue ? 'overdue' : diff !== null && diff <= 7 ? 'due-soon' : ''
           return `<div class="training-overview-item ${urgency}">
-            <span class="badge ${TRAINING_STATUS_CLS[i.status]||''}">${TRAINING_STATUS_LABELS[i.status]||i.status}</span>
+            <span class="badge ${TRAINING_STATUS_CLS[i.status]||''}">${getTrainingStatusLabels()[i.status]||i.status}</span>
             <strong>${escHtml(i.title)}</strong>
-            <span style="color:var(--text-subtle);font-size:.78rem">${TRAINING_CAT_LABELS[i.category]||i.category}</span>
-            <span class="training-due ${urgency}">${i.dueDate ? (i.overdue ? `${t('training_overdueSince')} ${i.dueDate}` : `Due: ${i.dueDate}`) : '—'}</span>
+            <span style="color:var(--text-subtle);font-size:.78rem">${getTrainingCatLabels()[i.category]||i.category}</span>
+            <span class="training-due ${urgency}">${i.dueDate ? (i.overdue ? `${t('training_overdueSince')} ${i.dueDate}` : `${t('training_due')} ${i.dueDate}`) : '—'}</span>
             <span style="color:var(--text-subtle);font-size:.78rem">${escHtml(i.assignees||'—')}</span>
           </div>`
         }).join('') || `<p style="color:var(--text-subtle)">${t('training_noUrgent')}</p>`}
@@ -10499,11 +10503,11 @@ async function renderTrainingPlan(el) {
       ${canEdit ? `<button class="btn btn-primary btn-sm" onclick="openTrainingForm()"><i class="ph ph-plus"></i> New Training</button>` : ''}
       <select id="trainingFilterStatus" class="select select-sm" onchange="filterTrainingPlan()">
         <option value="">${t('filter_allStatuses')}</option>
-        ${Object.entries(TRAINING_STATUS_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getTrainingStatusLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
       <select id="trainingFilterCat" class="select select-sm" onchange="filterTrainingPlan()">
         <option value="">${t('filter_allCats')}</option>
-        ${Object.entries(TRAINING_CAT_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getTrainingCatLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
     </div>
     <div id="trainingPlanTable"></div>
@@ -10524,8 +10528,8 @@ function renderTrainingTable(list, isAdmin, canEdit) {
         ${list.map(i => `
           <tr class="${i.overdue?'training-row-overdue':''}">
             <td><strong>${escHtml(i.title)}</strong></td>
-            <td><span class="training-cat-chip">${TRAINING_CAT_LABELS[i.category]||i.category}</span></td>
-            <td><span class="badge ${TRAINING_STATUS_CLS[i.status]||''}">${TRAINING_STATUS_LABELS[i.status]||i.status}</span></td>
+            <td><span class="training-cat-chip">${getTrainingCatLabels()[i.category]||i.category}</span></td>
+            <td><span class="badge ${TRAINING_STATUS_CLS[i.status]||''}">${getTrainingStatusLabels()[i.status]||i.status}</span></td>
             <td class="${i.overdue?'training-overdue-text':''}">${i.dueDate||'—'}</td>
             <td>${i.mandatory?'<i class="ph ph-check-circle" style="color:var(--success-text)"></i>':'—'}</td>
             <td style="font-size:.78rem;color:var(--text-subtle)">${escHtml(i.assignees||'—')}</td>
@@ -10563,7 +10567,7 @@ async function renderTrainingEvidence(el) {
         <div class="training-evidence-card">
           <div class="training-evidence-header">
             <strong>${escHtml(i.title)}</strong>
-            <span class="training-cat-chip">${TRAINING_CAT_LABELS[i.category]||i.category}</span>
+            <span class="training-cat-chip">${getTrainingCatLabels()[i.category]||i.category}</span>
             <span style="color:var(--text-subtle);font-size:.78rem">Abgeschlossen: ${i.completedDate||'—'}</span>
           </div>
           <div class="training-evidence-meta">
@@ -10609,13 +10613,13 @@ async function openTrainingForm(id) {
             <div class="form-group">
               <label class="form-label">Category</label>
               <select id="tmCat" class="select">
-                ${Object.entries(TRAINING_CAT_LABELS).map(([v,l])=>`<option value="${v}"${item?.category===v?' selected':''}>${l}</option>`).join('')}
+                ${Object.entries(getTrainingCatLabels()).map(([v,l])=>`<option value="${v}"${item?.category===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label class="form-label">Status</label>
               <select id="tmStatus" class="select">
-                ${Object.entries(TRAINING_STATUS_LABELS).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
+                ${Object.entries(getTrainingStatusLabels()).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
           </div>
