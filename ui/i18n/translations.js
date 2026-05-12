@@ -644,6 +644,24 @@
     ack_deleteAckConfirm:      { de: 'Bestätigung löschen?',en: 'Delete acknowledgement?',     fr: 'Supprimer l\'acceptation ?', nl: 'Bevestiging verwijderen?',   cs: 'Smazat potvrzení?' },
     ack_deleteDistConfirm:     { de: 'Verteilrunde und alle Bestätigungen löschen?', en: 'Delete distribution and all acknowledgements?', fr: 'Supprimer la distribution et toutes les acceptations ?', nl: 'Distributie en alle bevestigingen verwijderen?', cs: 'Smazat distribuci a všechna potvrzení?' },
 
+    // ── Reports module — KPI / table rendering ──────────────────────────────
+    reports_complianceOverview:{ de: 'Compliance-Übersicht',   en: 'Compliance Overview',         fr: 'Vue d\'ensemble de la conformité', nl: 'Naleving overzicht',      cs: 'Přehled souladu' },
+    reports_rate:              { de: 'Quote',                  en: 'Rate',                        fr: 'Taux',                    nl: 'Percentage',                   cs: 'Míra' },
+    reports_reviewDate:        { de: 'Review-Datum',           en: 'Review Date',                 fr: 'Date de revue',           nl: 'Beoordelingsdatum',            cs: 'Datum přezkumu' },
+    reports_daysLate:          { de: '{days} Tage',            en: '{days} days',                 fr: '{days} jours',            nl: '{days} dagen',                 cs: '{days} dní' },
+    reports_inDays:            { de: 'In {days} Tagen',        en: 'In {days} days',              fr: 'Dans {days} jours',       nl: 'Over {days} dagen',            cs: 'Za {days} dní' },
+    reports_dueSoonCount:      { de: 'Bald fällig ({days} Tage)', en: 'Due soon ({days} days)',   fr: 'Bientôt dû ({days} jours)', nl: 'Binnenkort verlopen ({days} dagen)', cs: 'Brzy k provedení ({days} dní)' },
+    reports_accepted:          { de: 'Akzeptiert',             en: 'Accepted',                    fr: 'Accepté',                 nl: 'Geaccepteerd',                 cs: 'Přijaté' },
+    reports_source:            { de: 'Quelle',                 en: 'Source',                      fr: 'Source',                  nl: 'Bron',                         cs: 'Zdroj' },
+    reports_fromScan:          { de: 'aus Scan',               en: 'from scan',                   fr: 'depuis scan',             nl: 'uit scan',                     cs: 'ze skenu' },
+    reports_manual:            { de: 'Manuell',                en: 'Manual',                      fr: 'Manuel',                  nl: 'Handmatig',                    cs: 'Ručně' },
+    reports_changedBy:         { de: 'Geändert von',           en: 'Changed by',                  fr: 'Modifié par',             nl: 'Gewijzigd door',               cs: 'Změnil' },
+    reports_riskCount:         { de: '{count} freigegebene Risiken', en: '{count} approved risks',fr: '{count} risques approuvés', nl: '{count} goedgekeurde risico\'s', cs: '{count} schválených rizik' },
+    reports_findingCount:      { de: '{count} Feststellungen', en: '{count} findings',            fr: '{count} constatations',   nl: '{count} bevindingen',          cs: '{count} nálezů' },
+    reports_entries:           { de: '{count} Einträge',       en: '{count} entries',             fr: '{count} entrées',         nl: '{count} vermeldingen',         cs: '{count} záznamů' },
+    reports_gapWithoutPolicy:  { de: '{count} Controls ohne Policy', en: '{count} Controls without Policy', fr: '{count} contrôles sans politique', nl: '{count} beheersmaatregelen zonder beleid', cs: '{count} opatření bez politiky' },
+    reports_legend:            { de: '✓ umgesetzt · ★ optimiert · ◑ teilweise · ✗ nicht begonnen · — nicht anwendbar', en: '✓ implemented · ★ optimized · ◑ partial · ✗ not started · — not applicable', fr: '✓ mis en œuvre · ★ optimisé · ◑ partiel · ✗ non commencé · — non applicable', nl: '✓ geïmplementeerd · ★ geoptimaliseerd · ◑ gedeeltelijk · ✗ niet gestart · — niet van toepassing', cs: '✓ implementováno · ★ optimalizováno · ◑ částečně · ✗ nezahájeno · — neaplikovatelné' },
+
     // ── Admin — Language Configuration ───────────────────────────────────────
     admin_langConfig:    { de: 'Sprachkonfiguration',       en: 'Language Configuration',     fr: 'Configuration des langues', nl: 'Taalconfiguratie' , cs: 'Konfigurace jazyků' },
     admin_langConfigDesc:{ de: 'Sprachen systemweit aktivieren oder deaktivieren. Die Standardsprache wird auf der Login-Seite verwendet.', en: 'Enable or disable languages system-wide. The default language is shown on the login page for users without a stored preference.', fr: 'Activez ou désactivez les langues à l\'échelle du système. La langue par défaut est affichée sur la page de connexion.', nl: 'Schakel talen systeem breed in of uit. De standaardtaal wordt weergegeven op de aanmeldpagina.' , cs: 'Aktivace nebo deaktivace jazyků pro celý systém. Výchozí jazyk se použije na přihlašovací stránce, dokud uživatel jazyk nezvolí.' },

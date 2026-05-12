@@ -1096,7 +1096,7 @@ async function runReport(type) {
   const to     = dom('reportTo')?.value || ''
   const resultEl = dom('reportResult')
   if (!resultEl) return
-  resultEl.innerHTML = '<p class="report-loading"><i class="ph ph-spinner"></i> Wird berechnet…</p>'
+  resultEl.innerHTML = `<p class="report-loading"><i class="ph ph-spinner"></i> ${t('reports_calculating')}</p>`
 
   let url = `/reports/${type}`
   const params = new URLSearchParams()
@@ -1108,27 +1108,27 @@ async function runReport(type) {
 
   try {
     const res = await fetch(url, { headers: apiHeaders('reader') })
-    if (!res.ok) { resultEl.innerHTML = `<p class="report-error">Error: ${res.status}</p>`; return }
+    if (!res.ok) { resultEl.innerHTML = `<p class="report-error">${t('err_generic')}: ${res.status}</p>`; return }
     _lastReportData = await res.json()
     renderReportResult(type, _lastReportData, resultEl)
   } catch (e) {
-    resultEl.innerHTML = `<p class="report-error">Netzwerkfehler: ${e.message}</p>`
+    resultEl.innerHTML = `<p class="report-error">${t('err_network')}: ${e.message}</p>`
   }
 }
 
 function renderReportResult(type, data, el) {
   if (type === 'compliance') {
-    el.innerHTML = `<h3 class="report-result-title">Compliance Overview</h3>` +
+    el.innerHTML = `<h3 class="report-result-title">${t('reports_complianceOverview')}</h3>` +
       (Array.isArray(data) ? data : [data]).map(row => `
         <div class="report-compliance-card">
-          <h4>${row.entity?.name || 'All'} <span class="picker-id">${row.entity?.shortCode || ''}</span></h4>
+          <h4>${row.entity?.name || t('soa_filterAll')} <span class="picker-id">${row.entity?.shortCode || ''}</span></h4>
           <div class="report-kpi-row">
-            <div class="report-kpi"><span class="report-kpi-val">${row.totalApplicable}</span><span class="report-kpi-label">Applicable</span></div>
-            <div class="report-kpi"><span class="report-kpi-val">${row.totalImplemented}</span><span class="report-kpi-label">Implemented</span></div>
-            <div class="report-kpi"><span class="report-kpi-val ${row.implementationRate < 50 ? 'red' : row.implementationRate < 80 ? 'yellow' : 'green'}">${row.implementationRate}%</span><span class="report-kpi-label">Rate</span></div>
+            <div class="report-kpi"><span class="report-kpi-val">${row.totalApplicable}</span><span class="report-kpi-label">${t('soa_applicable')}</span></div>
+            <div class="report-kpi"><span class="report-kpi-val">${row.totalImplemented}</span><span class="report-kpi-label">${t('soa_implemented')}</span></div>
+            <div class="report-kpi"><span class="report-kpi-val ${row.implementationRate < 50 ? 'red' : row.implementationRate < 80 ? 'yellow' : 'green'}">${row.implementationRate}%</span><span class="report-kpi-label">${t('reports_rate')}</span></div>
           </div>
           <table class="report-table">
-            <thead><tr><th>Framework</th><th>Applicable</th><th>Implemented</th><th>Rate</th></tr></thead>
+            <thead><tr><th>${t('reports_framework')}</th><th>${t('soa_applicable')}</th><th>${t('soa_implemented')}</th><th>${t('reports_rate')}</th></tr></thead>
             <tbody>${Object.entries(row.byFramework || {}).map(([fw, v]) =>
               `<tr><td>${fw}</td><td>${v.applicable}</td><td>${v.implemented}</td>
                <td>${v.applicable > 0 ? Math.round(v.implemented/v.applicable*100) : 0}%</td></tr>`
@@ -1137,9 +1137,9 @@ function renderReportResult(type, data, el) {
         </div>
       `).join('')
   } else if (type === 'framework') {
-    el.innerHTML = `<h3 class="report-result-title">Framework Coverage</h3>
+    el.innerHTML = `<h3 class="report-result-title">${t('reports_fw')}</h3>
       <table class="report-table">
-        <thead><tr><th>Framework</th><th>Controls</th><th>Applicable</th><th>n/a</th><th>Implemented</th><th>Rate</th></tr></thead>
+        <thead><tr><th>${t('reports_framework')}</th><th>${t('soa_kpiControls')}</th><th>${t('soa_applicable')}</th><th>n/a</th><th>${t('soa_implemented')}</th><th>${t('reports_rate')}</th></tr></thead>
         <tbody>${(Array.isArray(data) ? data : [data]).map(fw => `
           <tr>
             <td><span class="fw-dot" style="background:${fw.color}"></span>${fw.label}</td>
@@ -1150,56 +1150,56 @@ function renderReportResult(type, data, el) {
         </tbody>
       </table>`
   } else if (type === 'gap') {
-    el.innerHTML = `<h3 class="report-result-title">Gap Analysis — ${data.totalGaps} Controls without Policy</h3>
+    el.innerHTML = `<h3 class="report-result-title">${t('reports_gap')} — ${t('reports_gapWithoutPolicy', { count: data.totalGaps })}</h3>
       <table class="report-table">
-        <thead><tr><th>Control ID</th><th>Framework</th><th>Title</th><th>Status</th><th>Owner</th></tr></thead>
+        <thead><tr><th>ID</th><th>${t('reports_framework')}</th><th>${t('col_title')}</th><th>${t('soa_status')}</th><th>${t('soa_owner')}</th></tr></thead>
         <tbody>${(data.gaps || []).map(g => `
           <tr><td class="picker-id">${g.id}</td><td>${g.framework}</td><td>${g.title}</td>
               <td>${g.status || '—'}</td><td>${g.owner || '—'}</td></tr>`).join('')}
         </tbody>
       </table>`
   } else if (type === 'templates') {
-    el.innerHTML = `<h3 class="report-result-title">Templates (${data.total})</h3>
+    el.innerHTML = `<h3 class="report-result-title">${t('reports_templates')} (${data.total})</h3>
       <div class="report-kpi-row">
         ${Object.entries(data.byStatus||{}).map(([s,n])=>`<div class="report-kpi"><span class="report-kpi-val">${n}</span><span class="report-kpi-label status-${s}">${s}</span></div>`).join('')}
       </div>
       <table class="report-table">
-        <thead><tr><th>Type</th><th>Title</th><th>Status</th><th>Version</th><th>Controls</th></tr></thead>
-        <tbody>${(data.templates||[]).map(t=>`
-          <tr><td>${t.type}</td><td>${t.title}</td>
-              <td><span class="status-badge status-${t.status}">${t.status}</span></td>
-              <td>v${t.version}</td><td>${t.linkedControls.length}</td></tr>`).join('')}
+        <thead><tr><th>${t('col_type')}</th><th>${t('col_title')}</th><th>${t('soa_status')}</th><th>${t('col_version')}</th><th>${t('soa_kpiControls')}</th></tr></thead>
+        <tbody>${(data.templates||[]).map(tpl=>`
+          <tr><td>${tpl.type}</td><td>${tpl.title}</td>
+              <td><span class="status-badge status-${tpl.status}">${tpl.status}</span></td>
+              <td>v${tpl.version}</td><td>${tpl.linkedControls.length}</td></tr>`).join('')}
         </tbody>
       </table>`
   } else if (type === 'reviews') {
-    const fmtDate = d => d ? new Date(d).toLocaleDateString('en-GB') : '—'
-    const reviewRow = (t, cls) =>
-      `<tr class="${cls}"><td>${fmtDate(t.nextReviewDate)}</td><td>${t.type}</td>
-       <td>${escHtml(t.title)}</td><td><span class="status-badge status-${t.status}">${t.status}</span></td>
-       <td>${escHtml(t.owner||'—')}</td>
-       <td>${t.daysUntil !== null ? (t.daysUntil < 0 ? `<span style="color:var(--color-danger)">${t.daysUntil} days</span>` : `${t.daysUntil} days`) : '—'}</td></tr>`
+    const fmtDate = d => d ? new Date(d).toLocaleDateString() : '—'
+    const reviewRow = (tpl, cls) =>
+      `<tr class="${cls}"><td>${fmtDate(tpl.nextReviewDate)}</td><td>${tpl.type}</td>
+       <td>${escHtml(tpl.title)}</td><td><span class="status-badge status-${tpl.status}">${tpl.status}</span></td>
+       <td>${escHtml(tpl.owner||'—')}</td>
+       <td>${tpl.daysUntil !== null ? (tpl.daysUntil < 0 ? `<span style="color:var(--color-danger)">${t('reports_daysLate', { days: tpl.daysUntil })}</span>` : t('reports_daysLate', { days: tpl.daysUntil })) : '—'}</td></tr>`
     el.innerHTML = `
-      <h3 class="report-result-title">Due Reviews</h3>
+      <h3 class="report-result-title">${t('reports_reviews')}</h3>
       <div class="report-kpi-row">
-        <div class="report-kpi"><span class="report-kpi-val red">${data.overdue?.length||0}</span><span class="report-kpi-label">Overdue</span></div>
-        <div class="report-kpi"><span class="report-kpi-val yellow">${data.upcoming?.length||0}</span><span class="report-kpi-label">In ${data.daysAhead} days</span></div>
-        <div class="report-kpi"><span class="report-kpi-val">${data.noReview?.length||0}</span><span class="report-kpi-label">No review date</span></div>
+        <div class="report-kpi"><span class="report-kpi-val red">${data.overdue?.length||0}</span><span class="report-kpi-label">${t('reports_overdue')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val yellow">${data.upcoming?.length||0}</span><span class="report-kpi-label">${t('reports_inDays', { days: data.daysAhead })}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val">${data.noReview?.length||0}</span><span class="report-kpi-label">${t('reports_noDate')}</span></div>
       </div>
-      ${data.overdue?.length ? `<h4 style="color:var(--color-danger);margin-top:1rem">Overdue</h4>
-      <table class="report-table"><thead><tr><th>Review Date</th><th>Type</th><th>Title</th><th>Status</th><th>Owner</th><th>Due</th></tr></thead>
-      <tbody>${data.overdue.map(t => reviewRow(t, 'review-overdue')).join('')}</tbody></table>` : ''}
-      ${data.upcoming?.length ? `<h4 style="color:var(--color-warning);margin-top:1rem">Due soon (${data.daysAhead} days)</h4>
-      <table class="report-table"><thead><tr><th>Review Date</th><th>Type</th><th>Title</th><th>Status</th><th>Owner</th><th>Due</th></tr></thead>
-      <tbody>${data.upcoming.map(t => reviewRow(t, 'review-upcoming')).join('')}</tbody></table>` : ''}`
+      ${data.overdue?.length ? `<h4 style="color:var(--color-danger);margin-top:1rem">${t('reports_overdue')}</h4>
+      <table class="report-table"><thead><tr><th>${t('reports_reviewDate')}</th><th>${t('col_type')}</th><th>${t('col_title')}</th><th>${t('soa_status')}</th><th>${t('soa_owner')}</th><th>${t('col_due')}</th></tr></thead>
+      <tbody>${data.overdue.map(tpl => reviewRow(tpl, 'review-overdue')).join('')}</tbody></table>` : ''}
+      ${data.upcoming?.length ? `<h4 style="color:var(--color-warning);margin-top:1rem">${t('reports_dueSoonCount', { days: data.daysAhead })}</h4>
+      <table class="report-table"><thead><tr><th>${t('reports_reviewDate')}</th><th>${t('col_type')}</th><th>${t('col_title')}</th><th>${t('soa_status')}</th><th>${t('soa_owner')}</th><th>${t('col_due')}</th></tr></thead>
+      <tbody>${data.upcoming.map(tpl => reviewRow(tpl, 'review-upcoming')).join('')}</tbody></table>` : ''}`
   } else if (type === 'matrix') {
     const statusColor = s => ({ implemented:'var(--color-success)', optimized:'var(--color-success)',
       partial:'var(--color-warning)', not_started:'var(--color-danger)', 'n/a':'var(--color-muted)' })[s] || '#888'
     const statusEmoji = s => ({ implemented:'✓', optimized:'★', partial:'◑', not_started:'✗', 'n/a':'—' })[s] || '?'
     el.innerHTML = `
-      <h3 class="report-result-title">Compliance Matrix — ${data.framework === 'all' ? 'All Frameworks' : data.framework}</h3>
+      <h3 class="report-result-title">${t('reports_matrix')} — ${data.framework === 'all' ? t('reports_allFw') : data.framework}</h3>
       <div style="overflow-x:auto">
       <table class="report-table matrix-table">
-        <thead><tr><th>Control</th><th>Framework</th><th>Title</th>${(data.entities||[]).map(e=>`<th title="${e.name}">${e.shortCode||e.name}</th>`).join('')}</tr></thead>
+        <thead><tr><th>${t('soa_control')}</th><th>${t('reports_framework')}</th><th>${t('col_title')}</th>${(data.entities||[]).map(e=>`<th title="${e.name}">${e.shortCode||e.name}</th>`).join('')}</tr></thead>
         <tbody>${(data.controls||[]).map(ctrl=>`
           <tr>
             <td class="picker-id">${ctrl.id}</td>
@@ -1212,13 +1212,13 @@ function renderReportResult(type, data, el) {
           </tr>`).join('')}
         </tbody>
       </table></div>
-      <p style="margin-top:.5rem;font-size:.8rem;color:var(--color-muted)">✓ implemented &nbsp; ★ optimized &nbsp; ◑ partial &nbsp; ✗ not started &nbsp; — not applicable</p>`
+      <p style="margin-top:.5rem;font-size:.8rem;color:var(--color-muted)">${t('reports_legend')}</p>`
   } else if (type === 'audit') {
-    el.innerHTML = `<h3 class="report-result-title">Audit Trail (${data.total} entries)</h3>
+    el.innerHTML = `<h3 class="report-result-title">${t('reports_audit')} (${t('reports_entries', { count: data.total })})</h3>
       <table class="report-table">
-        <thead><tr><th>Date</th><th>Template</th><th>Type</th><th>Status</th><th>Changed by</th></tr></thead>
+        <thead><tr><th>${t('col_date')}</th><th>${t('admin_templates')}</th><th>${t('col_type')}</th><th>${t('soa_status')}</th><th>${t('reports_changedBy')}</th></tr></thead>
         <tbody>${(data.entries||[]).map(e=>`
-          <tr><td>${new Date(e.changedAt).toLocaleString('en-GB')}</td>
+          <tr><td>${new Date(e.changedAt).toLocaleString()}</td>
               <td>${e.templateTitle}</td><td>${e.type}</td>
               <td><span class="status-badge status-${e.status}">${e.status}</span></td>
               <td>${e.changedBy}</td></tr>`).join('')}
@@ -1228,19 +1228,19 @@ function renderReportResult(type, data, el) {
     const sevColor = { critical:'#f87171', high:'#fb923c', medium:'#fbbf24', low:'#4ade80', observation:'#60a5fa' }
     const stColor  = { open:'#f87171', in_progress:'#fbbf24', resolved:'#4ade80', accepted:'#60a5fa' }
     el.innerHTML = `
-      <h3 class="report-result-title">Audit Findings (${data.total})</h3>
+      <h3 class="report-result-title">${t('findings_title')} (${data.total})</h3>
       <div class="report-kpi-row" style="margin-bottom:16px">
-        <div class="report-kpi"><span class="report-kpi-val red">${data.byStatus?.open||0}</span><span class="report-kpi-label">Open</span></div>
-        <div class="report-kpi"><span class="report-kpi-val yellow">${data.byStatus?.in_progress||0}</span><span class="report-kpi-label">In Progress</span></div>
-        <div class="report-kpi"><span class="report-kpi-val green">${data.byStatus?.resolved||0}</span><span class="report-kpi-label">Resolved</span></div>
-        <div class="report-kpi"><span class="report-kpi-val">${data.byStatus?.accepted||0}</span><span class="report-kpi-label">Accepted</span></div>
-        <div class="report-kpi"><span class="report-kpi-val" style="color:#f87171">${data.bySeverity?.critical||0}</span><span class="report-kpi-label">Critical</span></div>
-        <div class="report-kpi"><span class="report-kpi-val" style="color:#fb923c">${data.bySeverity?.high||0}</span><span class="report-kpi-label">High</span></div>
-        <div class="report-kpi"><span class="report-kpi-val ${data.overdueActions>0?'red':''}">${data.openActions||0}</span><span class="report-kpi-label">Open Actions</span></div>
-        ${data.overdueActions > 0 ? `<div class="report-kpi"><span class="report-kpi-val red">${data.overdueActions}</span><span class="report-kpi-label">Overdue Actions</span></div>` : ''}
+        <div class="report-kpi"><span class="report-kpi-val red">${data.byStatus?.open||0}</span><span class="report-kpi-label">${t('findings_open')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val yellow">${data.byStatus?.in_progress||0}</span><span class="report-kpi-label">${t('kpi_inProgress')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val green">${data.byStatus?.resolved||0}</span><span class="report-kpi-label">${t('findings_tabResolved')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val">${data.byStatus?.accepted||0}</span><span class="report-kpi-label">${t('reports_accepted')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val" style="color:#f87171">${data.bySeverity?.critical||0}</span><span class="report-kpi-label">${t('findings_critical')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val" style="color:#fb923c">${data.bySeverity?.high||0}</span><span class="report-kpi-label">${t('findings_high')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val ${data.overdueActions>0?'red':''}">${data.openActions||0}</span><span class="report-kpi-label">${t('findings_openActions')}</span></div>
+        ${data.overdueActions > 0 ? `<div class="report-kpi"><span class="report-kpi-val red">${data.overdueActions}</span><span class="report-kpi-label">${t('findings_overdue')}</span></div>` : ''}
       </div>
       <table class="report-table">
-        <thead><tr><th>Ref</th><th>Title</th><th>Severity</th><th>Status</th><th>Auditor</th><th>Area</th><th>Observation</th><th>Requirement</th><th>Open Actions</th></tr></thead>
+        <thead><tr><th>${t('col_ref')}</th><th>${t('col_title')}</th><th>${t('findings_severity')}</th><th>${t('soa_status')}</th><th>Auditor</th><th>${t('findings_area')}</th><th>${t('findings_observation_field')}</th><th>${t('findings_requirement')}</th><th>${t('findings_openActions')}</th></tr></thead>
         <tbody>${(data.findings||[]).map(f => {
           const openActs = (f.actions||[]).filter(a => a.status !== 'done').length
           return `<tr>
@@ -1260,17 +1260,17 @@ function renderReportResult(type, data, el) {
   } else if (type === 'risks') {
     const lvColor = { critical:'#dc2626', high:'#ea580c', medium:'#ca8a04', low:'#16a34a', info:'#6b7280' }
     el.innerHTML = `
-      <h3 class="report-result-title">Risk Register (${data.total} freigegebene Risiken)</h3>
+      <h3 class="report-result-title">${t('risk_register')} (${t('reports_riskCount', { count: data.total })})</h3>
       <div class="report-kpi-row" style="margin-bottom:16px">
-        <div class="report-kpi"><span class="report-kpi-val" style="color:#dc2626">${data.byLevel?.critical||0}</span><span class="report-kpi-label">Critical</span></div>
-        <div class="report-kpi"><span class="report-kpi-val" style="color:#ea580c">${data.byLevel?.high||0}</span><span class="report-kpi-label">High</span></div>
-        <div class="report-kpi"><span class="report-kpi-val" style="color:#ca8a04">${data.byLevel?.medium||0}</span><span class="report-kpi-label">Medium</span></div>
-        <div class="report-kpi"><span class="report-kpi-val" style="color:#16a34a">${data.byLevel?.low||0}</span><span class="report-kpi-label">Low</span></div>
-        <div class="report-kpi"><span class="report-kpi-val">${data.bySource?.scan||0}</span><span class="report-kpi-label">aus Scan</span></div>
-        <div class="report-kpi"><span class="report-kpi-val">${data.bySource?.manual||0}</span><span class="report-kpi-label">Manuell</span></div>
+        <div class="report-kpi"><span class="report-kpi-val" style="color:#dc2626">${data.byLevel?.critical||0}</span><span class="report-kpi-label">${t('findings_critical')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val" style="color:#ea580c">${data.byLevel?.high||0}</span><span class="report-kpi-label">${t('findings_high')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val" style="color:#ca8a04">${data.byLevel?.medium||0}</span><span class="report-kpi-label">${t('findings_medium')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val" style="color:#16a34a">${data.byLevel?.low||0}</span><span class="report-kpi-label">${t('findings_low')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val">${data.bySource?.scan||0}</span><span class="report-kpi-label">${t('reports_fromScan')}</span></div>
+        <div class="report-kpi"><span class="report-kpi-val">${data.bySource?.manual||0}</span><span class="report-kpi-label">${t('reports_manual')}</span></div>
       </div>
       <table class="report-table">
-        <thead><tr><th>Titel</th><th>Kategorie</th><th>Schweregrad</th><th>Status</th><th>CVSS</th><th>CVEs</th><th>Score</th><th>Owner</th><th>Quelle</th></tr></thead>
+        <thead><tr><th>${t('col_title')}</th><th>${t('col_category')}</th><th>${t('findings_severity')}</th><th>${t('soa_status')}</th><th>CVSS</th><th>CVEs</th><th>Score</th><th>${t('soa_owner')}</th><th>${t('reports_source')}</th></tr></thead>
         <tbody>${(data.risks||[]).map(r => {
           const cvssVal  = r.cvssScore != null ? r.cvssScore.toFixed(1) : null
           const cvssData = cvssVal ? cvssInfo(r.cvssScore) : null
@@ -1283,7 +1283,7 @@ function renderReportResult(type, data, el) {
             <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(r.cveIds||[]).join(', ')||'—'}</td>
             <td style="text-align:center">${r.score != null ? r.score : '—'}</td>
             <td>${escHtml(r.owner||'—')}</td>
-            <td>${r.source === 'greenbone-scan' ? '<span class="badge-review-pending" style="background:#3b82f6;color:#fff;font-size:.7rem">Scan</span>' : 'Manuell'}</td>
+            <td>${r.source === 'greenbone-scan' ? `<span class="badge-review-pending" style="background:#3b82f6;color:#fff;font-size:.7rem">${t('reports_fromScan')}</span>` : t('reports_manual')}</td>
           </tr>`
         }).join('')}
         </tbody>
