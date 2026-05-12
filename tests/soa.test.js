@@ -55,6 +55,60 @@ describe('SoA – Lesen', () => {
     const res = await authedGet(app, readerCookie, '/soa/export')
     expect(res.status).toBe(200)
   })
+
+  // ── Czech NIS2 (Czech-fork-specific) ─────────────────────────────────
+  // Verifies that both Czech NIS2 regimes (zákon č. 264/2025 Sb.) seed
+  // with the expected control counts and § numbering, and appear in the
+  // framework picker.
+
+  test('Czech NIS2 — vyšší regime exposes 25 controls (13 org + 12 tech)', async () => {
+    const res = await authedGet(app, readerCookie, '/soa?framework=CZNIS2V')
+    expect(res.status).toBe(200)
+    expect(Array.isArray(res.body)).toBe(true)
+    expect(res.body.length).toBe(25)
+    expect(res.body.every(c => c.framework === 'CZNIS2V')).toBe(true)
+    const org  = res.body.filter(c => c.id.startsWith('CZNIS2V-O.'))
+    const tech = res.body.filter(c => c.id.startsWith('CZNIS2V-T.'))
+    expect(org.length).toBe(13)
+    expect(tech.length).toBe(12)
+    // Vyšší-only opatření must be present: §22 (T.7), §23 (T.8), §27 (T.12)
+    const ids = res.body.map(c => c.id)
+    expect(ids).toContain('CZNIS2V-T.7')
+    expect(ids).toContain('CZNIS2V-T.8')
+    expect(ids).toContain('CZNIS2V-T.12')
+  })
+
+  test('Czech NIS2 — nižší regime exposes 22 controls (skips §22, §23, §27)', async () => {
+    const res = await authedGet(app, readerCookie, '/soa?framework=CZNIS2N')
+    expect(res.status).toBe(200)
+    expect(res.body.length).toBe(22)
+    expect(res.body.every(c => c.framework === 'CZNIS2N')).toBe(true)
+    const ids = res.body.map(c => c.id)
+    // The 3 vyšší-only opatření must NOT appear in nižší regime
+    expect(ids).not.toContain('CZNIS2N-T.7')
+    expect(ids).not.toContain('CZNIS2N-T.8')
+    expect(ids).not.toContain('CZNIS2N-T.12')
+    // But other technical opatření do appear (e.g. §21 logging = T.6, §24 appsec = T.9)
+    expect(ids).toContain('CZNIS2N-T.6')
+    expect(ids).toContain('CZNIS2N-T.9')
+  })
+
+  test('Czech NIS2 — both frameworks present in /soa/frameworks list', async () => {
+    const res = await authedGet(app, readerCookie, '/soa/frameworks')
+    expect(res.status).toBe(200)
+    const ids = res.body.map(fw => fw.id)
+    expect(ids).toContain('CZNIS2V')
+    expect(ids).toContain('CZNIS2N')
+  })
+
+  test('Czech NIS2 — controls carry proper theme labels', async () => {
+    const res = await authedGet(app, readerCookie, '/soa?framework=CZNIS2V')
+    expect(res.status).toBe(200)
+    const themes = new Set(res.body.map(c => c.theme))
+    expect(themes.has('Organizační opatření')).toBe(true)
+    expect(themes.has('Technická opatření')).toBe(true)
+    expect(themes.size).toBe(2)
+  })
 })
 
 describe('SoA – Bearbeiten', () => {

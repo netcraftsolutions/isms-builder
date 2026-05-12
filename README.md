@@ -18,8 +18,8 @@
 
 **Self-hosted Information Security Management System — open source, no cloud required**
 
-[![CI](https://github.com/coolstartnow/isms-builder/actions/workflows/ci.yml/badge.svg)](https://github.com/coolstartnow/isms-builder/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-192%20passing-brightgreen)](https://github.com/coolstartnow/isms-builder/actions)
+[![CI](https://github.com/netcraftsolutions/isms-builder/actions/workflows/ci.yml/badge.svg)](https://github.com/netcraftsolutions/isms-builder/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/tests-233%20passing-brightgreen)](https://github.com/netcraftsolutions/isms-builder/actions)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![Version](docs/badges/version.svg)](CHANGELOG.md)
