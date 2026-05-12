@@ -2429,31 +2429,31 @@ function renderSoaContent(container) {
 
   container.innerHTML = `
     <div class="soa-header">
-      <h2 class="soa-title">Statement of Applicability</h2>
+      <h2 class="soa-title">${t('soa_title')}</h2>
       <div class="soa-fw-tabs">${tabsHtml}</div>
       <div class="soa-summary-row">
-        <span class="soa-kpi">${total} Controls</span>
-        <span class="soa-kpi soa-kpi-green">${applied} anwendbar</span>
-        <span class="soa-kpi soa-kpi-blue">${implRate}% umgesetzt</span>
-        <a class="btn btn-export" href="/soa/export" download="soa-export.json">Export JSON</a>
-        ${(ROLE_RANK[getCurrentRole()] || 0) >= ROLE_RANK['admin'] ? `<button class="btn btn-import-iso" onclick="openSoaIsoImport()" title="ISO 27001/9000/9001 Controls importieren">⬆ ISO Controls importieren</button>` : ''}
+        <span class="soa-kpi">${total} ${t('soa_kpiControls')}</span>
+        <span class="soa-kpi soa-kpi-green">${applied} ${t('soa_kpiApplicable')}</span>
+        <span class="soa-kpi soa-kpi-blue">${implRate}% ${t('soa_kpiImplemented')}</span>
+        <a class="btn btn-export" href="/soa/export" download="soa-export.json">${t('soa_exportJson')}</a>
+        ${(ROLE_RANK[getCurrentRole()] || 0) >= ROLE_RANK['admin'] ? `<button class="btn btn-import-iso" onclick="openSoaIsoImport()" title="${t('soa_importIso')}">⬆ ${t('soa_importIso')}</button>` : ''}
         ${soaActiveFramework === 'CUSTOM' && (ROLE_RANK[getCurrentRole()] || 0) >= ROLE_RANK['contentowner']
-          ? `<button class="btn btn-primary btn-sm" onclick="openCustomControlModal(null)"><i class="ph ph-plus"></i> New Control</button>`
+          ? `<button class="btn btn-primary btn-sm" onclick="openCustomControlModal(null)"><i class="ph ph-plus"></i> ${t('soa_newCustomControl')}</button>`
           : ''}
       </div>
       <div class="soa-filters">
         <select id="soaFilterTheme" class="soa-select">
-          <option value="">Alle Themes</option>
-          ${themes.map(t => `<option value="${t}" ${soaFilters.theme===t?'selected':''}>${t}</option>`).join('')}
+          <option value="">${t('soa_allThemes')}</option>
+          ${themes.map(th => `<option value="${th}" ${soaFilters.theme===th?'selected':''}>${th}</option>`).join('')}
         </select>
         <select id="soaFilterStatus" class="soa-select">
           <option value="">${t('filter_allStatuses')}</option>
           ${Object.entries(getStatusLabels()).map(([v,l]) => `<option value="${v}" ${soaFilters.status===v?'selected':''}>${l}</option>`).join('')}
         </select>
         <select id="soaFilterApplicable" class="soa-select">
-          <option value="">All</option>
-          <option value="yes" ${soaFilters.applicable==='yes'?'selected':''}>Applicable</option>
-          <option value="no"  ${soaFilters.applicable==='no'?'selected':''}>Not Applicable</option>
+          <option value="">${t('soa_filterAll')}</option>
+          <option value="yes" ${soaFilters.applicable==='yes'?'selected':''}>${t('soa_applicable')}</option>
+          <option value="no"  ${soaFilters.applicable==='no'?'selected':''}>${t('soa_notApplicable')}</option>
         </select>
       </div>
     </div>
@@ -2463,12 +2463,12 @@ function renderSoaContent(container) {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Theme</th>
-            <th>Control</th>
-            <th>Applicable</th>
-            <th>Status</th>
-            <th>Responsible</th>
-            <th>Justification</th>
+            <th>${t('soa_theme')}</th>
+            <th>${t('soa_control')}</th>
+            <th>${t('soa_applicable')}</th>
+            <th>${t('soa_status')}</th>
+            <th>${t('soa_owner')}</th>
+            <th>${t('soa_justification')}</th>
             ${canEdit ? '<th></th>' : ''}
           </tr>
         </thead>
@@ -2477,7 +2477,7 @@ function renderSoaContent(container) {
           ${filtered.map(c => soaRow(c, canEdit)).join('')}
         </tbody>
       </table>
-      ${filtered.length === 0 ? '<div class="soa-empty">No controls found.</div>' : ''}
+      ${filtered.length === 0 ? `<div class="soa-empty">${t('soa_noControls')}</div>` : ''}
     </div>
   `
 
@@ -2508,12 +2508,12 @@ function soaRow(c, canEdit) {
   const color = THEME_COLORS[c.theme] || '#888'
   const linkedCount = (c.linkedTemplates || []).length
   const linkedBadge = linkedCount > 0
-    ? `<span class="soa-linked-badge">${linkedCount} Template${linkedCount > 1 ? 's' : ''}</span>`
+    ? `<span class="soa-linked-badge">${linkedCount} ${t('soa_linkedBadge')}</span>`
     : ''
   return `
     <tr class="soa-row ${c.applicable ? '' : 'soa-row-na'}" data-id="${c.id}">
       <td class="soa-id">
-        <button class="soa-expand-btn" data-id="${c.id}" title="Details einblenden">&#9656;</button>
+        <button class="soa-expand-btn" data-id="${c.id}" title="${t('soa_showDetails')}">&#9656;</button>
         ${c.id}
       </td>
       <td><span class="soa-theme-badge" style="border-color:${color};color:${color}">${c.theme}</span></td>
@@ -2534,26 +2534,26 @@ function soaRow(c, canEdit) {
       </td>
       <td>
         ${canEdit
-          ? `<input class="soa-owner-input" data-id="${c.id}" value="${c.owner||''}" placeholder="Name…">`
+          ? `<input class="soa-owner-input" data-id="${c.id}" value="${c.owner||''}" placeholder="${t('soa_ownerPh')}">`
           : (c.owner || '—')}
       </td>
       <td>
         ${canEdit
-          ? `<input class="soa-just-input" data-id="${c.id}" value="${c.justification||''}" placeholder="Justification…">`
+          ? `<input class="soa-just-input" data-id="${c.id}" value="${c.justification||''}" placeholder="${t('soa_justificationPh')}">`
           : (c.justification || '')}
       </td>
       ${canEdit ? `<td style="white-space:nowrap">
-        <button class="btn-soa-save soa-save-btn" data-id="${c.id}">Save</button>
+        <button class="btn-soa-save soa-save-btn" data-id="${c.id}">${t('save')}</button>
         ${c.isCustom ? `
-          <button class="btn btn-secondary btn-xs" style="margin-left:4px" onclick="openCustomControlModal('${c.id}')" title="Edit control"><i class="ph ph-pencil"></i></button>
-          <button class="btn btn-danger btn-xs" style="margin-left:4px" onclick="deleteCustomControl('${c.id}','${escHtml(c.title)}')" title="Delete (only if no templates linked)"><i class="ph ph-trash"></i></button>
+          <button class="btn btn-secondary btn-xs" style="margin-left:4px" onclick="openCustomControlModal('${c.id}')" title="${t('edit')}"><i class="ph ph-pencil"></i></button>
+          <button class="btn btn-danger btn-xs" style="margin-left:4px" onclick="deleteCustomControl('${c.id}','${escHtml(c.title)}')" title="${t('delete')}"><i class="ph ph-trash"></i></button>
         ` : ''}
       </td>` : ''}
     </tr>
     <tr class="soa-detail-row" data-for="${c.id}" style="display:none;">
       <td colspan="8" class="soa-detail-cell">
         <div class="soa-detail-content" id="soa-detail-${c.id}">
-          <div class="soa-detail-loading">Loading details…</div>
+          <div class="soa-detail-loading">${t('soa_loading')}</div>
         </div>
       </td>
     </tr>

@@ -319,10 +319,26 @@
     col_actions:         { de: 'Aktionen',    en: 'Actions',   fr: 'Actions',        nl: 'Acties' },
 
     // ── Sidebar / template types ─────────────────────────────────────────────
-    sidebar_create:      { de: 'Erstellen',                 en: 'Create',                     fr: 'Créer',                     nl: 'Aanmaken' },
-    sidebar_nav:         { de: 'Navigation',                en: 'Navigation',                 fr: 'Navigation',                nl: 'Navigatie' },
-    sidebar_types:       { de: 'Template-Typen',            en: 'Template Types',             fr: 'Types de modèles',          nl: 'Sjabloontypes' },
-    sidebar_admin:       { de: 'Administration',            en: 'Administration',             fr: 'Administration',            nl: 'Beheer' },
+    sidebar_create:      { de: 'Erstellen',                 en: 'Create',                     fr: 'Créer',                     nl: 'Aanmaken' , cs: 'Vytvořit' },
+    sidebar_nav:         { de: 'Navigation',                en: 'Navigation',                 fr: 'Navigation',                nl: 'Navigatie' , cs: 'Navigace' },
+    sidebar_types:       { de: 'Template-Typen',            en: 'Template Types',             fr: 'Types de modèles',          nl: 'Sjabloontypes' , cs: 'Typy šablon' },
+    sidebar_admin:       { de: 'Administration',            en: 'Administration',             fr: 'Administration',            nl: 'Beheer' , cs: 'Administrace' },
+
+    // ── Missing nav item (was rendering raw key) ─────────────────────────────
+    nav_policyAcks:      { de: 'Richtlinien-Bestätigungen',  en: 'Policy Acknowledgements',    fr: 'Acceptations de politiques', nl: 'Beleidsbevestigingen' , cs: 'Potvrzení politik' },
+
+    // ── SoA chrome (KPI badges, buttons, filters, placeholders) ──────────────
+    soa_kpiControls:     { de: 'Controls',                   en: 'controls',                   fr: 'contrôles',                 nl: 'beheersmaatregelen' , cs: 'opatření' },
+    soa_kpiApplicable:   { de: 'anwendbar',                  en: 'applicable',                 fr: 'applicables',               nl: 'van toepassing' , cs: 'aplikovatelných' },
+    soa_kpiImplemented:  { de: 'umgesetzt',                  en: 'implemented',                fr: 'mis en œuvre',              nl: 'geïmplementeerd' , cs: 'implementováno' },
+    soa_exportJson:      { de: 'JSON exportieren',           en: 'Export JSON',                fr: 'Exporter JSON',             nl: 'JSON exporteren' , cs: 'Exportovat JSON' },
+    soa_importIso:       { de: 'ISO Controls importieren',   en: 'Import ISO Controls',        fr: 'Importer contrôles ISO',    nl: 'ISO-beheersmaatregelen importeren' , cs: 'Importovat ISO opatření' },
+    soa_newCustomControl: { de: 'Neues Control',             en: 'New Control',                fr: 'Nouveau contrôle',          nl: 'Nieuwe beheersmaatregel' , cs: 'Nové opatření' },
+    soa_filterAll:       { de: 'Alle',                       en: 'All',                        fr: 'Tous',                      nl: 'Alle' , cs: 'Vše' },
+    soa_status:          { de: 'Status',                     en: 'Status',                     fr: 'Statut',                    nl: 'Status' , cs: 'Stav' },
+    soa_ownerPh:         { de: 'Name…',                      en: 'Name…',                      fr: 'Nom…',                      nl: 'Naam…' , cs: 'Jméno…' },
+    soa_justificationPh: { de: 'Begründung…',                en: 'Justification…',             fr: 'Justification…',            nl: 'Onderbouwing…' , cs: 'Zdůvodnění…' },
+    soa_linkedBadge:     { de: 'Template(s)',                en: 'Template(s)',                fr: 'Modèle(s)',                 nl: 'Sjablo(o)n(en)' , cs: 'šablon' },
 
     // ── 2FA banner in topbar ─────────────────────────────────────────────────
     tfa_hint:            { de: '2FA nicht aktiv',           en: '2FA not active',             fr: '2FA non actif',             nl: '2FA niet actief' },
