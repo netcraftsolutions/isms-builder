@@ -540,6 +540,11 @@ async function init() {
   })
 
   selectType(currentType, true)
+  // Restore last-visited section across full page reloads (e.g. Cmd+R)
+  try {
+    const stored = localStorage.getItem('isms_section')
+    if (stored) currentSection = stored
+  } catch {}
   loadSection(currentSection)
 
   dom('btnNewType')?.addEventListener('click', () => openModal())
@@ -924,6 +929,7 @@ function loadSection(sectionId){
     sectionId = 'dashboard'
   }
   currentSection = sectionId
+  try { localStorage.setItem('isms_section', sectionId) } catch {}
   document.querySelectorAll('#sectionNav .sidebar-nav-item').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.section === sectionId)
   })
@@ -2868,6 +2874,26 @@ async function deleteCustomControl(id, title) {
   if (container) await switchFramework('CUSTOM', container)
 }
 
+// Recompute and update SoA KPI badges in place (without re-rendering rows,
+// to preserve unsaved input in other rows and expanded detail panels).
+function updateSoaSummary(container) {
+  let filtered = soaData
+  if (soaFilters.theme)                filtered = filtered.filter(c => c.theme === soaFilters.theme)
+  if (soaFilters.status)               filtered = filtered.filter(c => c.status === soaFilters.status)
+  if (soaFilters.applicable === 'yes') filtered = filtered.filter(c => c.applicable)
+  if (soaFilters.applicable === 'no')  filtered = filtered.filter(c => !c.applicable)
+
+  const applied   = filtered.filter(c => c.applicable).length
+  const total     = filtered.length
+  const implCount = filtered.filter(c => c.applicable && (c.status === 'implemented' || c.status === 'optimized')).length
+  const implRate  = applied > 0 ? Math.round(implCount / applied * 100) : 0
+
+  const kpis = container.querySelectorAll('.soa-summary-row .soa-kpi')
+  if (kpis[0]) kpis[0].textContent = `${total} ${t('soa_kpiControls')}`
+  if (kpis[1]) kpis[1].textContent = `${applied} ${t('soa_kpiApplicable')}`
+  if (kpis[2]) kpis[2].textContent = `${implRate}% ${t('soa_kpiImplemented')}`
+}
+
 async function saveSoaRow(id, container) {
   const row = container.querySelector(`tr[data-id="${id}"]`)
   if (!row) return
@@ -2888,10 +2914,11 @@ async function saveSoaRow(id, container) {
     const idx = soaData.findIndex(c => c.id === id)
     if (idx >= 0) soaData[idx] = updated
     row.classList.toggle('soa-row-na', !updated.applicable)
+    updateSoaSummary(container)
     const btn = row.querySelector('.soa-save-btn')
     if (btn) { btn.textContent = t('saved'); setTimeout(() => { btn.textContent = t('save') }, 1500) }
   } else {
-    alert('Error saving')
+    alert(t('err_saveFailed'))
   }
 }
 
