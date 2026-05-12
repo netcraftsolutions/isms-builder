@@ -8,6 +8,10 @@
       "ISO-5.4",
       "BSI-ISMS.1",
       "NIS2-a",
+      "CZNIS2V-O.1",
+      "CZNIS2N-O.1",
+      "CZNIS2V-O.3",
+      "CZNIS2N-O.3",
       "EUCS-GOV.1",
       "EUCS-GOV.2",
       "EUAI-GOV.1",
@@ -22,6 +26,8 @@
       "ISO-5.1",
       "BSI-ISMS.2",
       "NIS2-a",
+      "CZNIS2V-O.2",
+      "CZNIS2N-O.2",
       "EUCS-GOV.3",
       "EUAI-ART9",
       "EUAI-GOV.2"
@@ -36,6 +42,8 @@
       "ISO-5.3",
       "BSI-ORP.1",
       "BSI-ORP.2",
+      "CZNIS2V-O.4",
+      "CZNIS2N-O.4",
       "EUCS-GOV.2",
       "EUAI-GOV.3"
     ]
@@ -52,6 +60,10 @@
       "BSI-ORP.4",
       "NIS2-i",
       "NIS2-j",
+      "CZNIS2V-T.3",
+      "CZNIS2N-T.3",
+      "CZNIS2V-T.4",
+      "CZNIS2N-T.4",
       "EUCS-IAM.1",
       "EUCS-IAM.2",
       "EUCS-IAM.3"
@@ -70,6 +82,8 @@
       "ISO-6.8",
       "BSI-DER.2",
       "NIS2-b",
+      "CZNIS2V-O.11",
+      "CZNIS2N-O.11",
       "EUCS-INC.1",
       "EUCS-INC.2"
     ]
@@ -83,6 +97,10 @@
       "ISO-5.30",
       "BSI-DER.4",
       "NIS2-c",
+      "CZNIS2V-O.12",
+      "CZNIS2N-O.12",
+      "CZNIS2V-T.11",
+      "CZNIS2N-T.11",
       "EUCS-BCM.1",
       "EUCS-BCM.2"
     ]
@@ -99,6 +117,8 @@
       "ISO-5.23",
       "BSI-OPS.2",
       "NIS2-d",
+      "CZNIS2V-O.5",
+      "CZNIS2N-O.5",
       "EUCS-SCM.1",
       "EUCS-SCM.2"
     ]
@@ -111,6 +131,8 @@
       "ISO-8.8",
       "BSI-DER.3",
       "NIS2-e",
+      "CZNIS2V-O.10",
+      "CZNIS2N-O.10",
       "EUCS-VUL.1",
       "EUCS-VUL.2"
     ]
@@ -123,6 +145,8 @@
       "ISO-8.24",
       "ISO-8.25",
       "NIS2-h",
+      "CZNIS2V-T.10",
+      "CZNIS2N-T.10",
       "EUCS-CRY.1"
     ]
   },
@@ -135,6 +159,10 @@
       "ISO-8.16",
       "ISO-8.17",
       "BSI-DER.1",
+      "CZNIS2V-T.6",
+      "CZNIS2N-T.6",
+      "CZNIS2V-T.7",
+      "CZNIS2V-T.8",
       "EUCS-LOG.1",
       "EUAI-ART12"
     ]
@@ -150,6 +178,8 @@
       "ISO-7.4",
       "BSI-INF.1",
       "BSI-INF.2",
+      "CZNIS2V-T.1",
+      "CZNIS2N-T.1",
       "EUCS-PHY.1"
     ]
   },
@@ -161,6 +191,8 @@
       "ISO-6.3",
       "BSI-ORP.3",
       "NIS2-g",
+      "CZNIS2V-O.7",
+      "CZNIS2N-O.7",
       "EUCS-PEN.1"
     ]
   },
@@ -186,7 +218,9 @@
       "ISO-5.12",
       "ISO-5.13",
       "BSI-ORP.2",
-      "NIS2-i"
+      "NIS2-i",
+      "CZNIS2V-O.6",
+      "CZNIS2N-O.6"
     ]
   },
   {
@@ -197,6 +231,8 @@
       "ISO-8.32",
       "BSI-OPS.1",
       "NIS2-e",
+      "CZNIS2V-O.9",
+      "CZNIS2N-O.9",
       "EUCS-CHM.1",
       "EUCS-CHM.2"
     ]
@@ -211,6 +247,8 @@
       "ISO-5.36",
       "BSI-ISMS.2",
       "NIS2-f",
+      "CZNIS2V-O.13",
+      "CZNIS2N-O.13",
       "EUAI-ART43"
     ]
   },
@@ -226,6 +264,8 @@
       "ISO-6.6",
       "BSI-ORP.1",
       "NIS2-i",
+      "CZNIS2V-O.7",
+      "CZNIS2N-O.7",
       "EUCS-PEN.1"
     ]
   },
@@ -265,6 +305,10 @@
       "ISO-8.22",
       "BSI-NET.1",
       "BSI-NET.2",
+      "CZNIS2V-T.2",
+      "CZNIS2N-T.2",
+      "CZNIS2V-T.5",
+      "CZNIS2N-T.5",
       "EUCS-NET.1"
     ]
   }

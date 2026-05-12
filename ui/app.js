@@ -2348,11 +2348,13 @@ const THEME_COLORS = {
   Physical:       '#fb923c',
   Technological:  '#34d399'
 }
-const STATUS_LABELS = {
-  not_started: 'Nicht begonnen',
-  partial:     'Teilweise',
-  implemented: 'Umgesetzt',
-  optimized:   'Optimiert'
+function getStatusLabels() {
+  return {
+    not_started: t('soa_notStarted'),
+    partial:     t('soa_partial'),
+    implemented: t('soa_implemented'),
+    optimized:   t('soa_optimized'),
+  }
 }
 
 let soaData = []
@@ -2446,7 +2448,7 @@ function renderSoaContent(container) {
         </select>
         <select id="soaFilterStatus" class="soa-select">
           <option value="">${t('filter_allStatuses')}</option>
-          ${Object.entries(STATUS_LABELS).map(([v,l]) => `<option value="${v}" ${soaFilters.status===v?'selected':''}>${l}</option>`).join('')}
+          ${Object.entries(getStatusLabels()).map(([v,l]) => `<option value="${v}" ${soaFilters.status===v?'selected':''}>${l}</option>`).join('')}
         </select>
         <select id="soaFilterApplicable" class="soa-select">
           <option value="">All</option>
@@ -2524,11 +2526,11 @@ function soaRow(c, canEdit) {
       <td>
         ${canEdit
           ? `<select class="soa-status-sel" data-id="${c.id}">
-              ${Object.entries(STATUS_LABELS).map(([v,l]) =>
+              ${Object.entries(getStatusLabels()).map(([v,l]) =>
                 `<option value="${v}" ${c.status===v?'selected':''}>${l}</option>`
               ).join('')}
             </select>`
-          : `<span class="soa-status-label soa-status-${c.status}">${STATUS_LABELS[c.status]||c.status}</span>`}
+          : `<span class="soa-status-label soa-status-${c.status}">${getStatusLabels()[c.status]||c.status}</span>`}
       </td>
       <td>
         ${canEdit

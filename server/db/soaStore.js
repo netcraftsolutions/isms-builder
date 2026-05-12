@@ -1,6 +1,6 @@
 // © 2026 Claude Hecker — ISMS Builder V 1.30 — AGPL-3.0
 // SoA Store – Statement of Applicability
-// Multi-Framework: BSI IT-Grundschutz · EU NIS2 · EUCS · EU AI Act · CRA (built-in)
+// Multi-Framework: BSI IT-Grundschutz · EU NIS2 · Czech NIS2 vyšší/nižší (zákon č. 264/2025) · EUCS · EU AI Act · CRA (built-in)
 //                  ISO 27001:2022 · ISO 9000:2015 · ISO 9001:2015 (user-supplied via data/iso-controls.json)
 //
 // NOTE: ISO 27001, ISO 9000, and ISO 9001 controls are NOT included in the distribution.
@@ -22,6 +22,8 @@ const FRAMEWORKS = {
   ISO27001: { id: 'ISO27001', label: 'ISO 27001:2022',      color: '#4f8cff' },
   BSI:      { id: 'BSI',      label: 'BSI IT-Grundschutz',  color: '#f0b429' },
   NIS2:     { id: 'NIS2',     label: 'EU NIS2',             color: '#34d399' },
+  CZNIS2V:  { id: 'CZNIS2V',  label: 'Czech NIS2 – Režim vyšších povinností (zákon č. 264/2025 Sb.)', color: '#dc143c' },
+  CZNIS2N:  { id: 'CZNIS2N',  label: 'Czech NIS2 – Režim nižších povinností (zákon č. 264/2025 Sb.)', color: '#fb7185' },
   EUCS:     { id: 'EUCS',     label: 'EU Cloud (EUCS)',     color: '#a78bfa' },
   EUAI:     { id: 'EUAI',     label: 'EU AI Act',           color: '#fb923c' },
   ISO9000:  { id: 'ISO9000',  label: 'ISO 9000:2015',       color: '#2dd4bf' },
@@ -132,6 +134,69 @@ const NIS2_CONTROLS = [
   { id:'NIS2-i', theme:'Personal',            title:'Art. 21(2)(i) – Personalsicherheit, Konzepte für Zugriffskontrolle und Asset-Management' },
   { id:'NIS2-j', theme:'Authentisierung',     title:'Art. 21(2)(j) – Multi-Faktor-Authentifizierung, gesicherte Kommunikation und Notfallkommunikation' },
 ].map(c => ({ ...c, framework: 'NIS2' }))
+
+// ─────────────────────────────────────────────────────────────────
+// Czech NIS2 – Zákon č. 264/2025 Sb. o kybernetické bezpečnosti
+// + Vyhláška o bezpečnostních opatřeních (NÚKIB)
+// Dva samostatné frameworky pro dvě regulační kategorie:
+//   • CZNIS2V – Režim vyšších povinností (essential entities): všech 25
+//     opatření z vyhlášky (§3–§15 organizační, §16–§27 technická).
+//   • CZNIS2N – Režim nižších povinností (important entities): 22 opatření;
+//     neaplikují se §22 detekce, §23 SIEM a §27 OT/ICS.
+// IDs mají sjednocené číslování T.N → §(15+N), takže ekvivalentní opatření
+// mají v obou frameworcích stejný numerický suffix (CZNIS2V-T.6 ↔ CZNIS2N-T.6).
+// ─────────────────────────────────────────────────────────────────
+const _CZNIS2_ORG = [
+  { id:'O.1',  title:'§ 3 – Systém řízení bezpečnosti informací (ISMS)' },
+  { id:'O.2',  title:'§ 4 – Řízení rizik' },
+  { id:'O.3',  title:'§ 5 – Bezpečnostní politika a strategie kybernetické bezpečnosti' },
+  { id:'O.4',  title:'§ 6 – Organizační bezpečnost a stanovení rolí a odpovědností' },
+  { id:'O.5',  title:'§ 7 – Stanovení bezpečnostních požadavků pro dodavatele a řízení dodavatelského řetězce' },
+  { id:'O.6',  title:'§ 8 – Řízení aktiv (evidence a klasifikace)' },
+  { id:'O.7',  title:'§ 9 – Bezpečnost lidských zdrojů a vzdělávání' },
+  { id:'O.8',  title:'§ 10 – Řízení provozu a komunikací' },
+  { id:'O.9',  title:'§ 11 – Řízení změn' },
+  { id:'O.10', title:'§ 12 – Akvizice, vývoj a údržba (bezpečnost při vývoji a údržbě)' },
+  { id:'O.11', title:'§ 13 – Zvládání kybernetických bezpečnostních událostí a incidentů (hlášení NÚKIB)' },
+  { id:'O.12', title:'§ 14 – Řízení kontinuity činností (BCM, DR)' },
+  { id:'O.13', title:'§ 15 – Audit kybernetické bezpečnosti' },
+]
+
+const _CZNIS2_TECH_BASE = [
+  { id:'T.1',  title:'§ 16 – Fyzická bezpečnost' },
+  { id:'T.2',  title:'§ 17 – Bezpečnost komunikačních sítí (segmentace, perimetr)' },
+  { id:'T.3',  title:'§ 18 – Správa a ověřování identit (vícefaktorová autentizace)' },
+  { id:'T.4',  title:'§ 19 – Řízení přístupových oprávnění (least privilege)' },
+  { id:'T.5',  title:'§ 20 – Ochrana před škodlivým kódem' },
+  { id:'T.6',  title:'§ 21 – Zaznamenávání událostí informačního a komunikačního systému (logování)' },
+  { id:'T.9',  title:'§ 24 – Aplikační bezpečnost' },
+  { id:'T.10', title:'§ 25 – Kryptografické algoritmy a správa klíčů' },
+  { id:'T.11', title:'§ 26 – Zajišťování úrovně dostupnosti informací (zálohování, obnova)' },
+]
+
+const _CZNIS2_TECH_HIGH_ONLY = [
+  { id:'T.7',  title:'§ 22 – Detekce kybernetických bezpečnostních událostí' },
+  { id:'T.8',  title:'§ 23 – Sběr a vyhodnocování kybernetických bezpečnostních událostí (SIEM)' },
+  { id:'T.12', title:'§ 27 – Bezpečnost průmyslových, řídicích a obdobných specifických technických aktiv (OT/ICS)' },
+]
+
+function _czechNis2Build(fwId, includeHighOnly) {
+  const org  = _CZNIS2_ORG.map(c => ({ id: `${fwId}-${c.id}`, theme:'Organizační opatření', title:c.title, framework:fwId }))
+  const tech = _CZNIS2_TECH_BASE.map(c => ({ id: `${fwId}-${c.id}`, theme:'Technická opatření', title:c.title, framework:fwId }))
+  if (includeHighOnly) {
+    for (const c of _CZNIS2_TECH_HIGH_ONLY) tech.push({ id: `${fwId}-${c.id}`, theme:'Technická opatření', title:c.title, framework:fwId })
+  }
+  // Sort technical by section number for stable display order
+  tech.sort((a, b) => {
+    const an = parseInt(a.id.split('-T.')[1], 10)
+    const bn = parseInt(b.id.split('-T.')[1], 10)
+    return an - bn
+  })
+  return [...org, ...tech]
+}
+
+const CZNIS2V_CONTROLS = _czechNis2Build('CZNIS2V', true)   // 13 org + 12 tech = 25
+const CZNIS2N_CONTROLS = _czechNis2Build('CZNIS2N', false)  // 13 org +  9 tech = 22
 
 // ─────────────────────────────────────────────────────────────────
 // EUCS – EU Cybersecurity Certification Scheme for Cloud Services
@@ -264,6 +329,8 @@ const USER_ISO_CONTROLS = loadUserISOControls()
 const ALL_SEED_CONTROLS = [
   ...BSI_CONTROLS,
   ...NIS2_CONTROLS,
+  ...CZNIS2V_CONTROLS,
+  ...CZNIS2N_CONTROLS,
   ...EUCS_CONTROLS,
   ...EUAI_CONTROLS,
   ...CRA_CONTROLS,
@@ -446,5 +513,5 @@ module.exports = {
   },
 
   FRAMEWORKS,
-  IMPLEMENTATION_STATUSES
+  IMPLEMENTATION_STATUSES,
 }

@@ -36,6 +36,8 @@ Der Template-Typ **SoA** in der Sidebar dient für **ergänzende Dokumente** zum
 | **ISO 27001:2022** | 93 | Internationaler Standard für ISMS |
 | **BSI IT-Grundschutz** | variabel | Deutsches Pendant, sehr detailliert |
 | **NIS2** | ~30 | EU-Richtlinie für kritische Infrastrukturen |
+| **Czech NIS2 – Vyšší** | 25 | Zákon č. 264/2025 Sb. o kybernetické bezpečnosti (NÚKIB) – **Režim vyšších povinností** (essential entities). Alle 25 Maßnahmen: organizační §3–§15 (13) + technická §16–§27 (12, inkl. §22 Detection, §23 SIEM, §27 OT/ICS). Framework-ID `CZNIS2V`. |
+| **Czech NIS2 – Nižší** | 22 | Zákon č. 264/2025 Sb. – **Režim nižších povinností** (important entities). 22 Maßnahmen: organizační §3–§15 (13) + technická §16–§26 ohne §22/§23/§27 (9). Framework-ID `CZNIS2N`. |
 | **EUCS** | variabel | EU Cloud Security Scheme |
 | **EUAI Act** | variabel | KI-Verordnung der EU |
 | **ISO 9001** | variabel | Qualitätsmanagement |

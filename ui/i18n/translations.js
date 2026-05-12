@@ -19,7 +19,7 @@
     loginTotp:          { de: 'Mit 2FA anmelden',                                 en: 'Sign in with 2FA',                                fr: 'Se connecter avec la 2FA',                            nl: 'Aanmelden met 2FA' },
     loginBtn:           { de: 'Anmelden',                                         en: 'Sign in',                                         fr: 'Se connecter',                                        nl: 'Aanmelden' },
     loginReportIncident:{ de: 'Sicherheitsvorfall melden',                        en: 'Report a Security Incident',                      fr: 'Signaler un incident de sécurité',                    nl: 'Beveiligingsincident melden' },
-    loginFooter:        { de: 'ISMS Builder · ISO 27001 · BSI · NIS2 · EUCS · EU AI Act', en: 'ISMS Builder · ISO 27001 · BSI · NIS2 · EUCS · EU AI Act', fr: 'ISMS Builder · ISO 27001 · BSI · NIS2 · EUCS · EU AI Act', nl: 'ISMS Builder · ISO 27001 · BSI · NIS2 · EUCS · EU AI Act' },
+    loginFooter:        { de: 'ISMS Builder · ISO 27001 · BSI · NIS2 · Czech NIS2 · EUCS · EU AI Act', en: 'ISMS Builder · ISO 27001 · BSI · NIS2 · Czech NIS2 · EUCS · EU AI Act', fr: 'ISMS Builder · ISO 27001 · BSI · NIS2 · Czech NIS2 · EUCS · EU AI Act', nl: 'ISMS Builder · ISO 27001 · BSI · NIS2 · Czech NIS2 · EUCS · EU AI Act' },
     loginLang:          { de: 'Sprache',                                           en: 'Language',                                        fr: 'Langue',                                              nl: 'Taal' },
 
     // Demo reset banner

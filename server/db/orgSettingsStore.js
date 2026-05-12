@@ -71,6 +71,8 @@ const DEFAULTS = {
     ISO27001: true,
     BSI:      true,
     NIS2:     true,
+    CZNIS2V:  true,
+    CZNIS2N:  true,
     EUCS:     true,
     EUAI:     true,
     ISO9000:  true,
