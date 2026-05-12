@@ -15,7 +15,7 @@ let MODULE_CONFIG = {
   governance:true, bcm:true, suppliers:true,
 }
 let SOA_FW_CONFIG = {
-  ISO27001:true, BSI:true, NIS2:true, EUCS:true, EUAI:true,
+  ISO27001:true, BSI:true, NIS2:true, CZNIS2V:true, CZNIS2N:true, EUCS:true, EUAI:true,
   ISO9000:true, ISO9001:true, CRA:true,
 }
 
@@ -1030,23 +1030,25 @@ function renderReportsTabContent(container) {
           ${_reportEntities.map(e => `<option value="${e.id}">${e.name} (${e.shortCode || e.id})</option>`).join('')}
         </select>
       </div>
-      <label class="form-label">Framework</label>
+      <label class="form-label">${t('reports_framework')}</label>
       <select id="reportFwSel" class="select report-sel">
-        <option value="">Alle Frameworks</option>
+        <option value="">${t('reports_allFw')}</option>
         <option value="ISO27001">ISO 27001:2022</option>
         <option value="BSI">BSI IT-Grundschutz</option>
         <option value="NIS2">EU NIS2</option>
+        <option value="CZNIS2V">Czech NIS2 – Režim vyšších povinností</option>
+        <option value="CZNIS2N">Czech NIS2 – Režim nižších povinností</option>
         <option value="EUCS">EU Cloud (EUCS)</option>
         <option value="EUAI">EU AI Act</option>
         <option value="ISO9000">ISO 9000:2015</option>
         <option value="ISO9001">ISO 9001:2015</option>
         <option value="CRA">EU Cyber Resilience Act</option>
       </select>
-      <label class="form-label">From</label>
+      <label class="form-label">${t('reports_fromLabel')}</label>
       <input type="date" id="reportFrom" class="form-input report-date" />
-      <label class="form-label">To</label>
+      <label class="form-label">${t('reports_toLabel')}</label>
       <input type="date" id="reportTo" class="form-input report-date" />
-      <button id="reportRunBtn" class="btn btn-primary"><i class="ph ph-play"></i> Create Report</button>
+      <button id="reportRunBtn" class="btn btn-primary"><i class="ph ph-play"></i> ${t('reports_createBtn')}</button>
       <button class="btn btn-secondary" onclick="exportReportJson()"><i class="ph ph-download-simple"></i> JSON</button>
       <button class="btn btn-secondary" onclick="exportReportCsv()"><i class="ph ph-file-csv"></i> CSV</button>
       <button class="btn btn-secondary" onclick="exportReportPdf()"><i class="ph ph-file-pdf"></i> PDF</button>
@@ -4968,6 +4970,8 @@ const SOA_FW_META = [
   { id: 'ISO27001', label: 'ISO 27001:2022',          color: '#4f8cff', desc: 'Information Security Management (93 Controls, Annex A)', norms: ['ISO 27001'] },
   { id: 'BSI',      label: 'BSI IT-Grundschutz',      color: '#f0b429', desc: 'German IT-Grundschutz Compendium (16 building blocks)', norms: ['BSI'] },
   { id: 'NIS2',     label: 'EU NIS2',                 color: '#34d399', desc: 'Network and Information Security Directive 2 (29 requirements)', norms: ['NIS2'] },
+  { id: 'CZNIS2V',  label: 'Czech NIS2 – Vyšší',      color: '#dc143c', desc: 'Zákon č. 264/2025 Sb. – režim vyšších povinností (25 opatření, §3–§27)', norms: ['Czech NIS2'] },
+  { id: 'CZNIS2N',  label: 'Czech NIS2 – Nižší',      color: '#fb7185', desc: 'Zákon č. 264/2025 Sb. – režim nižších povinností (22 opatření, bez §22/§23/§27)', norms: ['Czech NIS2'] },
   { id: 'EUCS',     label: 'EU Cloud (EUCS)',          color: '#a78bfa', desc: 'EU Cybersecurity Certification Scheme for Cloud Services', norms: ['EUCS'] },
   { id: 'EUAI',     label: 'EU AI Act',               color: '#fb923c', desc: 'Requirements for AI systems under the EU AI Act', norms: ['EU AI Act'] },
   { id: 'ISO9000',  label: 'ISO 9000:2015',           color: '#2dd4bf', desc: 'Foundations and vocabulary of quality management systems', norms: ['ISO 9000'] },
