@@ -1,7 +1,14 @@
 {
   "name": "isms-build",
   "version": "1.35.0",
-  "description": "ISMS Template Builder – Build Mode",
+  "description": "ISMS Template Builder – Build Mode (Czech context fork of coolstartnow/isms-builder)",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/netcraftsolutions/isms-builder.git"
+  },
+  "homepage": "https://github.com/netcraftsolutions/isms-builder",
+  "bugs": "https://github.com/netcraftsolutions/isms-builder/issues",
   "scripts": {
     "start": "node server/index.js",
     "test": "jest --runInBand",

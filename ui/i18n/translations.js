@@ -20,6 +20,7 @@
     loginBtn:           { de: 'Anmelden',                                         en: 'Sign in',                                         fr: 'Se connecter',                                        nl: 'Aanmelden' },
     loginReportIncident:{ de: 'Sicherheitsvorfall melden',                        en: 'Report a Security Incident',                      fr: 'Signaler un incident de sécurité',                    nl: 'Beveiligingsincident melden' },
     loginFooter:        { de: 'ISMS Builder · ISO 27001 · BSI · NIS2 · Czech NIS2 · EUCS · EU AI Act', en: 'ISMS Builder · ISO 27001 · BSI · NIS2 · Czech NIS2 · EUCS · EU AI Act', fr: 'ISMS Builder · ISO 27001 · BSI · NIS2 · Czech NIS2 · EUCS · EU AI Act', nl: 'ISMS Builder · ISO 27001 · BSI · NIS2 · Czech NIS2 · EUCS · EU AI Act' },
+    loginSource:        { de: 'Quellcode (AGPL-3.0)',                                en: 'Source code (AGPL-3.0)',                          fr: 'Code source (AGPL-3.0)',                              nl: 'Broncode (AGPL-3.0)' },
     loginLang:          { de: 'Sprache',                                           en: 'Language',                                        fr: 'Langue',                                              nl: 'Taal' },
 
     // Demo reset banner

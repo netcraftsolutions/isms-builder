@@ -1,6 +1,20 @@
 <!-- © 2026 Claude Hecker — ISMS Builder V 1.32.0 — AGPL-3.0 -->
+<!-- Czech context fork © 2026 Netcraft Solutions — same AGPL-3.0 license -->
 ![ISMS Builder Banner](isms-builder-banner.png)
-# ISMS Builder
+# ISMS Builder — Czech context fork
+
+> **This is a fork** of the upstream [ISMS Builder](https://github.com/coolstartnow/isms-builder)
+> project by Claude Hecker, maintained by [Netcraft Solutions](https://github.com/netcraftsolutions)
+> for adaptation to the Czech regulatory environment (zákon č. 264/2025 Sb.
+> o kybernetické bezpečnosti and the NÚKIB cybersecurity decree).
+>
+> Like the upstream project, this fork is licensed under **AGPL-3.0**. See
+> [NOTICE](NOTICE) for attribution details and [LICENSE](LICENSE) for the
+> full license text. Modifications introduced in this fork are listed in
+> the git history of this repository and remain available to users of any
+> network-deployed instance, in accordance with AGPL § 13.
+
+---
 
 **Self-hosted Information Security Management System — open source, no cloud required**
 

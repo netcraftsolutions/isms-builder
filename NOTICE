@@ -1,0 +1,45 @@
+ISMS Builder — Czech context fork
+=================================
+
+This repository (https://github.com/netcraftsolutions/isms-builder) is a fork
+of the upstream ISMS Builder project, maintained for adaptation to the Czech
+regulatory environment (zákon č. 264/2025 Sb. o kybernetické bezpečnosti and
+the implementing NÚKIB decree on cybersecurity measures).
+
+Upstream project
+----------------
+ISMS Builder
+Copyright © 2026 Claude Hecker
+Upstream repository: https://github.com/coolstartnow/isms-builder
+License: GNU Affero General Public License, version 3 (AGPL-3.0)
+See LICENSE for the full license text.
+
+This fork
+---------
+Maintainer: Netcraft Solutions
+Repository: https://github.com/netcraftsolutions/isms-builder
+License: GNU Affero General Public License, version 3 (AGPL-3.0)
+
+Modifications in this fork are licensed under the same AGPL-3.0 terms as
+the upstream project, as required by sections 5 and 13 of the license.
+
+Network use (AGPL § 13)
+-----------------------
+If you interact with a deployed instance of this software over a network,
+you have the right to receive the Corresponding Source — including any
+modifications applied by the operator of that instance. Operators of public
+instances must make the source code of their running version available to
+users; this fork satisfies that obligation by publishing all modifications
+in the repository linked above.
+
+Third-party components
+----------------------
+This project bundles third-party open-source dependencies. See
+THIRD-PARTY-LICENSES.md for the full attribution and license texts.
+
+Trademarks
+----------
+"ISMS Builder" is used here in its descriptive sense as the name of the
+upstream project. This fork makes no claim to any trademark held by the
+upstream maintainer. Commercial offerings based on this fork should use a
+distinct brand to avoid confusion.
