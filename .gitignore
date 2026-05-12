@@ -66,6 +66,12 @@ data/policy-acks.json
 data/policy-distributions.json
 data/scan-import-state.json
 
+# guidance.json — server appends seed entries on every startup and
+# customer admins edit guidance content through the UI. Was tracked
+# in upstream as bootstrap content but drifts immediately on first run
+# (caused recurring EACCES + permission churn after each git pull).
+data/guidance.json
+
 # GDPR runtime records — VVT, DSAR, DSB, DPIA, breaches, TOMs.
 # Highly sensitive customer data; never in repo.
 data/gdpr/
