@@ -847,6 +847,21 @@
     inc_cleanedNoShort:        { de: 'Nein – Folge offen',  en: 'No – pending follow-up',      fr: 'Non – suivi en attente',  nl: 'Nee – follow-up open',         cs: 'Ne – čeká se na řešení' },
     inc_cleanedPartialShort:   { de: 'Teilweise',           en: 'Partial',                     fr: 'Partiel',                 nl: 'Gedeeltelijk',                 cs: 'Částečně' },
 
+    // ── Goals module — status + category labels (was hardcoded array) ────────
+    goals_title:               { de: 'Sicherheitsziele',    en: 'Security Goals',              fr: 'Objectifs de sécurité',   nl: 'Beveiligingsdoelen',           cs: 'Bezpečnostní cíle' },
+    goals_count:               { de: '{n} Ziel(e)',         en: '{n} Goal(s)',                 fr: '{n} objectif(s)',         nl: '{n} doel(en)',                 cs: '{n} cílů' },
+    goals_overdueShort:        { de: '(überfällig)',        en: '(overdue)',                   fr: '(en retard)',             nl: '(achterstallig)',              cs: '(po termínu)' },
+    goals_kpiCount:            { de: '{n} KPI(s)',          en: '{n} KPI(s)',                  fr: '{n} KPI',                 nl: '{n} KPI(\'s)',                 cs: '{n} KPI' },
+    goals_statusMissed:        { de: 'Verfehlt',            en: 'Missed',                      fr: 'Manqué',                  nl: 'Gemist',                       cs: 'Nesplněno' },
+    goals_statusAchieved:      { de: 'Erreicht',            en: 'Achieved',                    fr: 'Atteint',                 nl: 'Bereikt',                      cs: 'Dosaženo' },
+    goals_catConfidentiality:  { de: 'Vertraulichkeit',     en: 'Confidentiality',             fr: 'Confidentialité',         nl: 'Vertrouwelijkheid',            cs: 'Důvěrnost' },
+    goals_catIntegrity:        { de: 'Integrität',          en: 'Integrity',                   fr: 'Intégrité',               nl: 'Integriteit',                  cs: 'Integrita' },
+    goals_catAvailability:     { de: 'Verfügbarkeit',       en: 'Availability',                fr: 'Disponibilité',           nl: 'Beschikbaarheid',              cs: 'Dostupnost' },
+    goals_catCompliance:       { de: 'Compliance',          en: 'Compliance',                  fr: 'Conformité',              nl: 'Naleving',                     cs: 'Soulad' },
+    goals_catOperational:      { de: 'Betrieblich',         en: 'Operational',                 fr: 'Opérationnel',            nl: 'Operationeel',                 cs: 'Provozní' },
+    goals_catTechnical:        { de: 'Technisch',           en: 'Technical',                   fr: 'Technique',               nl: 'Technisch',                    cs: 'Technické' },
+    goals_catOrganizational:   { de: 'Organisatorisch',     en: 'Organizational',              fr: 'Organisationnel',         nl: 'Organisatorisch',              cs: 'Organizační' },
+
     // ── Admin — Language Configuration ───────────────────────────────────────
     admin_langConfig:    { de: 'Sprachkonfiguration',       en: 'Language Configuration',     fr: 'Configuration des langues', nl: 'Taalconfiguratie' , cs: 'Konfigurace jazyků' },
     admin_langConfigDesc:{ de: 'Sprachen systemweit aktivieren oder deaktivieren. Die Standardsprache wird auf der Login-Seite verwendet.', en: 'Enable or disable languages system-wide. The default language is shown on the login page for users without a stored preference.', fr: 'Activez ou désactivez les langues à l\'échelle du système. La langue par défaut est affichée sur la page de connexion.', nl: 'Schakel talen systeem breed in of uit. De standaardtaal wordt weergegeven op de aanmeldpagina.' , cs: 'Aktivace nebo deaktivace jazyků pro celý systém. Výchozí jazyk se použije na přihlašovací stránce, dokud uživatel jazyk nezvolí.' },

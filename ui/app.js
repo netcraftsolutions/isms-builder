@@ -5677,28 +5677,34 @@ async function adminDeleteEntity(id, name) {
 // SICHERHEITSZIELE – ISO 27001 Kap. 6.2
 // ════════════════════════════════════════════════════════════
 
-const GOAL_CATEGORIES = [
-  { id: 'confidentiality', label: 'Confidentiality' },
-  { id: 'integrity',       label: 'Integrity' },
-  { id: 'availability',    label: 'Availability' },
-  { id: 'compliance',      label: 'Compliance' },
-  { id: 'operational',     label: 'Operational' },
-  { id: 'technical',       label: 'Technisch' },
-  { id: 'organizational',  label: 'Organisatorisch' }
-]
-const GOAL_STATUSES = [
-  { id: 'planned',   label: 'Planned',    color: '#888' },
-  { id: 'active',    label: 'Active',     color: '#60a5fa' },
-  { id: 'achieved',  label: 'Achieved',   color: '#4ade80' },
-  { id: 'missed',    label: 'Missed',     color: '#f87171' },
-  { id: 'cancelled', label: 'Cancelled',  color: '#555' }
-]
-const GOAL_PRIORITIES = [
-  { id: 'low',      label: 'Low',      color: '#888' },
-  { id: 'medium',   label: 'Medium',   color: '#f0b429' },
-  { id: 'high',     label: 'High',     color: '#fb923c' },
-  { id: 'critical', label: 'Critical', color: '#f87171' }
-]
+function getGoalCategories() {
+  return [
+    { id: 'confidentiality', label: t('goals_catConfidentiality') },
+    { id: 'integrity',       label: t('goals_catIntegrity') },
+    { id: 'availability',    label: t('goals_catAvailability') },
+    { id: 'compliance',      label: t('goals_catCompliance') },
+    { id: 'operational',     label: t('goals_catOperational') },
+    { id: 'technical',       label: t('goals_catTechnical') },
+    { id: 'organizational',  label: t('goals_catOrganizational') },
+  ]
+}
+function getGoalStatuses() {
+  return [
+    { id: 'planned',   label: t('status_planned'),         color: '#888' },
+    { id: 'active',    label: t('status_active'),          color: '#60a5fa' },
+    { id: 'achieved',  label: t('goals_statusAchieved'),   color: '#4ade80' },
+    { id: 'missed',    label: t('goals_statusMissed'),     color: '#f87171' },
+    { id: 'cancelled', label: t('status_cancelled'),       color: '#555' },
+  ]
+}
+function getGoalPriorities() {
+  return [
+    { id: 'low',      label: t('priority_low'),      color: '#888' },
+    { id: 'medium',   label: t('priority_medium'),   color: '#f0b429' },
+    { id: 'high',     label: t('priority_high'),     color: '#fb923c' },
+    { id: 'critical', label: t('priority_critical'), color: '#f87171' },
+  ]
+}
 
 let _goalStatusFilter   = ''
 let _goalCategoryFilter = ''
@@ -5724,9 +5730,9 @@ async function renderGoals() {
   const list    = goalsRes.ok    ? await goalsRes.json()    : []
   const summary = summaryRes.ok  ? await summaryRes.json()  : {}
 
-  const statusOpts = [{ id:'', label:t('filter_allStatuses') }, ...GOAL_STATUSES]
+  const statusOpts = [{ id:'', label:t('filter_allStatuses') }, ...getGoalStatuses()]
     .map(s => `<option value="${s.id}" ${_goalStatusFilter===s.id?'selected':''}>${s.label}</option>`).join('')
-  const catOpts = [{ id:'', label:t('filter_allCats') }, ...GOAL_CATEGORIES]
+  const catOpts = [{ id:'', label:t('filter_allCats') }, ...getGoalCategories()]
     .map(c => `<option value="${c.id}" ${_goalCategoryFilter===c.id?'selected':''}>${c.label}</option>`).join('')
 
   const now = new Date()
@@ -5734,16 +5740,16 @@ async function renderGoals() {
   container.innerHTML = `
     <div class="admin-fullpage">
       <div class="admin-fullpage-header">
-        <h2><i class="ph ph-target"></i> Security Goals <small style="font-size:.7em;font-weight:400;color:var(--text-subtle)">ISO 27001 Kap. 6.2</small></h2>
+        <h2><i class="ph ph-target"></i> ${t('goals_title')} <small style="font-size:.7em;font-weight:400;color:var(--text-subtle)">${t('dash_goals')}</small></h2>
         ${goalCanEdit() ? `<button class="btn btn-primary btn-sm" onclick="openGoalForm()"><i class="ph ph-plus"></i> ${t('goals_new')}</button>` : ''}
       </div>
 
       <!-- KPI-Leiste -->
       <div class="goals-kpi-row">
-        <div class="goals-kpi"><span class="goals-kpi-val">${summary.total||0}</span><span class="goals-kpi-lbl">Total</span></div>
-        <div class="goals-kpi"><span class="goals-kpi-val" style="color:#60a5fa">${summary.active||0}</span><span class="goals-kpi-lbl">Active</span></div>
-        <div class="goals-kpi"><span class="goals-kpi-val" style="color:#4ade80">${summary.achieved||0}</span><span class="goals-kpi-lbl">Achieved</span></div>
-        <div class="goals-kpi"><span class="goals-kpi-val" style="color:#f87171">${summary.overdue||0}</span><span class="goals-kpi-lbl">Overdue</span></div>
+        <div class="goals-kpi"><span class="goals-kpi-val">${summary.total||0}</span><span class="goals-kpi-lbl">${t('kpi_total')}</span></div>
+        <div class="goals-kpi"><span class="goals-kpi-val" style="color:#60a5fa">${summary.active||0}</span><span class="goals-kpi-lbl">${t('kpi_active')}</span></div>
+        <div class="goals-kpi"><span class="goals-kpi-val" style="color:#4ade80">${summary.achieved||0}</span><span class="goals-kpi-lbl">${t('goals_achieved')}</span></div>
+        <div class="goals-kpi"><span class="goals-kpi-val" style="color:#f87171">${summary.overdue||0}</span><span class="goals-kpi-lbl">${t('dash_overdue')}</span></div>
         <div class="goals-kpi">
           <div class="goals-avg-wrap">
             <span class="goals-kpi-val">${summary.avgProgress||0}%</span>
@@ -5757,16 +5763,16 @@ async function renderGoals() {
       <div class="gdpr-filter-bar" style="margin-bottom:12px">
         <select class="select" style="font-size:.82rem" onchange="_goalStatusFilter=this.value;renderGoals()">${statusOpts}</select>
         <select class="select" style="font-size:.82rem" onchange="_goalCategoryFilter=this.value;renderGoals()">${catOpts}</select>
-        <span class="gdpr-filter-count">${list.length} Goal(s)</span>
+        <span class="gdpr-filter-count">${t('goals_count', { n: list.length })}</span>
       </div>
 
       <!-- Liste -->
       ${list.length === 0 ? `<p class="gdpr-empty">${t('goals_empty')}</p>` : `
       <div class="goals-list">
         ${list.map(g => {
-          const st  = GOAL_STATUSES.find(s => s.id === g.status)
-          const cat = GOAL_CATEGORIES.find(c => c.id === g.category)
-          const pri = GOAL_PRIORITIES.find(p => p.id === g.priority)
+          const st  = getGoalStatuses().find(s => s.id === g.status)
+          const cat = getGoalCategories().find(c => c.id === g.category)
+          const pri = getGoalPriorities().find(p => p.id === g.priority)
           const prog = g.progressCalc ?? 0
           const isOverdue = g.targetDate && new Date(g.targetDate) < now && !['achieved','cancelled'].includes(g.status)
           return `
@@ -5791,8 +5797,8 @@ async function renderGoals() {
               </div>
               <div class="goals-card-meta">
                 ${g.owner ? `<span><i class="ph ph-user"></i> ${escHtml(g.owner)}</span>` : ''}
-                ${g.targetDate ? `<span style="${isOverdue?'color:#f87171;font-weight:600':''}"><i class="ph ph-calendar-x"></i> ${new Date(g.targetDate).toLocaleDateString('en-GB')}${isOverdue?' (overdue)':''}</span>` : ''}
-                ${g.kpis?.length ? `<span><i class="ph ph-chart-line-up"></i> ${g.kpis.length} KPI(s)</span>` : ''}
+                ${g.targetDate ? `<span style="${isOverdue?'color:#f87171;font-weight:600':''}"><i class="ph ph-calendar-x"></i> ${new Date(g.targetDate).toLocaleDateString()}${isOverdue?' '+t('goals_overdueShort'):''}</span>` : ''}
+                ${g.kpis?.length ? `<span><i class="ph ph-chart-line-up"></i> ${t('goals_kpiCount', { n: g.kpis.length })}</span>` : ''}
               </div>
             </div>
             <div class="goals-card-actions" onclick="event.stopPropagation()">
@@ -5844,11 +5850,11 @@ async function openGoalForm(id = null) {
   }
   const g = item || {}
 
-  const stOpts  = GOAL_STATUSES.map(s =>
+  const stOpts  = getGoalStatuses().map(s =>
     `<option value="${s.id}" ${g.status===s.id?'selected':''}>${s.label}</option>`).join('')
-  const catOpts = GOAL_CATEGORIES.map(c =>
+  const catOpts = getGoalCategories().map(c =>
     `<option value="${c.id}" ${g.category===c.id?'selected':''}>${c.label}</option>`).join('')
-  const priOpts = GOAL_PRIORITIES.map(p =>
+  const priOpts = getGoalPriorities().map(p =>
     `<option value="${p.id}" ${g.priority===p.id?'selected':''}>${p.label}</option>`).join('')
 
   const kpisHtml = (g.kpis || []).map(k => goalKpiRow(k)).join('')
