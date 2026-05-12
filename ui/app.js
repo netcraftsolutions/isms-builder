@@ -2896,7 +2896,7 @@ async function renderDashboard() {
   const editor = document.querySelector('.editor')
   editor.appendChild(container)
 
-  container.innerHTML = '<div class="dashboard-loading">Loading Dashboard…</div>'
+  container.innerHTML = `<div class="dashboard-loading">${t('dash_loading')}</div>`
 
   let data, soaSummary, riskSummary, gdprDash, trainSummary, legalSummary, calEvents, goalsSummary, assetSummary, govSummary, bcmSummary, supplierSummary, findingsSummary, reviewPending, ackSummary
   try {
@@ -2935,7 +2935,7 @@ async function renderDashboard() {
     ackSummary       = ackRes?.ok      ? await ackRes.json()       : null
   } catch (e) {
     if (container.isConnected)
-      container.innerHTML = '<div class="dashboard-error">Dashboard konnte nicht geladen werden.</div>'
+      container.innerHTML = `<div class="dashboard-error">${t('dash_loadError')}</div>`
     return
   }
 
@@ -2956,38 +2956,38 @@ async function renderDashboard() {
   const alertsHtml = (() => {
     const alerts = []
     if (data.byStatus?.review > 0)
-      alerts.push({ color: 'var(--warning-text)', icon: 'ph-clock', text: `${data.byStatus.review} Template(s) awaiting review`, nav: 'policy' })
+      alerts.push({ color: 'var(--warning-text)', icon: 'ph-clock', text: t('dash_alert_review', { n: data.byStatus.review }), nav: 'policy' })
     if (MODULE_CONFIG.risk && riskSummary?.byLevel?.critical > 0)
-      alerts.push({ color: '#f87171', icon: 'ph-warning', text: `${riskSummary.byLevel.critical} critical risks open`, nav: 'risk' })
+      alerts.push({ color: '#f87171', icon: 'ph-warning', text: t('dash_alert_critRisks', { n: riskSummary.byLevel.critical }), nav: 'risk' })
     if (MODULE_CONFIG.risk && riskSummary?.byLevel?.high > 0)
-      alerts.push({ color: '#fb923c', icon: 'ph-warning-circle', text: `${riskSummary.byLevel.high} high risks`, nav: 'risk' })
+      alerts.push({ color: '#fb923c', icon: 'ph-warning-circle', text: t('dash_alert_highRisks', { n: riskSummary.byLevel.high }), nav: 'risk' })
     if (MODULE_CONFIG.gdpr && gdprDash?.incidents?.open > 0)
-      alerts.push({ color: '#f87171', icon: 'ph-shield-warning', text: `${gdprDash.incidents.open} open data breach(es)`, nav: 'gdpr' })
+      alerts.push({ color: '#f87171', icon: 'ph-shield-warning', text: t('dash_alert_breaches', { n: gdprDash.incidents.open }), nav: 'gdpr' })
     if (MODULE_CONFIG.legal && legalSummary?.contracts?.expiring > 0)
-      alerts.push({ color: '#fb923c', icon: 'ph-file-text', text: `${legalSummary.contracts.expiring} contract(s) expiring soon`, nav: 'legal' })
+      alerts.push({ color: '#fb923c', icon: 'ph-file-text', text: t('dash_alert_contracts', { n: legalSummary.contracts.expiring }), nav: 'legal' })
     if (MODULE_CONFIG.training && trainSummary?.overdue > 0)
-      alerts.push({ color: '#f87171', icon: 'ph-graduation-cap', text: `${trainSummary.overdue} overdue training(s)`, nav: 'training' })
+      alerts.push({ color: '#f87171', icon: 'ph-graduation-cap', text: t('dash_alert_training', { n: trainSummary.overdue }), nav: 'training' })
     if (MODULE_CONFIG.goals && goalsSummary?.overdue > 0)
-      alerts.push({ color: '#fb923c', icon: 'ph-target', text: `${goalsSummary.overdue} security goal(s) overdue`, nav: 'goals' })
+      alerts.push({ color: '#fb923c', icon: 'ph-target', text: t('dash_alert_goalsOverdue', { n: goalsSummary.overdue }), nav: 'goals' })
     if (MODULE_CONFIG.assets && assetSummary?.endOfLifeSoon > 0)
-      alerts.push({ color: '#f0b429', icon: 'ph-warning', text: `${assetSummary.endOfLifeSoon} asset(s) approaching end-of-life`, nav: 'assets' })
+      alerts.push({ color: '#f0b429', icon: 'ph-warning', text: t('dash_alert_assetEol', { n: assetSummary.endOfLifeSoon }), nav: 'assets' })
     if (MODULE_CONFIG.assets && assetSummary?.criticalUnclassified > 0)
-      alerts.push({ color: '#fb923c', icon: 'ph-buildings', text: `${assetSummary.criticalUnclassified} critical/high assets without classification`, nav: 'assets' })
+      alerts.push({ color: '#fb923c', icon: 'ph-buildings', text: t('dash_alert_assetUnclass', { n: assetSummary.criticalUnclassified }), nav: 'assets' })
     if (MODULE_CONFIG.governance && govSummary?.actions?.overdue > 0)
-      alerts.push({ color: '#f87171', icon: 'ph-chalkboard-teacher', text: `${govSummary.actions.overdue} governance action(s) overdue`, nav: 'governance' })
+      alerts.push({ color: '#f87171', icon: 'ph-chalkboard-teacher', text: t('dash_alert_govActions', { n: govSummary.actions.overdue }), nav: 'governance' })
     if (MODULE_CONFIG.governance && govSummary?.actions?.critical > 0)
-      alerts.push({ color: '#fb923c', icon: 'ph-chalkboard-teacher', text: `${govSummary.actions.critical} critical governance action(s) open`, nav: 'governance' })
+      alerts.push({ color: '#fb923c', icon: 'ph-chalkboard-teacher', text: t('dash_alert_govCrit', { n: govSummary.actions.critical }), nav: 'governance' })
     if (MODULE_CONFIG.bcm && bcmSummary?.plans?.overdueTest > 0)
-      alerts.push({ color: '#f87171', icon: 'ph-heartbeat', text: `${bcmSummary.plans.overdueTest} BCM plan test(s) overdue`, nav: 'bcm' })
+      alerts.push({ color: '#f87171', icon: 'ph-heartbeat', text: t('dash_alert_bcmTests', { n: bcmSummary.plans.overdueTest }), nav: 'bcm' })
     if (MODULE_CONFIG.suppliers && supplierSummary?.overdueAudits > 0)
-      alerts.push({ color: '#f87171', icon: 'ph-truck', text: `${supplierSummary.overdueAudits} supplier audit(s) overdue`, nav: 'suppliers' })
+      alerts.push({ color: '#f87171', icon: 'ph-truck', text: t('dash_alert_supplierAudits', { n: supplierSummary.overdueAudits }), nav: 'suppliers' })
     if (findingsSummary?.byStatus?.open > 0)
-      alerts.push({ color: '#fb923c', icon: 'ph-magnifying-glass', text: `${findingsSummary.byStatus.open} open audit finding(s)`, nav: 'reports' })
+      alerts.push({ color: '#fb923c', icon: 'ph-magnifying-glass', text: t('dash_alert_findingsOpen', { n: findingsSummary.byStatus.open }), nav: 'reports' })
     if (findingsSummary?.overdueActions > 0)
-      alerts.push({ color: '#f87171', icon: 'ph-magnifying-glass', text: `${findingsSummary.overdueActions} overdue action(s) in findings`, nav: 'reports' })
+      alerts.push({ color: '#f87171', icon: 'ph-magnifying-glass', text: t('dash_alert_findingsAct', { n: findingsSummary.overdueActions }), nav: 'reports' })
     if (reviewPending?.length > 0)
-      alerts.push({ color: '#f59e0b', icon: 'ph-shield-warning', text: `${reviewPending.length} Scan-Risiko(en) warten auf Freigabe`, nav: 'risk' })
-    if (alerts.length === 0) return '<p class="dash-empty" style="color:var(--success-text)"><i class="ph ph-check-circle"></i> No critical issues</p>'
+      alerts.push({ color: '#f59e0b', icon: 'ph-shield-warning', text: t('dash_alert_scanRisks', { n: reviewPending.length }), nav: 'risk' })
+    if (alerts.length === 0) return `<p class="dash-empty" style="color:var(--success-text)"><i class="ph ph-check-circle"></i> ${t('dash_noIssues')}</p>`
     return alerts.map(a => `<div class="dash-alert dash-link" data-nav="${a.nav}" style="border-left:3px solid ${a.color};padding:6px 10px;margin-bottom:6px;background:var(--surface);border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;gap:8px">
       <i class="ph ${a.icon}" style="color:${a.color};font-size:1rem"></i>
       <span style="font-size:.85rem">${a.text}</span>
@@ -2996,169 +2996,169 @@ async function renderDashboard() {
 
   container.innerHTML = `
     <div class="dash-isms-header">
-      <h2 class="dashboard-title"><i class="ph ph-gauge"></i> ISMS Dashboard</h2>
-      <span class="dash-timestamp" style="font-size:.75rem;color:var(--text-subtle)">As of: ${new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}</span>
+      <h2 class="dashboard-title"><i class="ph ph-gauge"></i> ${t('dash_title')}</h2>
+      <span class="dash-timestamp" style="font-size:.75rem;color:var(--text-subtle)">${t('dash_status')} ${new Date().toLocaleString(undefined, {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}</span>
     </div>
 
     <!-- Alerts -->
     <div class="dash-section">
-      <div class="dash-section-title"><i class="ph ph-bell"></i> Action Required</div>
+      <div class="dash-section-title"><i class="ph ph-bell"></i> ${t('dash_actionRequired')}</div>
       ${alertsHtml}
     </div>
 
     <!-- KPI Row 1: Templates & Compliance -->
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-files"></i> Policies & Compliance</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-files"></i> ${t('dash_policies')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
-      <div class="dash-card kpi dash-link" data-nav="policy" title="Open templates">
+      <div class="dash-card kpi dash-link" data-nav="policy" title="${t('admin_templates')}">
         <div class="kpi-value">${data.total}</div>
-        <div class="kpi-label">Templates</div>
+        <div class="kpi-label">${t('dash_templates')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="policy">
         <div class="kpi-value" style="color:var(--success-text)">${data.approvalRate}%</div>
-        <div class="kpi-label">Approved</div>
+        <div class="kpi-label">${t('dash_approved')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="policy">
         <div class="kpi-value" style="color:var(--warning-text)">${data.byStatus?.review || 0}</div>
-        <div class="kpi-label">In Review</div>
+        <div class="kpi-label">${t('dash_inReview')}</div>
       </div>
       ${MODULE_CONFIG.soa && soaSummary ? `<div class="dash-card kpi dash-link" data-nav="soa">
         <div class="kpi-value" style="color:var(--accent-text)">${Math.round(Object.values(soaSummary).reduce((s,fw)=>s+fw.implementationRate,0)/Object.values(soaSummary).length)}%</div>
-        <div class="kpi-label">Ø Framework Rate</div>
+        <div class="kpi-label">${t('dash_fwRate')}</div>
       </div>` : ''}
     </div>
 
     <!-- KPI Row 2: Risiken -->
     ${MODULE_CONFIG.risk ? `
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-chart-bar"></i> Risk Management</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-chart-bar"></i> ${t('dash_risks')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
       <div class="dash-card kpi dash-link" data-nav="risk">
         <div class="kpi-value">${riskSummary?.total || 0}</div>
-        <div class="kpi-label">Total Risks</div>
+        <div class="kpi-label">${t('dash_totalRisks')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="risk">
         <div class="kpi-value" style="color:#f87171">${riskSummary?.byLevel?.critical || 0}</div>
-        <div class="kpi-label">Critical</div>
+        <div class="kpi-label">${t('dash_critical')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="risk">
         <div class="kpi-value" style="color:#fb923c">${riskSummary?.byLevel?.high || 0}</div>
-        <div class="kpi-label">High</div>
+        <div class="kpi-label">${t('dash_high')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="risk">
         <div class="kpi-value" style="color:var(--warning-text)">${riskSummary?.openTreatments || 0}</div>
-        <div class="kpi-label">Open Treatments</div>
+        <div class="kpi-label">${t('dash_openActions')}</div>
       </div>
     </div>` : ''}
 
     <!-- KPI Row 3: GDPR -->
     ${MODULE_CONFIG.gdpr ? `
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-shield-check"></i> Data Protection (GDPR)</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-shield-check"></i> ${t('dash_gdpr')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
       <div class="dash-card kpi dash-link" data-nav="gdpr">
         <div class="kpi-value">${gdprDash?.vvt?.total || 0}</div>
-        <div class="kpi-label">RoPA Entries</div>
+        <div class="kpi-label">${t('dash_vvt')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="gdpr">
         <div class="kpi-value" style="color:${(gdprDash?.incidents?.open||0)>0?'#f87171':'var(--success-text)'}">${gdprDash?.incidents?.open || 0}</div>
-        <div class="kpi-label">Open Data Breaches</div>
+        <div class="kpi-label">${t('dash_breaches')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="gdpr">
         <div class="kpi-value" style="color:var(--warning-text)">${gdprDash?.dsar?.open || 0}</div>
-        <div class="kpi-label">Open DSARs</div>
+        <div class="kpi-label">${t('dash_dsars')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="gdpr">
         <div class="kpi-value">${gdprDash?.toms?.implemented || 0}</div>
-        <div class="kpi-label">TOMs Implemented</div>
+        <div class="kpi-label">${t('dash_toms')}</div>
       </div>
     </div>` : ''}
 
     <!-- KPI Row 3b: Sicherheitsziele -->
     ${MODULE_CONFIG.goals && goalsSummary ? `
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-target"></i> Security Goals (ISO 27001 Cl. 6.2)</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-target"></i> ${t('dash_securityGoalsLong')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
       <div class="dash-card kpi dash-link" data-nav="goals">
         <div class="kpi-value">${goalsSummary.active||0}</div>
-        <div class="kpi-label">Active Goals</div>
+        <div class="kpi-label">${t('dash_activeGoals')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="goals">
         <div class="kpi-value" style="color:#4ade80">${goalsSummary.achieved||0}</div>
-        <div class="kpi-label">Achieved</div>
+        <div class="kpi-label">${t('dash_achieved')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="goals">
         <div class="kpi-value" style="color:${(goalsSummary.overdue||0)>0?'#f87171':'var(--success-text)'}">${goalsSummary.overdue||0}</div>
-        <div class="kpi-label">Overdue</div>
+        <div class="kpi-label">${t('dash_overdue')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="goals">
         <div class="kpi-value" style="color:#60a5fa">${goalsSummary.avgProgress||0}%</div>
-        <div class="kpi-label">Ø Progress</div>
+        <div class="kpi-label">${t('dash_progress')}</div>
       </div>
     </div>` : ''}
 
     <!-- KPI Row 3c: Asset Management -->
     ${MODULE_CONFIG.assets && assetSummary ? `
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-buildings"></i> Asset Management</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-buildings"></i> ${t('dash_assetMgmt')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
       <div class="dash-card kpi dash-link" data-nav="assets">
         <div class="kpi-value">${assetSummary.total || 0}</div>
-        <div class="kpi-label">Total Assets</div>
+        <div class="kpi-label">${t('dash_assets')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="assets">
         <div class="kpi-value" style="color:#f87171">${assetSummary.byCriticality?.critical || 0}</div>
-        <div class="kpi-label">Critical</div>
+        <div class="kpi-label">${t('dash_critical')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="assets">
         <div class="kpi-value" style="color:#fb923c">${assetSummary.criticalUnclassified || 0}</div>
-        <div class="kpi-label">Unclassified crit.</div>
+        <div class="kpi-label">${t('dash_unclassifiedCrit')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="assets">
         <div class="kpi-value" style="color:#f0b429">${assetSummary.endOfLifeSoon || 0}</div>
-        <div class="kpi-label">EoL in 90 days</div>
+        <div class="kpi-label">${t('dash_eol')}</div>
       </div>
     </div>` : ''}
 
     <!-- KPI Row 3d: Governance -->
     ${MODULE_CONFIG.governance && govSummary ? `
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-chalkboard-teacher"></i> Governance</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-chalkboard-teacher"></i> ${t('dash_governanceSection')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
       <div class="dash-card kpi dash-link" data-nav="governance">
         <div class="kpi-value">${govSummary.reviews?.total || 0}</div>
-        <div class="kpi-label">Management Reviews</div>
+        <div class="kpi-label">${t('dash_governance')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="governance">
         <div class="kpi-value" style="color:${(govSummary.actions?.overdue||0)>0?'#f87171':'var(--success-text)'}">
           ${govSummary.actions?.overdue || 0}
         </div>
-        <div class="kpi-label">Actions Overdue</div>
+        <div class="kpi-label">${t('dash_actionsOverdueLabel')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="governance">
         <div class="kpi-value" style="color:var(--warning-text)">${govSummary.actions?.open || 0}</div>
-        <div class="kpi-label">Open Actions</div>
+        <div class="kpi-label">${t('dash_openActions')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="governance">
         <div class="kpi-value">${govSummary.meetings?.total || 0}</div>
-        <div class="kpi-label">Meetings</div>
+        <div class="kpi-label">${t('dash_meetings')}</div>
       </div>
     </div>` : ''}
 
     ${MODULE_CONFIG.bcm && bcmSummary ? `
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-heartbeat"></i> Business Continuity (BCM)</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-heartbeat"></i> ${t('dash_bcmSection')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
       <div class="dash-card kpi dash-link" data-nav="bcm">
         <div class="kpi-value">${bcmSummary.plans?.total || 0}</div>
-        <div class="kpi-label">Continuity Plans</div>
+        <div class="kpi-label">${t('dash_bcm')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="bcm">
         <div class="kpi-value" style="color:var(--success-text)">${bcmSummary.plans?.tested || 0}</div>
-        <div class="kpi-label">Tested Plans</div>
+        <div class="kpi-label">${t('bcm_tabExercises')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="bcm">
         <div class="kpi-value" style="color:#f87171">${bcmSummary.bia?.critical || 0}</div>
-        <div class="kpi-label">Critical Processes</div>
+        <div class="kpi-label">${t('dash_critical')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="bcm">
         <div class="kpi-value" style="color:${(bcmSummary.plans?.overdueTest||0)>0?'#f87171':'var(--success-text)'}">
           ${bcmSummary.plans?.overdueTest || 0}
         </div>
-        <div class="kpi-label">Tests Overdue</div>
+        <div class="kpi-label">${t('dash_overdue')}</div>
       </div>
     </div>` : ''}
 
@@ -3171,95 +3171,95 @@ async function renderDashboard() {
       </div>
       <div class="dash-card kpi dash-link" data-nav="suppliers">
         <div class="kpi-value" style="color:#f87171">${supplierSummary.critical || 0}</div>
-        <div class="kpi-label">Critical Suppliers</div>
+        <div class="kpi-label">${t('dash_critSuppliers')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="suppliers">
         <div class="kpi-value" style="color:${(supplierSummary.overdueAudits||0)>0?'#f87171':'var(--success-text)'}">
           ${supplierSummary.overdueAudits || 0}
         </div>
-        <div class="kpi-label">Audits Overdue</div>
+        <div class="kpi-label">${t('dash_auditsOverdue')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="suppliers">
         <div class="kpi-value" style="color:var(--warning-text)">${supplierSummary.withDataAccess || 0}</div>
-        <div class="kpi-label">With Data Access</div>
+        <div class="kpi-label">${t('dash_withDataAccess')}</div>
       </div>
     </div>` : ''}
 
     <!-- KPI Row: Audit-Feststellungen -->
     ${findingsSummary ? `
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-magnifying-glass"></i> Audit Findings</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-magnifying-glass"></i> ${t('findings_title')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
       <div class="dash-card kpi dash-link" data-nav="reports">
         <div class="kpi-value">${findingsSummary.total || 0}</div>
-        <div class="kpi-label">Total Findings</div>
+        <div class="kpi-label">${t('dash_totalFindings')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="reports">
         <div class="kpi-value" style="color:${(findingsSummary.byStatus?.open||0)>0?'#fb923c':'var(--success-text)'}">
           ${findingsSummary.byStatus?.open || 0}
         </div>
-        <div class="kpi-label">Open</div>
+        <div class="kpi-label">${t('findings_open')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="reports">
         <div class="kpi-value" style="color:${(findingsSummary.bySeverity?.critical||0)>0?'#f87171':(findingsSummary.bySeverity?.high||0)>0?'#fb923c':'var(--success-text)'}">
           ${(findingsSummary.bySeverity?.critical||0) + (findingsSummary.bySeverity?.high||0)}
         </div>
-        <div class="kpi-label">Critical/High</div>
+        <div class="kpi-label">${t('dash_critHigh')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="reports">
         <div class="kpi-value" style="color:${(findingsSummary.overdueActions||0)>0?'#f87171':'var(--success-text)'}">
           ${findingsSummary.overdueActions || 0}
         </div>
-        <div class="kpi-label">Actions Overdue</div>
+        <div class="kpi-label">${t('dash_actionsOverdueLabel')}</div>
       </div>
     </div>` : ''}
 
     <!-- KPI Row: Policy Acknowledgements -->
     ${ackSummary ? `
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-check-circle"></i> Richtlinien-Bestätigungen</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-check-circle"></i> ${t('nav_policyAcks')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
       <div class="dash-card kpi dash-link" data-nav="policy-acks">
         <div class="kpi-value">${ackSummary.activeDistributions || 0}</div>
-        <div class="kpi-label">Aktive Verteilrunden</div>
+        <div class="kpi-label">${t('dash_activeDistributions')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="policy-acks">
         <div class="kpi-value" style="color:${(ackSummary.pendingAcks||0)>0?'#fbbf24':'var(--success-text)'}">
           ${ackSummary.pendingAcks || 0}
         </div>
-        <div class="kpi-label">Ausstehende Bestätigungen</div>
+        <div class="kpi-label">${t('dash_pendingAcks')}</div>
       </div>
     </div>` : ''}
 
     <!-- KPI Row 4: Legal & Training -->
     ${(MODULE_CONFIG.legal || MODULE_CONFIG.training) ? `
-    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-briefcase"></i> Legal & Training</div>
+    <div class="dash-section-title" style="margin:16px 0 8px"><i class="ph ph-briefcase"></i> ${t('dash_legal')}</div>
     <div class="dashboard-grid" style="margin-bottom:0">
       ${MODULE_CONFIG.legal ? `
       <div class="dash-card kpi dash-link" data-nav="legal">
         <div class="kpi-value">${legalSummary?.contracts?.active || 0}</div>
-        <div class="kpi-label">Active Contracts</div>
+        <div class="kpi-label">${t('dash_contracts')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="legal">
         <div class="kpi-value" style="color:${(legalSummary?.contracts?.expiring||0)>0?'#fb923c':'var(--success-text)'}">${legalSummary?.contracts?.expiring || 0}</div>
-        <div class="kpi-label">Contracts Expiring</div>
+        <div class="kpi-label">${t('dash_expiring')}</div>
       </div>` : ''}
       ${MODULE_CONFIG.training ? `
       <div class="dash-card kpi dash-link" data-nav="training">
         <div class="kpi-value">${trainSummary?.completionRate || 0}%</div>
-        <div class="kpi-label">Training Rate</div>
+        <div class="kpi-label">${t('dash_training')}</div>
       </div>
       <div class="dash-card kpi dash-link" data-nav="training">
         <div class="kpi-value" style="color:${(trainSummary?.overdue||0)>0?'#f87171':'var(--success-text)'}">${trainSummary?.overdue || 0}</div>
-        <div class="kpi-label">Overdue Trainings</div>
+        <div class="kpi-label">${t('dash_overdueTraining')}</div>
       </div>` : ''}
     </div>` : ''}
 
     <!-- Framework-Compliance -->
     ${MODULE_CONFIG.soa && soaSummary ? `
     <div class="dash-section" style="margin-top:16px">
-      <div class="dash-section-title"><i class="ph ph-check-square"></i> Framework-Compliance</div>
+      <div class="dash-section-title"><i class="ph ph-check-square"></i> ${t('dash_frameworkCompliance')}</div>
       <div class="fw-summary-grid">
         ${Object.values(soaSummary).map(fw => `
-          <div class="fw-summary-item dash-link" data-nav="soa" data-fw="${fw.framework}" title="Open ${fw.label}" style="cursor:pointer">
+          <div class="fw-summary-item dash-link" data-nav="soa" data-fw="${fw.framework}" title="${t('dash_openOf', { label: fw.label })}" style="cursor:pointer">
             <span class="fw-label" style="color:${fw.color}">${fw.label}</span>
             <div class="fw-bar-track">
               <div class="fw-bar-fill" style="width:${fw.implementationRate}%; background:${fw.color}"></div>
@@ -3275,7 +3275,7 @@ async function renderDashboard() {
     <div style="display:grid;grid-template-columns:${MODULE_CONFIG.risk && MODULE_CONFIG.calendar ? '1fr 1fr' : '1fr'};gap:12px;margin-top:16px">
       ${MODULE_CONFIG.risk ? `
       <div class="dash-card">
-        <div class="dash-card-title"><i class="ph ph-chart-bar"></i> Top-5 Risiken</div>
+        <div class="dash-card-title"><i class="ph ph-chart-bar"></i> ${t('dash_top5')}</div>
         ${riskSummary?.top5?.length ? `
         <table style="width:100%;font-size:.8rem;border-collapse:collapse">
           ${riskSummary.top5.map(r => `
@@ -3285,37 +3285,37 @@ async function renderDashboard() {
                 <span style="color:${riskColors[r.riskLevel]};font-weight:600">${r.score}</span>
               </td>
             </tr>`).join('')}
-        </table>` : '<p class="dash-empty">No risks found</p>'}
+        </table>` : `<p class="dash-empty">${t('dash_noRisks')}</p>`}
       </div>` : ''}
 
       ${MODULE_CONFIG.calendar ? `
       <div class="dash-card">
-        <div class="dash-card-title"><i class="ph ph-calendar-check"></i> Next 14 Days</div>
+        <div class="dash-card-title"><i class="ph ph-calendar-check"></i> ${t('dash_next14')}</div>
         ${upcoming.length ? `
         <ul style="list-style:none;padding:0;margin:0;font-size:.8rem">
           ${upcoming.map(ev => `
             <li style="padding:4px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px">
               <span class="cal-chip ${ev.type}" style="font-size:.7rem;padding:1px 5px;border-radius:3px">${ev.type.replace(/_/g,' ')}</span>
               <span>${escHtml(ev.title)}</span>
-              <span style="margin-left:auto;color:var(--text-subtle)">${new Date(ev.date).toLocaleDateString('en-GB')}</span>
+              <span style="margin-left:auto;color:var(--text-subtle)">${new Date(ev.date).toLocaleDateString()}</span>
             </li>`).join('')}
-        </ul>` : '<p class="dash-empty">No upcoming events</p>'}
+        </ul>` : `<p class="dash-empty">${t('dash_noEvents')}</p>`}
       </div>` : ''}
     </div>` : ''}
 
     <!-- Recent Activity -->
     <div class="dash-card" style="margin-top:12px">
-      <div class="dash-card-title"><i class="ph ph-activity"></i> Recent Activity</div>
+      <div class="dash-card-title"><i class="ph ph-activity"></i> ${t('dash_activity')}</div>
       ${data.recentActivity.length === 0
-        ? '<p class="dash-empty">No activity yet.</p>'
+        ? `<p class="dash-empty">${t('dash_noActivity')}</p>`
         : `<ul class="activity-list">
             ${data.recentActivity.map(a => `
               <li class="dash-link" data-nav-type="${a.type}" data-tmpl-id="${a.templateId}" data-tmpl-type="${a.type}" style="cursor:pointer">
                 <span class="status-dot ${a.status}"></span>
                 <span class="act-title">${escHtml(a.title)}</span>
                 <span class="act-status">${statusLabels[a.status] || a.status}</span>
-                <span class="act-by">by ${escHtml(a.changedBy)}</span>
-                <span class="act-date">${new Date(a.changedAt).toLocaleString('en-GB')}</span>
+                <span class="act-by">${t('dash_by')} ${escHtml(a.changedBy)}</span>
+                <span class="act-date">${new Date(a.changedAt).toLocaleString()}</span>
               </li>
             `).join('')}
           </ul>`
