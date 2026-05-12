@@ -3644,7 +3644,7 @@ async function _adminListSave() {
 }
 
 async function _adminListReset(listId) {
-  if (!confirm('Reset list to default values?')) return
+  if (!confirm(t('admin_resetListConfirm'))) return
   const res = await fetch(`/admin/list/${encodeURIComponent(listId)}/reset`, {
     method: 'POST', headers: apiHeaders('admin'),
   })
@@ -4325,7 +4325,7 @@ async function loadAuditLog() {
 }
 
 async function clearAuditLog() {
-  if (!confirm('Really clear the audit log? This action cannot be undone.')) return
+  if (!confirm(t('auditLog_confirm'))) return
   const res = await fetch('/admin/audit-log', { method: 'DELETE', headers: apiHeaders('admin') })
   if (res.ok) loadAuditLog()
   else alert('Error clearing the log.')
@@ -4840,7 +4840,7 @@ async function renderAdminTrashTab() {
 }
 
 async function restoreTrashItem(module, id, meta) {
-  if (!confirm('Restore item?')) return
+  if (!confirm(t('trash_restoreConfirm'))) return
   let url
   if (module === 'template') url = `/template/${meta.type}/${id}/restore`
   else if (module === 'risk') url = `/risks/${id}/restore`
@@ -4866,7 +4866,7 @@ async function restoreTrashItem(module, id, meta) {
 }
 
 async function permanentDeleteTrashItem(module, id, meta) {
-  if (!confirm('Permanently delete? This action CANNOT be undone!')) return
+  if (!confirm(t('trash_permaDeleteConfirm'))) return
   let url
   if (module === 'template') url = `/template/${meta.type}/${id}/permanent`
   else if (module === 'risk') url = `/risks/${id}/permanent`
@@ -5911,7 +5911,7 @@ async function saveGoal(id) {
 }
 
 async function deleteGoal(id) {
-  if (!confirm('Delete security goal?')) return
+  if (!confirm(t('goals_deleteConfirm'))) return
   const res = await fetch(`/goals/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json(); alert(e.error || 'Error'); return }
   renderGoals()
@@ -6463,7 +6463,7 @@ async function verify2FA() {
 }
 
 async function disable2FA() {
-  if (!confirm('Really disable 2FA? Your account will only be protected by password.')) return
+  if (!confirm(t('tfa_disableConfirm'))) return
   const msg = dom('twofaMsg')
   const res = await fetch('/2fa', { method: 'DELETE', headers: apiHeaders() })
   const data = await res.json()
@@ -6704,7 +6704,7 @@ async function uploadAttachment(input) {
 }
 
 async function deleteAttachment(type, id, attId) {
-  if (!confirm('Delete attachment?')) return
+  if (!confirm(t('common_deleteAttachment'))) return
   const res = await fetch(`/template/${type}/${id}/attachments/${attId}`, {
     method: 'DELETE',
     headers: apiHeaders('editor')
@@ -6778,7 +6778,7 @@ async function uploadDocAttachment(input, apiBase, collection, itemId, container
 }
 
 async function deleteDocAttachment(apiBase, collection, itemId, fileId, containerId) {
-  if (!confirm('Delete attachment?')) return
+  if (!confirm(t('common_deleteAttachment'))) return
   const res = await fetch(`${apiBase}/${collection}/${itemId}/files/${fileId}`, {
     method: 'DELETE', headers: apiHeaders('editor')
   })
@@ -7558,7 +7558,7 @@ function renderGuidanceSearchResults(results, query) {
 }
 
 async function deleteGuidanceDoc(id) {
-  if (!confirm('Delete document?')) return
+  if (!confirm(t('guidance_deleteDoc'))) return
   const res = await fetch(`/guidance/${id}`, { method: 'DELETE', headers: apiHeaders('admin') })
   if (!res.ok) { alert('Error deleting'); return }
   if (_guidanceDocId === id) { _guidanceDocId = null }
@@ -8457,7 +8457,7 @@ async function renderRiskReports(el) {
             <td><span class="risk-badge ${RISK_LEVEL_CFG[r.riskLevel]?.cls||''}">${RISK_LEVEL_CFG[r.riskLevel]?.label||r.riskLevel||'—'}</span></td>
             <td style="font-size:.8rem;color:var(--text-muted)">${escHtml(r.scanRef||'')}</td>
             <td style="font-size:.8rem">${(r.cveIds||[]).join(', ')||'—'}</td>
-            <td><button class="btn btn-primary btn-sm" onclick="approveRisk('${r.id}')"><i class="ph ph-check"></i> Freigeben</button></td>
+            <td><button class="btn btn-primary btn-sm" onclick="approveRisk('${r.id}')"><i class="ph ph-check"></i> ${t('risk_approve')}</button></td>
           </tr>`).join('')}
           </tbody>
         </table>
@@ -8466,7 +8466,7 @@ async function renderRiskReports(el) {
       <div class="risk-report-card risk-report-full">
         <h4><i class="ph ph-scan" style="color:#3b82f6"></i> Scan-Importe (${scanRisks.length} freigegeben)</h4>
         <table class="risk-table">
-          <thead><tr><th>Titel</th><th>CVSS</th><th>Schweregrad</th><th>CVEs</th><th>Score</th><th>Status</th><th>Genehmigt von</th></tr></thead>
+          <thead><tr><th>${t('col_title')}</th><th>CVSS</th><th>${t('findings_severity')}</th><th>CVEs</th><th>Score</th><th>${t('soa_status')}</th><th>${t('col_approvedBy')}</th></tr></thead>
           <tbody>${scanRisks.map(r => `<tr onclick="openRiskDetail('${r.id}')" style="cursor:pointer">
             <td>${escHtml(r.title)}</td>
             <td>${r.cvssScore != null ? cvssBadgeHtml(r.cvssScore) : '—'}</td>
@@ -8519,7 +8519,7 @@ async function openRiskDetail(id) {
       ${r.needsReview ? `<div class="scan-review-banner" style="margin-bottom:16px">
         <i class="ph ph-warning"></i>
         <span><strong>Freigabe erforderlich</strong> — Dieses Risiko wurde automatisch durch einen Scan-Import erstellt und muss geprüft und freigegeben werden.</span>
-        ${canManageRisks() ? `<button class="btn btn-primary btn-sm" onclick="approveRisk('${r.id}')"><i class="ph ph-check-circle"></i> Freigeben</button>` : ''}
+        ${canManageRisks() ? `<button class="btn btn-primary btn-sm" onclick="approveRisk('${r.id}')"><i class="ph ph-check-circle"></i> ${t('risk_approve')}</button>` : ''}
       </div>` : ''}
 
       ${r.source === 'greenbone-scan' ? (() => {
@@ -8610,7 +8610,7 @@ async function openRiskDetail(id) {
       </div>` : ''}
 
       ${r.applicableEntities?.length ? `<div class="risk-detail-section" style="margin-top:16px">
-        <h4>Gültig für Gesellschaften</h4>
+        <h4>${t('col_appliesTo')}</h4>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           ${r.applicableEntities.map(e => `<span class="tmpl-bar-pill"><i class="ph ph-buildings"></i> ${escHtml(entityMap[e] || e)}</span>`).join('')}
         </div>
@@ -8936,7 +8936,7 @@ async function submitRiskForm() {
 }
 
 async function deleteRisk(id) {
-  if (!confirm('Delete risk?')) return
+  if (!confirm(t('risk_deleteConfirm'))) return
   const res = await fetch(`/risks/${id}`, { method: 'DELETE', headers: apiHeaders('admin') })
   if (!res.ok) { const e = await res.json(); alert(e.error || 'Error'); return }
   switchRiskTab(_riskTab)
@@ -9024,7 +9024,7 @@ async function submitTreatmentModal(riskId, tpId) {
 }
 
 async function deleteTreatment(riskId, tpId) {
-  if (!confirm('Delete treatment?')) return
+  if (!confirm(t('risk_deleteTreatmentConfirm'))) return
   const res = await fetch(`/risks/${riskId}/treatments/${tpId}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json(); alert(e.error || 'Error'); return }
   await openRiskDetail(riskId)
@@ -10660,7 +10660,7 @@ async function saveTraining(id) {
 }
 
 async function deleteTraining(id) {
-  if (!confirm('Delete training?')) return
+  if (!confirm(t('training_deleteConfirm'))) return
   const res = await fetch(`/training/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json(); alert(e.error || 'Error'); return }
   switchTrainingTab(_trainingTab)
@@ -11084,7 +11084,7 @@ async function uploadLegalAttachment(resource, itemId) {
 }
 
 async function deleteLegalAttachment(resource, itemId, attId) {
-  if (!confirm('Delete attachment?')) return
+  if (!confirm(t('common_deleteAttachment'))) return
   const res = await fetch(`/legal/${resource}/${itemId}/attachments/${attId}`, {
     method: 'DELETE', headers: apiHeaders()
   })
@@ -11168,7 +11168,7 @@ async function saveLegalItem(type, id) {
 }
 
 async function deleteLegalItem(resource, id) {
-  if (!confirm('Delete?')) return
+  if (!confirm(t('common_deleteConfirm'))) return
   const res = await fetch(`/legal/${resource}/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json(); alert(e.error || 'Error'); return }
   switchLegalTab(_legalTab)
@@ -11701,7 +11701,7 @@ async function saveAsset(id) {
 }
 
 async function deleteAsset(id) {
-  if (!confirm('Delete asset?')) return
+  if (!confirm(t('assets_deleteConfirm'))) return
   const res = await fetch(`/assets/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json().catch(()=>({})); alert(e.error || 'Error'); return }
   switchAssetsTab(_assetsTab)
@@ -12063,7 +12063,7 @@ async function saveGovReview(id) {
 }
 
 async function deleteGovReview(id) {
-  if (!confirm('Really delete this management review?')) return
+  if (!confirm(t('gov_deleteReviewConfirm'))) return
   const res = await fetch(`/governance/reviews/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json().catch(()=>({})); alert(e.error || 'Error'); return }
   switchGovTab('reviews')
@@ -12184,7 +12184,7 @@ async function saveGovAction(id) {
 }
 
 async function deleteGovAction(id) {
-  if (!confirm('Really delete this action?')) return
+  if (!confirm(t('gov_deleteActionConfirm'))) return
   const res = await fetch(`/governance/actions/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json().catch(()=>({})); alert(e.error || 'Error'); return }
   switchGovTab('actions')
@@ -12308,7 +12308,7 @@ async function saveGovMeeting(id) {
 }
 
 async function deleteGovMeeting(id) {
-  if (!confirm('Delete meeting minutes?')) return
+  if (!confirm(t('gov_deleteMeetingConfirm'))) return
   const res = await fetch(`/governance/meetings/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json().catch(()=>({})); alert(e.error || 'Error'); return }
   switchGovTab('meetings')
@@ -12616,7 +12616,7 @@ async function saveBia(id) {
 }
 
 async function deleteBia(id) {
-  if (!confirm('Delete BIA entry?')) return
+  if (!confirm(t('bcm_deleteBiaConfirm'))) return
   const res = await fetch(`/bcm/bia/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json().catch(()=>({})); alert(e.error || 'Error'); return }
   switchBcmTab('bia')
@@ -12841,7 +12841,7 @@ async function savePlan(id) {
 }
 
 async function deletePlan(id) {
-  if (!confirm('Delete continuity plan?')) return
+  if (!confirm(t('bcm_deletePlanConfirm'))) return
   const res = await fetch(`/bcm/plans/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json().catch(()=>({})); alert(e.error || 'Error'); return }
   switchBcmTab('plans')
@@ -13017,7 +13017,7 @@ async function saveExercise(id) {
 }
 
 async function deleteExercise(id) {
-  if (!confirm('Delete exercise?')) return
+  if (!confirm(t('bcm_deleteExerciseConfirm'))) return
   const res = await fetch(`/bcm/exercises/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json().catch(()=>({})); alert(e.error || 'Error'); return }
   switchBcmTab('exercises')
@@ -13418,7 +13418,7 @@ async function saveSupplier(id) {
 }
 
 async function deleteSupplier(id) {
-  if (!confirm('Move supplier to trash?')) return
+  if (!confirm(t('suppliers_trashConfirm'))) return
   const res = await fetch(`/suppliers/${id}`, { method: 'DELETE', headers: apiHeaders() })
   if (!res.ok) { const e = await res.json().catch(() => ({})); alert(e.error || 'Error'); return }
   renderSuppliers()
