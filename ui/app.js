@@ -13447,24 +13447,24 @@ async function renderPolicyAcks() {
     mode = cfg.policyAckMode || 'manual'
   } catch {}
 
-  const modeLabels = { email_campaign: 'E-Mail-Kampagne', manual: 'Manuell / CSV', distribution_only: 'Nur Verteilung dokumentieren' }
+  const modeLabels = { email_campaign: t('ack_modeEmail'), manual: t('ack_modeManual'), distribution_only: t('ack_modeDistOnlyLong') }
   const modeIcons  = { email_campaign: 'ph-envelope', manual: 'ph-pencil', distribution_only: 'ph-file-text' }
 
   container.innerHTML = `
     <div class="reports-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-      <h2 class="reports-title"><i class="ph ph-check-circle"></i> Richtlinien-Bestätigungen</h2>
+      <h2 class="reports-title"><i class="ph ph-check-circle"></i> ${t('nav_policyAcks')}</h2>
       <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-muted)">
         <i class="ph ${modeIcons[mode]}"></i>
-        Modus: <strong>${modeLabels[mode] || mode}</strong>
-        ${getCurrentRole() === 'admin' ? `<button class="btn btn-secondary btn-sm" onclick="renderPolicyAckSettings()"><i class="ph ph-gear"></i> Modus ändern</button>` : ''}
+        ${t('ack_mode')}: <strong>${modeLabels[mode] || mode}</strong>
+        ${getCurrentRole() === 'admin' ? `<button class="btn btn-secondary btn-sm" onclick="renderPolicyAckSettings()"><i class="ph ph-gear"></i> ${t('ack_modeChange')}</button>` : ''}
       </div>
     </div>
     <div class="training-tab-bar" style="margin-bottom:16px">
       <button class="training-tab${_ackTab==='list'?' active':''}" onclick="_ackTab='list';renderPolicyAcks()">
-        <i class="ph ph-list-checks"></i> Verteilrunden
+        <i class="ph ph-list-checks"></i> ${t('ack_tabList')}
       </button>
       <button class="training-tab${_ackTab==='new'?' active':''}" onclick="_ackTab='new';renderPolicyAcks()">
-        <i class="ph ph-plus-circle"></i> Neue Verteilrunde
+        <i class="ph ph-plus-circle"></i> ${t('ack_tabNew')}
       </button>
     </div>
     <div id="policyAcksContent"></div>
@@ -13484,17 +13484,17 @@ async function _renderDistributionList(container, mode) {
   try { dists = await fetch('/distributions', { headers: apiHeaders() }).then(r => r.json()) } catch {}
 
   if (!Array.isArray(dists) || dists.length === 0) {
-    container.innerHTML = `<div class="empty-state"><i class="ph ph-check-circle" style="font-size:48px;color:var(--text-muted)"></i><p>Noch keine Verteilrunden vorhanden.</p><button class="btn btn-primary" onclick="_ackTab='new';renderPolicyAcks()"><i class="ph ph-plus"></i> Erste Verteilrunde anlegen</button></div>`
+    container.innerHTML = `<div class="empty-state"><i class="ph ph-check-circle" style="font-size:48px;color:var(--text-muted)"></i><p>${t('ack_listEmpty')}</p><button class="btn btn-primary" onclick="_ackTab='new';renderPolicyAcks()"><i class="ph ph-plus"></i> ${t('ack_createFirst')}</button></div>`
     return
   }
 
-  const statusLabel  = { active: 'Aktiv', completed: 'Abgeschlossen', expired: 'Abgelaufen' }
+  const statusLabel  = { active: t('ack_statusActive'), completed: t('ack_statusCompleted'), expired: t('ack_statusExpired') }
   const statusColor  = { active: '#4ade80', completed: '#60a5fa', expired: '#f87171' }
 
   container.innerHTML = `
     <table class="data-table" style="width:100%">
       <thead><tr>
-        <th>Richtlinie</th><th>Zielgruppe</th><th>Frist</th><th>Fortschritt</th><th>Status</th><th>Erstellt</th><th></th>
+        <th>${t('ack_thPolicy')}</th><th>${t('ack_thTarget')}</th><th>${t('ack_thDeadline')}</th><th>${t('ack_thProgress')}</th><th>${t('soa_status')}</th><th>${t('ack_thCreated')}</th><th></th>
       </tr></thead>
       <tbody>
         ${dists.map(d => {
@@ -13516,8 +13516,8 @@ async function _renderDistributionList(container, mode) {
             <td style="font-size:12px;color:var(--text-muted)">${new Date(d.createdAt).toLocaleDateString('de-DE')}</td>
             <td style="white-space:nowrap">
               <button class="btn btn-secondary btn-sm" onclick="openDistributionDetail('${d.id}')"><i class="ph ph-eye"></i></button>
-              ${d.mode === 'email_campaign' ? `<button class="btn btn-secondary btn-sm" title="Erinnerung senden" onclick="sendAckReminder('${d.id}')"><i class="ph ph-envelope"></i></button>` : ''}
-              <a href="/distributions/${d.id}/export/csv" class="btn btn-secondary btn-sm" title="CSV-Export"><i class="ph ph-download-simple"></i></a>
+              ${d.mode === 'email_campaign' ? `<button class="btn btn-secondary btn-sm" title="${t('ack_reminder')}" onclick="sendAckReminder('${d.id}')"><i class="ph ph-envelope"></i></button>` : ''}
+              <a href="/distributions/${d.id}/export/csv" class="btn btn-secondary btn-sm" title="${t('ack_csvExport')}"><i class="ph ph-download-simple"></i></a>
               ${getCurrentRole() === 'admin' ? `<button class="btn btn-danger btn-sm" onclick="deleteDistribution('${d.id}')"><i class="ph ph-trash"></i></button>` : ''}
             </td>
           </tr>`
@@ -13529,43 +13529,43 @@ async function _renderDistributionList(container, mode) {
 
 function _renderNewDistributionForm(container, mode) {
   const modeInfo = {
-    email_campaign:    'E-Mails mit Token-Link werden verschickt. Mitarbeiter bestätigen ohne Login.',
-    manual:            'Bestätigungen werden manuell eingetragen oder per CSV importiert.',
-    distribution_only: 'Es werden keine Einzelbestätigungen erfasst — nur die Verteilung dokumentiert.',
+    email_campaign:    t('ack_modeDescEmail'),
+    manual:            t('ack_modeDescManual'),
+    distribution_only: t('ack_modeDescDistOnly'),
   }
 
   container.innerHTML = `
     <div class="training-form-page">
-      <div class="form-section-header"><h3><i class="ph ph-plus-circle"></i> Neue Verteilrunde anlegen</h3></div>
+      <div class="form-section-header"><h3><i class="ph ph-plus-circle"></i> ${t('ack_newRoundTitle')}</h3></div>
 
       <div class="info-box" style="margin-bottom:20px">
-        <i class="ph ph-info"></i> <strong>Aktiver Modus:</strong> ${modeInfo[mode] || mode}
+        <i class="ph ph-info"></i> <strong>${t('ack_modeActive')}</strong> ${modeInfo[mode] || mode}
       </div>
 
-      <label class="form-label">Richtlinie (nur freigegebene) <span style="color:#f87171">*</span></label>
+      <label class="form-label">${t('ack_policySelect')} <span style="color:#f87171">*</span></label>
       <select id="ackTemplateId" class="select" style="margin-bottom:16px">
-        <option value="">Wird geladen…</option>
+        <option value="">${t('ack_policyLoading')}</option>
       </select>
 
-      <label class="form-label">Zielgruppe / Beschreibung</label>
-      <input type="text" id="ackTargetGroup" class="form-input" placeholder="z.B. Alle Mitarbeiter, IT-Abteilung…" style="margin-bottom:16px"/>
+      <label class="form-label">${t('ack_targetLabel')}</label>
+      <input type="text" id="ackTargetGroup" class="form-input" placeholder="${t('ack_targetPh')}" style="margin-bottom:16px"/>
 
-      <label class="form-label">Frist (optional)</label>
+      <label class="form-label">${t('ack_dueLabel')}</label>
       <input type="date" id="ackDueDate" class="form-input" style="margin-bottom:16px"/>
 
       ${mode === 'email_campaign' ? `
-      <label class="form-label">E-Mail-Adressen <span style="color:var(--text-muted);font-weight:400">(eine pro Zeile oder kommagetrennt)</span></label>
-      <textarea id="ackEmailList" class="form-textarea" rows="6" placeholder="alice@firma.de&#10;bob@firma.de&#10;carol@firma.de"></textarea>
+      <label class="form-label">${t('ack_emailLabel')} <span style="color:var(--text-muted);font-weight:400">${t('ack_emailLabelHint')}</span></label>
+      <textarea id="ackEmailList" class="form-textarea" rows="6" placeholder="alice@firma.cz&#10;bob@firma.cz&#10;carol@firma.cz"></textarea>
       ` : ''}
 
-      <label class="form-label">Notizen</label>
-      <textarea id="ackNotes" class="form-textarea" rows="3" placeholder="Optionale Notizen zu dieser Verteilrunde" style="margin-bottom:20px"></textarea>
+      <label class="form-label">${t('ack_notesLabel')}</label>
+      <textarea id="ackNotes" class="form-textarea" rows="3" placeholder="${t('ack_notesPh')}" style="margin-bottom:20px"></textarea>
 
       <div style="display:flex;gap:12px">
         <button class="btn btn-primary" onclick="saveNewDistribution()">
-          <i class="ph ph-paper-plane-tilt"></i> ${mode === 'email_campaign' ? 'Anlegen & E-Mails vorbereiten' : 'Verteilrunde anlegen'}
+          <i class="ph ph-paper-plane-tilt"></i> ${mode === 'email_campaign' ? t('ack_createEmailBtn') : t('ack_createBtn')}
         </button>
-        <button class="btn btn-secondary" onclick="_ackTab='list';renderPolicyAcks()">Abbrechen</button>
+        <button class="btn btn-secondary" onclick="_ackTab='list';renderPolicyAcks()">${t('cancel')}</button>
       </div>
     </div>
   `
@@ -13576,9 +13576,9 @@ function _renderNewDistributionForm(container, mode) {
     .then(templates => {
       const sel = dom('ackTemplateId')
       if (!sel) return
-      const approved = Array.isArray(templates) ? templates.filter(t => t.status === 'approved') : []
-      sel.innerHTML = `<option value="">Richtlinie wählen…</option>` +
-        approved.map(t => `<option value="${t.id}">${escHtml(t.title)} (${escHtml(t.type)})</option>`).join('')
+      const approved = Array.isArray(templates) ? templates.filter(tpl => tpl.status === 'approved') : []
+      sel.innerHTML = `<option value="">${t('ack_policyChoose')}</option>` +
+        approved.map(tpl => `<option value="${tpl.id}">${escHtml(tpl.title)} (${escHtml(tpl.type)})</option>`).join('')
     }).catch(() => {})
 }
 
@@ -13588,7 +13588,7 @@ async function saveNewDistribution() {
   const dueDate     = dom('ackDueDate')?.value || null
   const notes       = dom('ackNotes')?.value?.trim() || ''
 
-  if (!templateId) { alert('Bitte eine Richtlinie wählen.'); return }
+  if (!templateId) { alert(t('ack_selectPolicy')); return }
 
   // E-Mail-Liste parsen (für email_campaign Modus)
   let emailList = []
@@ -13604,7 +13604,7 @@ async function saveNewDistribution() {
   })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
-    alert(err.error || 'Fehler beim Anlegen')
+    alert(err.error || t('ack_createError'))
     return
   }
 
@@ -13620,12 +13620,12 @@ async function saveNewDistribution() {
     })
     if (sendRes.ok) {
       const r = await sendRes.json()
-      alert(`Verteilrunde angelegt. ${r.sent} E-Mail(s) verschickt.`)
+      alert(t('ack_createSuccessWithMail', { sent: r.sent }))
     } else {
-      alert('Verteilrunde angelegt. E-Mails konnten nicht gesendet werden (SMTP nicht konfiguriert?).')
+      alert(t('ack_createSuccessNoMail'))
     }
   } else {
-    alert('Verteilrunde erfolgreich angelegt.')
+    alert(t('ack_createSuccess'))
   }
 
   _ackTab = 'list'
@@ -13643,17 +13643,17 @@ async function openDistributionDetail(id) {
   const container = dom('policyAcksContent')
   if (!container) return
 
-  const modeLabels = { email_campaign: 'E-Mail-Kampagne', manual: 'Manuell / CSV', distribution_only: 'Nur Verteilung' }
+  const modeLabels = { email_campaign: t('ack_modeEmail'), manual: t('ack_modeManual'), distribution_only: t('ack_modeDistOnly') }
   const pct = dist.stats.total > 0 ? Math.round(dist.stats.confirmed / dist.stats.total * 100) : 0
 
   const acksHtml = acks.length === 0
-    ? `<p style="color:var(--text-muted);padding:20px 0">Noch keine Bestätigungen.</p>`
+    ? `<p style="color:var(--text-muted);padding:20px 0">${t('ack_acksEmpty')}</p>`
     : `<table class="data-table" style="width:100%;margin-top:12px">
-        <thead><tr><th>E-Mail</th><th>Name</th><th>Bestätigt am</th><th>Methode</th>${getCurrentRole()==='admin'?'<th></th>':''}</tr></thead>
+        <thead><tr><th>${t('admin_email')}</th><th>${t('col_name')}</th><th>${t('ack_thConfirmedAt')}</th><th>${t('ack_thMethod')}</th>${getCurrentRole()==='admin'?'<th></th>':''}</tr></thead>
         <tbody>${acks.map(a => `<tr>
           <td>${escHtml(a.recipientEmail||'–')}</td>
           <td>${escHtml(a.recipientName||'–')}</td>
-          <td>${a.acknowledgedAt ? new Date(a.acknowledgedAt).toLocaleString('de-DE') : '<span style="color:#fbbf24">Ausstehend</span>'}</td>
+          <td>${a.acknowledgedAt ? new Date(a.acknowledgedAt).toLocaleString() : `<span style="color:#fbbf24">${t('ack_pending')}</span>`}</td>
           <td style="font-size:12px;color:var(--text-muted)">${a.method||'–'}</td>
           ${getCurrentRole()==='admin'?`<td><button class="btn btn-danger btn-sm" onclick="deleteAck('${a.id}','${id}')"><i class="ph ph-trash"></i></button></td>`:''}
         </tr>`).join('')}</tbody>
@@ -13662,17 +13662,17 @@ async function openDistributionDetail(id) {
   // Manuelle Bestätigung hinzufügen (nur für manual/csv mode)
   const addManualHtml = (dist.mode !== 'email_campaign') ? `
     <div style="margin-top:24px;border-top:1px solid var(--border-color);padding-top:20px">
-      <h4 style="margin-bottom:12px"><i class="ph ph-plus"></i> Bestätigung manuell hinzufügen</h4>
+      <h4 style="margin-bottom:12px"><i class="ph ph-plus"></i> ${t('ack_addManualTitle')}</h4>
       <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">
         <div>
-          <label class="form-label">E-Mail</label>
-          <input type="email" id="manAckEmail" class="form-input" placeholder="alice@firma.de"/>
+          <label class="form-label">${t('admin_email')}</label>
+          <input type="email" id="manAckEmail" class="form-input" placeholder="alice@firma.cz"/>
         </div>
         <div>
-          <label class="form-label">Name</label>
-          <input type="text" id="manAckName" class="form-input" placeholder="Alice Müller"/>
+          <label class="form-label">${t('col_name')}</label>
+          <input type="text" id="manAckName" class="form-input" placeholder="Alice Nováková"/>
         </div>
-        <button class="btn btn-primary" onclick="addManualAck('${id}')"><i class="ph ph-plus"></i> Hinzufügen</button>
+        <button class="btn btn-primary" onclick="addManualAck('${id}')"><i class="ph ph-plus"></i> ${t('add')}</button>
       </div>
     </div>
   ` : ''
@@ -13680,40 +13680,40 @@ async function openDistributionDetail(id) {
   // CSV-Import-Bereich (nur manual mode)
   const csvImportHtml = dist.mode === 'manual' ? `
     <div style="margin-top:16px">
-      <h4 style="margin-bottom:8px"><i class="ph ph-upload-simple"></i> CSV importieren</h4>
-      <p style="color:var(--text-muted);font-size:13px;margin-bottom:8px">Format: <code>email;name;datum</code> (eine Zeile pro Person, Datum optional)</p>
-      <textarea id="csvImportData" class="form-textarea" rows="4" placeholder="alice@firma.de;Alice Müller;2026-03-13&#10;bob@firma.de;Bob Schmidt;"></textarea>
-      <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="importAcksCsv('${id}')"><i class="ph ph-upload-simple"></i> Importieren</button>
+      <h4 style="margin-bottom:8px"><i class="ph ph-upload-simple"></i> ${t('ack_csvImportTitle')}</h4>
+      <p style="color:var(--text-muted);font-size:13px;margin-bottom:8px">${t('ack_csvFormatHint')}</p>
+      <textarea id="csvImportData" class="form-textarea" rows="4" placeholder="alice@firma.cz;Alice Nováková;2026-03-13&#10;bob@firma.cz;Bob Svoboda;"></textarea>
+      <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="importAcksCsv('${id}')"><i class="ph ph-upload-simple"></i> ${t('ack_csvImportBtn')}</button>
     </div>
   ` : ''
 
   container.innerHTML = `
     <div class="training-form-page">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
-        <button class="btn btn-secondary btn-sm" onclick="_ackTab='list';renderPolicyAcks()"><i class="ph ph-arrow-left"></i> Zurück</button>
+        <button class="btn btn-secondary btn-sm" onclick="_ackTab='list';renderPolicyAcks()"><i class="ph ph-arrow-left"></i> ${t('findings_back')}</button>
         <h3 style="margin:0">${escHtml(dist.templateTitle)}</h3>
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px">
-        <div class="kpi-card"><div class="kpi-label">Modus</div><div class="kpi-value">${modeLabels[dist.mode]||dist.mode}</div></div>
-        <div class="kpi-card"><div class="kpi-label">Zielgruppe</div><div class="kpi-value" style="font-size:14px">${escHtml(dist.targetGroup||'–')}</div></div>
-        <div class="kpi-card"><div class="kpi-label">Frist</div><div class="kpi-value" style="font-size:14px">${dist.dueDate ? new Date(dist.dueDate).toLocaleDateString('de-DE') : '–'}</div></div>
+        <div class="kpi-card"><div class="kpi-label">${t('ack_mode')}</div><div class="kpi-value">${modeLabels[dist.mode]||dist.mode}</div></div>
+        <div class="kpi-card"><div class="kpi-label">${t('ack_thTarget')}</div><div class="kpi-value" style="font-size:14px">${escHtml(dist.targetGroup||'–')}</div></div>
+        <div class="kpi-card"><div class="kpi-label">${t('ack_thDeadline')}</div><div class="kpi-value" style="font-size:14px">${dist.dueDate ? new Date(dist.dueDate).toLocaleDateString() : '–'}</div></div>
         ${dist.mode !== 'distribution_only' ? `
-        <div class="kpi-card"><div class="kpi-label">Bestätigt</div><div class="kpi-value">${dist.stats.confirmed}/${dist.stats.total} <span style="font-size:13px;color:var(--text-muted)">(${pct}%)</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">${t('ack_acksCount')}</div><div class="kpi-value">${dist.stats.confirmed}/${dist.stats.total} <span style="font-size:13px;color:var(--text-muted)">(${pct}%)</span></div></div>
         ` : ''}
       </div>
 
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
-        <a href="/distributions/${id}/export/csv" class="btn btn-secondary btn-sm"><i class="ph ph-download-simple"></i> CSV-Export</a>
-        ${dist.mode === 'email_campaign' ? `<button class="btn btn-secondary btn-sm" onclick="sendAckReminder('${id}')"><i class="ph ph-envelope"></i> Erinnerung senden</button>` : ''}
+        <a href="/distributions/${id}/export/csv" class="btn btn-secondary btn-sm"><i class="ph ph-download-simple"></i> ${t('ack_csvExport')}</a>
+        ${dist.mode === 'email_campaign' ? `<button class="btn btn-secondary btn-sm" onclick="sendAckReminder('${id}')"><i class="ph ph-envelope"></i> ${t('ack_reminder')}</button>` : ''}
         <select id="distStatusSel" class="select" style="max-width:180px;padding:6px 10px;font-size:13px" onchange="updateDistStatus('${id}',this.value)">
-          <option value="active"${dist.status==='active'?' selected':''}>Aktiv</option>
-          <option value="completed"${dist.status==='completed'?' selected':''}>Abgeschlossen</option>
-          <option value="expired"${dist.status==='expired'?' selected':''}>Abgelaufen</option>
+          <option value="active"${dist.status==='active'?' selected':''}>${t('ack_statusActive')}</option>
+          <option value="completed"${dist.status==='completed'?' selected':''}>${t('ack_statusCompleted')}</option>
+          <option value="expired"${dist.status==='expired'?' selected':''}>${t('ack_statusExpired')}</option>
         </select>
       </div>
 
-      <h4>Bestätigungen (${acks.length})</h4>
+      <h4>${t('ack_acksCount')} (${acks.length})</h4>
       ${acksHtml}
       ${addManualHtml}
       ${csvImportHtml}
@@ -13722,10 +13722,10 @@ async function openDistributionDetail(id) {
 }
 
 async function sendAckReminder(distId) {
-  if (!confirm('Erinnerungs-Mail an alle noch nicht bestätigten Empfänger senden?')) return
+  if (!confirm(t('ack_reminderConfirm'))) return
   const res = await fetch(`/distributions/${distId}/remind`, { method: 'POST', headers: apiHeaders() })
   const r = await res.json().catch(() => ({}))
-  alert(res.ok ? `${r.sent} Erinnerung(en) gesendet.` : (r.error || 'Fehler'))
+  alert(res.ok ? t('ack_remindersSent', { sent: r.sent }) : (r.error || t('err_generic')))
 }
 
 async function updateDistStatus(distId, status) {
@@ -13737,22 +13737,22 @@ async function updateDistStatus(distId, status) {
 }
 
 async function deleteDistribution(id) {
-  if (!confirm('Verteilrunde und alle Bestätigungen löschen?')) return
+  if (!confirm(t('ack_deleteDistConfirm'))) return
   const res = await fetch(`/distributions/${id}`, { method: 'DELETE', headers: apiHeaders() })
-  if (!res.ok) { const e = await res.json().catch(() => ({})); alert(e.error || 'Fehler'); return }
+  if (!res.ok) { const e = await res.json().catch(() => ({})); alert(e.error || t('err_generic')); return }
   renderPolicyAcks()
 }
 
 async function addManualAck(distId) {
   const email = dom('manAckEmail')?.value?.trim()
   const name  = dom('manAckName')?.value?.trim() || ''
-  if (!email) { alert('E-Mail-Adresse eingeben'); return }
+  if (!email) { alert(t('ack_emailRequired')); return }
   const res = await fetch(`/distributions/${distId}/acks`, {
     method: 'POST',
     headers: { ...apiHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify({ recipientEmail: email, recipientName: name }),
   })
-  if (!res.ok) { const e = await res.json().catch(() => ({})); alert(e.error || 'Fehler'); return }
+  if (!res.ok) { const e = await res.json().catch(() => ({})); alert(e.error || t('err_generic')); return }
   openDistributionDetail(distId)
 }
 
@@ -13763,19 +13763,19 @@ async function importAcksCsv(distId) {
     const parts = line.split(';')
     return { email: (parts[0]||'').trim(), name: (parts[1]||'').trim(), acknowledgedAt: (parts[2]||'').trim() || null }
   }).filter(r => r.email)
-  if (!rows.length) { alert('Keine gültigen Zeilen gefunden.'); return }
+  if (!rows.length) { alert(t('ack_csvNoValid')); return }
   const res = await fetch(`/distributions/${distId}/acks/import`, {
     method: 'POST',
     headers: { ...apiHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify({ rows }),
   })
   const r = await res.json().catch(() => ({}))
-  alert(`${r.imported || 0} importiert, ${r.skipped || 0} übersprungen.`)
+  alert(t('ack_csvImportResult', { imported: r.imported || 0, skipped: r.skipped || 0 }))
   openDistributionDetail(distId)
 }
 
 async function deleteAck(ackId, distId) {
-  if (!confirm('Bestätigung löschen?')) return
+  if (!confirm(t('ack_deleteAckConfirm'))) return
   await fetch(`/distributions/${distId}/acks/${ackId}`, { method: 'DELETE', headers: apiHeaders() })
   openDistributionDetail(distId)
 }
@@ -13790,20 +13790,19 @@ async function renderPolicyAckSettings() {
   container.innerHTML = `
     <div class="training-form-page">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
-        <button class="btn btn-secondary btn-sm" onclick="renderPolicyAcks()"><i class="ph ph-arrow-left"></i> Zurück</button>
-        <h3 style="margin:0"><i class="ph ph-gear"></i> Bestätigungs-Modus konfigurieren</h3>
+        <button class="btn btn-secondary btn-sm" onclick="renderPolicyAcks()"><i class="ph ph-arrow-left"></i> ${t('findings_back')}</button>
+        <h3 style="margin:0"><i class="ph ph-gear"></i> ${t('ack_modeConfigure')}</h3>
       </div>
 
       <div class="info-box" style="margin-bottom:24px">
-        <i class="ph ph-warning"></i> Diese Einstellung gilt für <strong>alle zukünftigen Verteilrunden</strong>.
-        Bestehende Kampagnen behalten ihren ursprünglichen Modus.
+        <i class="ph ph-warning"></i> ${t('ack_modeSettingNote')}
       </div>
 
       <div style="display:flex;flex-direction:column;gap:12px;max-width:600px">
         ${[
-          { val:'email_campaign',    icon:'ph-envelope',   title:'E-Mail-Kampagne',              desc:'Token-Links per E-Mail — Mitarbeiter bestätigen ohne ISMS-Zugang' },
-          { val:'manual',            icon:'ph-pencil',     title:'Manuell / CSV-Import',         desc:'Bestätigungen werden manuell eingetragen oder per CSV importiert' },
-          { val:'distribution_only', icon:'ph-file-text',  title:'Nur Verteilung dokumentieren', desc:'Keine Einzelbestätigungen — nur Nachweis der Verteilung' },
+          { val:'email_campaign',    icon:'ph-envelope',   title: t('ack_modeEmail'),       desc: t('ack_modeDetailEmail') },
+          { val:'manual',            icon:'ph-pencil',     title: t('ack_modeManualLong'),  desc: t('ack_modeDetailManual') },
+          { val:'distribution_only', icon:'ph-file-text',  title: t('ack_modeDistOnlyLong'),desc: t('ack_modeDetailDistOnly') },
         ].map(opt => `
           <label style="display:flex;align-items:flex-start;gap:14px;padding:16px;border:2px solid ${current===opt.val?'var(--brand-color)':'var(--border-color)'};border-radius:8px;cursor:pointer;background:${current===opt.val?'var(--brand-color)18':'transparent'}">
             <input type="radio" name="ackMode" value="${opt.val}" ${current===opt.val?'checked':''} style="margin-top:3px;accent-color:var(--brand-color)"/>
@@ -13816,8 +13815,8 @@ async function renderPolicyAckSettings() {
       </div>
 
       <div style="margin-top:24px;display:flex;gap:12px">
-        <button class="btn btn-primary" onclick="savePolicyAckMode()"><i class="ph ph-floppy-disk"></i> Modus speichern</button>
-        <button class="btn btn-secondary" onclick="renderPolicyAcks()">Abbrechen</button>
+        <button class="btn btn-primary" onclick="savePolicyAckMode()"><i class="ph ph-floppy-disk"></i> ${t('ack_modeSave')}</button>
+        <button class="btn btn-secondary" onclick="renderPolicyAcks()">${t('cancel')}</button>
       </div>
     </div>
   `
@@ -13831,7 +13830,7 @@ async function savePolicyAckMode() {
     headers: { ...apiHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify({ policyAckMode: sel.value }),
   })
-  if (res.ok) { renderPolicyAcks() } else { alert('Fehler beim Speichern') }
+  if (res.ok) { renderPolicyAcks() } else { alert(t('err_saveFailed')) }
 }
 
 // Init app after DOM load – nur auf der SPA-Hauptseite (index.html)
