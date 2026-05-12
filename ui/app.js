@@ -1390,26 +1390,26 @@ async function renderFindingsTab() {
   content.innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap">
       <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--text-inv)">
-        <i class="ph ph-magnifying-glass"></i> Audit-Feststellungen
+        <i class="ph ph-magnifying-glass"></i> ${t('findings_title')}
       </h3>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         <button class="btn btn-secondary btn-sm" onclick="exportFindingsJson()"><i class="ph ph-download-simple"></i> JSON</button>
         <button class="btn btn-secondary btn-sm" onclick="exportFindingsCsv()"><i class="ph ph-file-csv"></i> CSV</button>
         <button class="btn btn-secondary btn-sm" onclick="exportFindingsPdf()"><i class="ph ph-file-pdf"></i> PDF</button>
         ${canEdit ? `<button class="btn btn-primary btn-sm" onclick="openFindingForm()">
-          <i class="ph ph-plus"></i> Neue Feststellung
+          <i class="ph ph-plus"></i> ${t('findings_new')}
         </button>` : ''}
       </div>
     </div>
 
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
       ${[
-        { label:'Gesamt',       value: sum.total || 0,           color:'var(--text-primary)' },
-        { label:'Kritisch',     value: sum.bySeverity?.critical||0, color: FINDING_SEVERITY_COLOR.critical },
-        { label:'Hoch',         value: sum.bySeverity?.high||0,     color: FINDING_SEVERITY_COLOR.high },
-        { label:'Offen',        value: sum.byStatus?.open||0,        color: FINDING_STATUS_COLOR.open },
-        { label:'Maßn. offen',  value: sum.openActions||0,           color: sum.openActions > 0 ? '#fbbf24':'#4ade80' },
-        { label:'Maßn. überfällig', value: sum.overdueActions||0,   color: sum.overdueActions > 0 ? FINDING_SEVERITY_COLOR.critical:'#4ade80' },
+        { label: t('kpi_total'),                value: sum.total || 0,                color:'var(--text-primary)' },
+        { label: t('findings_critical'),        value: sum.bySeverity?.critical||0,   color: FINDING_SEVERITY_COLOR.critical },
+        { label: t('findings_high'),            value: sum.bySeverity?.high||0,       color: FINDING_SEVERITY_COLOR.high },
+        { label: t('findings_open'),            value: sum.byStatus?.open||0,         color: FINDING_STATUS_COLOR.open },
+        { label: t('findings_openActions'),     value: sum.openActions||0,            color: sum.openActions > 0 ? '#fbbf24':'#4ade80' },
+        { label: t('findings_overdue'),         value: sum.overdueActions||0,         color: sum.overdueActions > 0 ? FINDING_SEVERITY_COLOR.critical:'#4ade80' },
       ].map(k => `
         <div class="dash-card kpi" style="flex:1;min-width:100px;padding:10px 14px;text-align:center">
           <div style="font-size:1.4rem;font-weight:700;color:${k.color}">${k.value}</div>
@@ -1456,7 +1456,7 @@ function _renderFindingsList(all, list) {
   if (!list.length) {
     area.innerHTML = `<div class="report-empty" style="padding:32px;text-align:center;color:var(--text-subtle)">
       <i class="ph ph-magnifying-glass" style="font-size:32px;display:block;margin-bottom:8px"></i>
-      Keine Feststellungen
+      ${t('findings_none')}
     </div>`
     return
   }
@@ -1529,38 +1529,38 @@ async function openFindingDetail(id) {
           ${escHtml(f.title)}
         </h3>
         <button class="btn btn-secondary btn-sm" style="margin-left:auto" onclick="printFindingDetail('${f.id}')">
-          <i class="ph ph-printer"></i> Drucken / PDF
+          <i class="ph ph-printer"></i> ${t('common_print')} / PDF
         </button>
       </div>
       <div class="training-form-body">
 
         <div class="training-form-section">
           <h4 class="training-form-section-title" style="display:flex;align-items:center;gap:8px">
-            Feststellung ${_findingSeverityBadge(f.severity)} ${_findingStatusBadge(f.status)}
+            ${t('findings_detailSection')} ${_findingSeverityBadge(f.severity)} ${_findingStatusBadge(f.status)}
           </h4>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-bottom:12px;font-size:13px">
-            <div><span style="color:var(--text-subtle)">Bereich:</span> ${escHtml(f.auditedArea||'—')}</div>
+            <div><span style="color:var(--text-subtle)">${t('findings_area')}:</span> ${escHtml(f.auditedArea||'—')}</div>
             <div><span style="color:var(--text-subtle)">Auditor:</span> ${escHtml(f.auditor||'—')}</div>
-            <div><span style="color:var(--text-subtle)">Zeitraum:</span>
+            <div><span style="color:var(--text-subtle)">${t('findings_period')}:</span>
               ${f.auditPeriodFrom ? escHtml(f.auditPeriodFrom)+(f.auditPeriodTo?' – '+escHtml(f.auditPeriodTo):'') : '—'}
             </div>
-            <div><span style="color:var(--text-subtle)">Erstellt:</span> ${f.createdAt?.slice(0,10)||'—'}</div>
+            <div><span style="color:var(--text-subtle)">${t('col_date')}:</span> ${f.createdAt?.slice(0,10)||'—'}</div>
           </div>
 
           <div class="form-group">
-            <label class="form-label" style="color:var(--warn)">📋 IST-Zustand (Beobachtung)</label>
+            <label class="form-label" style="color:var(--warn)">📋 ${t('findings_observation_field')}</label>
             <div style="background:var(--raised);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:13px;white-space:pre-wrap">${escHtml(f.observation||'—')}</div>
           </div>
           <div class="form-group">
-            <label class="form-label" style="color:#60a5fa">🎯 SOLL-Zustand (Anforderung)</label>
+            <label class="form-label" style="color:#60a5fa">🎯 ${t('findings_requirement')}</label>
             <div style="background:var(--raised);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:13px;white-space:pre-wrap">${escHtml(f.requirement||'—')}</div>
           </div>
           <div class="form-group">
-            <label class="form-label" style="color:${FINDING_SEVERITY_COLOR.high}">⚠ Risiko / Auswirkung</label>
+            <label class="form-label" style="color:${FINDING_SEVERITY_COLOR.high}">⚠ ${t('findings_impact')}</label>
             <div style="background:var(--raised);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:13px;white-space:pre-wrap">${escHtml(f.impact||'—')}</div>
           </div>
           <div class="form-group">
-            <label class="form-label" style="color:#4ade80">💡 Empfehlung</label>
+            <label class="form-label" style="color:#4ade80">💡 ${t('findings_recommendation')}</label>
             <div style="background:var(--raised);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:13px;white-space:pre-wrap">${escHtml(f.recommendation||'—')}</div>
           </div>
         </div>
@@ -1568,17 +1568,17 @@ async function openFindingDetail(id) {
         <div class="training-form-section" id="actionsSection">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
             <h4 class="training-form-section-title" style="margin:0">
-              <i class="ph ph-check-square"></i> Maßnahmenplan
+              <i class="ph ph-check-square"></i> ${t('findings_actions')}
             </h4>
             ${canAct ? `<button class="btn btn-primary btn-sm" onclick="openAddActionForm('${f.id}')">
-              <i class="ph ph-plus"></i> Maßnahme
+              <i class="ph ph-plus"></i> ${t('risk_measure')}
             </button>` : ''}
           </div>
           ${actTotal > 0 ? `
           <div style="margin-bottom:12px">
             <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-subtle);margin-bottom:4px">
-              <span>Fortschritt</span>
-              <span>${actDone} / ${actTotal} erledigt (${actPct} %)</span>
+              <span>${t('dash_progress')}</span>
+              <span>${actDone} / ${actTotal} ${t('findings_done')} (${actPct} %)</span>
             </div>
             <div style="background:var(--border);border-radius:4px;height:8px;overflow:hidden">
               <div style="height:100%;width:${actPct}%;background:${pbarColor};border-radius:4px;transition:width .3s ease"></div>
@@ -1592,7 +1592,7 @@ async function openFindingDetail(id) {
         ${canEdit ? `
         <div class="training-form-section">
           <button class="btn btn-primary" onclick="openFindingForm('${f.id}')">
-            <i class="ph ph-pencil-simple"></i> Feststellung bearbeiten
+            <i class="ph ph-pencil-simple"></i> ${t('findings_editTitle')}
           </button>
         </div>` : ''}
       </div>
@@ -1638,26 +1638,26 @@ async function printFindingDetail(findingId) {
       <span class="badge" style="background:${sevColor[f.severity]||'#888'}">${esc(f.severity||'')}</span>
       <span class="badge" style="background:#555">${esc(f.status||'')}</span>
     </h1>
-    <div class="meta">Erstellt: ${(f.createdAt||'').slice(0,10)} · Auditor: ${esc(f.auditor)} · Bereich: ${esc(f.auditedArea)}</div>
+    <div class="meta">${t('col_date')}: ${(f.createdAt||'').slice(0,10)} · Auditor: ${esc(f.auditor)} · ${t('findings_area')}: ${esc(f.auditedArea)}</div>
 
     <div class="section">
-      <h2>Feststellung</h2>
+      <h2>${t('findings_detailSection')}</h2>
       <div class="grid2">
-        <div><span style="color:#555">Zeitraum:</span> ${esc(f.auditPeriodFrom||'—')}${f.auditPeriodTo?' – '+esc(f.auditPeriodTo):''}</div>
-        <div><span style="color:#555">Verknüpfte Controls:</span> ${(f.linkedControls||[]).join(', ')||'—'}</div>
+        <div><span style="color:#555">${t('findings_period')}:</span> ${esc(f.auditPeriodFrom||'—')}${f.auditPeriodTo?' – '+esc(f.auditPeriodTo):''}</div>
+        <div><span style="color:#555">${t('risk_linkedControls')}:</span> ${(f.linkedControls||[]).join(', ')||'—'}</div>
       </div>
-      <div class="field"><div class="label">IST-Zustand (Beobachtung)</div><div class="value">${esc(f.observation)}</div></div>
-      <div class="field"><div class="label">SOLL-Zustand (Anforderung)</div><div class="value">${esc(f.requirement)}</div></div>
-      <div class="field"><div class="label">Risiko / Auswirkung</div><div class="value">${esc(f.impact)}</div></div>
-      <div class="field"><div class="label">Empfehlung</div><div class="value">${esc(f.recommendation)}</div></div>
+      <div class="field"><div class="label">${t('findings_observation_field')}</div><div class="value">${esc(f.observation)}</div></div>
+      <div class="field"><div class="label">${t('findings_requirement')}</div><div class="value">${esc(f.requirement)}</div></div>
+      <div class="field"><div class="label">${t('findings_impact')}</div><div class="value">${esc(f.impact)}</div></div>
+      <div class="field"><div class="label">${t('findings_recommendation')}</div><div class="value">${esc(f.recommendation)}</div></div>
     </div>
 
     <div class="section">
-      <h2>Maßnahmenplan — ${done} / ${actions.length} erledigt (${pct} %)</h2>
+      <h2>${t('findings_actions')} — ${done} / ${actions.length} ${t('findings_done')} (${pct} %)</h2>
       <div class="pbar-wrap"><div class="pbar"></div></div>
-      ${actions.length === 0 ? '<p style="color:#999;font-size:11px">Keine Maßnahmen eingetragen.</p>' : `
+      ${actions.length === 0 ? `<p style="color:#999;font-size:11px">${t('findings_noActions')}</p>` : `
       <table>
-        <thead><tr><th>Maßnahme</th><th>Verantwortlich</th><th>Fällig</th><th>Status</th></tr></thead>
+        <thead><tr><th>${t('risk_measure')}</th><th>${t('col_responsible')}</th><th>${t('col_dueDate')}</th><th>${t('soa_status')}</th></tr></thead>
         <tbody>
           ${actions.map(a => `<tr>
             <td>${esc(a.description)}</td>
@@ -1705,10 +1705,10 @@ async function exportFindingsPdf() {
   const esc  = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
   const sevColor = { critical:'#c0392b', high:'#e67e22', medium:'#f39c12', low:'#27ae60', observation:'#2980b9' }
   const win  = window.open('', '_blank')
-  if (!win) return alert('Pop-up blockiert. Bitte Pop-ups für diese Seite erlauben.')
+  if (!win) return alert(t('findings_popupBlocked'))
   win.document.write(`<!DOCTYPE html><html><head>
     <meta charset="UTF-8">
-    <title>Audit-Feststellungen — ${new Date().toLocaleDateString('de-DE')}</title>
+    <title>${t('findings_title')} — ${new Date().toLocaleDateString()}</title>
     <style>
       body  { font-family: Arial, sans-serif; font-size: 12px; color: #111; margin: 28px; }
       h1    { font-size: 15px; margin-bottom: 4px; }
@@ -1720,12 +1720,12 @@ async function exportFindingsPdf() {
       @media print { body { margin: 0; } }
     </style>
   </head><body>
-    <h1><i>Audit-Feststellungen</i></h1>
-    <div class="sub">Stand: ${new Date().toLocaleString('de-DE')} · ISMS Builder · ${list.length} Einträge</div>
+    <h1><i>${t('findings_title')}</i></h1>
+    <div class="sub">${t('dash_status')} ${new Date().toLocaleString()} · ISMS Builder · ${list.length} ${t('findings_entriesCount')}</div>
     <table>
       <thead><tr>
-        <th>Ref</th><th>Titel</th><th>Schwere</th><th>Status</th>
-        <th>Bereich</th><th>Auditor</th><th>Zeitraum</th><th>Maßnahmen</th>
+        <th>${t('col_ref')}</th><th>${t('col_title')}</th><th>${t('findings_severity')}</th><th>${t('soa_status')}</th>
+        <th>${t('findings_area')}</th><th>Auditor</th><th>${t('findings_period')}</th><th>${t('findings_actions')}</th>
       </tr></thead>
       <tbody>
         ${list.map(f => {
@@ -1750,7 +1750,7 @@ async function exportFindingsPdf() {
 }
 
 function _renderActionsList(actions, findingId, canEdit) {
-  if (!actions.length) return `<div style="color:var(--text-subtle);font-size:13px;padding:8px 0">Noch keine Maßnahmen eingetragen.</div>`
+  if (!actions.length) return `<div style="color:var(--text-subtle);font-size:13px;padding:8px 0">${t('findings_noActions')}</div>`
   return actions.map(a => {
     const colAct = a.status === 'done' ? '#4ade80' : a.status === 'in_progress' ? '#fbbf24' : '#f87171'
     const overdue = a.status !== 'done' && a.dueDate && new Date(a.dueDate) < new Date()
@@ -1760,8 +1760,8 @@ function _renderActionsList(actions, findingId, canEdit) {
         <div style="flex:1;min-width:0">
           <div style="font-weight:600;font-size:13px;margin-bottom:3px">${escHtml(a.description)}</div>
           <div style="font-size:12px;color:var(--text-subtle)">
-            Verantwortlich: <b>${escHtml(a.responsible||'—')}</b>
-            ${a.dueDate ? `· Fällig: <span style="color:${overdue?'#f87171':'inherit'}">${a.dueDate}${overdue?' ⚠':''}</span>` : ''}
+            ${t('col_responsible')}: <b>${escHtml(a.responsible||'—')}</b>
+            ${a.dueDate ? `· ${t('col_dueDate')}: <span style="color:${overdue?'#f87171':'inherit'}">${a.dueDate}${overdue?' ⚠':''}</span>` : ''}
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
@@ -1770,7 +1770,7 @@ function _renderActionsList(actions, findingId, canEdit) {
             ${Object.entries(FINDING_ACT_STATUS_LABELS).map(([v,l]) =>
               `<option value="${v}"${a.status===v?' selected':''}>${l}</option>`).join('')}
           </select>
-          <button class="btn btn-sm" style="color:var(--danger)" title="Löschen"
+          <button class="btn btn-sm" style="color:var(--danger)" title="${t('delete')}"
             onclick="deleteAction('${findingId}','${a.id}')">
             <i class="ph ph-trash-simple"></i>
           </button>` : `<span style="color:${colAct};font-size:12px">${FINDING_ACT_STATUS_LABELS[a.status]||a.status}</span>`}
@@ -1790,22 +1790,22 @@ async function openAddActionForm(findingId) {
   el.style.cssText = 'background:var(--raised);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:10px'
   el.innerHTML = `
     <div class="form-group">
-      <label class="form-label">Maßnahme <span class="form-required">*</span></label>
-      <textarea id="actDesc" class="form-input" rows="2" placeholder="Was wird konkret getan?"></textarea>
+      <label class="form-label">${t('risk_measure')} <span class="form-required">*</span></label>
+      <textarea id="actDesc" class="form-input" rows="2" placeholder="${t('findings_actionDescPh')}"></textarea>
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Verantwortlich</label>
-        <input id="actResp" class="form-input" placeholder="Name / Rolle">
+        <label class="form-label">${t('col_responsible')}</label>
+        <input id="actResp" class="form-input" placeholder="${t('findings_actionRespPh')}">
       </div>
       <div class="form-group">
-        <label class="form-label">Zieldatum</label>
+        <label class="form-label">${t('findings_actionTarget')}</label>
         <input id="actDue" class="form-input" type="date">
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-top:10px">
-      <button class="btn btn-primary btn-sm" onclick="saveNewAction('${findingId}')">Speichern</button>
-      <button class="btn btn-secondary btn-sm" onclick="dom('${formId}').remove()">Abbrechen</button>
+      <button class="btn btn-primary btn-sm" onclick="saveNewAction('${findingId}')">${t('save')}</button>
+      <button class="btn btn-secondary btn-sm" onclick="dom('${formId}').remove()">${t('cancel')}</button>
     </div>
   `
   area.prepend(el)
@@ -1822,7 +1822,7 @@ async function saveNewAction(findingId) {
     headers: { ...apiHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify({ description: desc, responsible: resp, dueDate: due })
   })
-  if (!r.ok) { showToast('Fehler beim Speichern', 'error'); return }
+  if (!r.ok) { showToast(t('err_saveFailed'), 'error'); return }
   openFindingDetail(findingId)
 }
 
@@ -1843,7 +1843,7 @@ async function updateActionStatus(findingId, actionId, status) {
 }
 
 async function deleteAction(findingId, actionId) {
-  if (!confirm('Maßnahme löschen?')) return
+  if (!confirm(t('findings_deleteActionConfirm'))) return
   await fetch(`/findings/${findingId}/actions/${actionId}`, { method: 'DELETE', headers: apiHeaders() })
   openFindingDetail(findingId)
 }
@@ -1862,31 +1862,31 @@ async function openFindingForm(id = null) {
     <div class="training-form-page">
       <div class="training-form-header">
         <button class="btn btn-secondary btn-sm" onclick="switchReportsMainTab('findings')">
-          <i class="ph ph-arrow-left"></i> Zurück
+          <i class="ph ph-arrow-left"></i> ${t('findings_back')}
         </button>
         <h3 class="training-form-title">
           <i class="ph ph-magnifying-glass"></i>
-          ${isEdit ? `Feststellung bearbeiten <span style="font-family:monospace;font-size:12px;color:var(--text-subtle)">${escHtml(f?.ref||'')}</span>` : 'Neue Feststellung'}
+          ${isEdit ? `${t('findings_editTitle')} <span style="font-family:monospace;font-size:12px;color:var(--text-subtle)">${escHtml(f?.ref||'')}</span>` : t('findings_new')}
         </h3>
       </div>
       <div class="training-form-body">
 
         <div class="training-form-section">
-          <h4 class="training-form-section-title"><i class="ph ph-info"></i> Grunddaten</h4>
+          <h4 class="training-form-section-title"><i class="ph ph-info"></i> ${t('findings_basicData')}</h4>
           <div class="form-group">
-            <label class="form-label">Titel <span class="form-required">*</span></label>
-            <input id="fndTitle" class="form-input" value="${escHtml(f?.title||'')}" placeholder="Kurzer prägnanter Name der Feststellung">
+            <label class="form-label">${t('col_title')} <span class="form-required">*</span></label>
+            <input id="fndTitle" class="form-input" value="${escHtml(f?.title||'')}" placeholder="${t('findings_titlePh')}">
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Schweregrad</label>
+              <label class="form-label">${t('findings_severity')}</label>
               <select id="fndSeverity" class="select">
                 ${Object.entries(FINDING_SEVERITY_LABELS).map(([v,l]) =>
                   `<option value="${v}"${(f?.severity||'medium')===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Status</label>
+              <label class="form-label">${t('soa_status')}</label>
               <select id="fndStatus" class="select">
                 ${Object.entries(FINDING_STATUS_LABELS).map(([v,l]) =>
                   `<option value="${v}"${(f?.status||'open')===v?' selected':''}>${l}</option>`).join('')}
@@ -1895,58 +1895,58 @@ async function openFindingForm(id = null) {
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Geprüfter Bereich</label>
-              <input id="fndArea" class="form-input" value="${escHtml(f?.auditedArea||'')}" placeholder="z.B. IT-Operations / ISO A.8">
+              <label class="form-label">${t('findings_area')}</label>
+              <input id="fndArea" class="form-input" value="${escHtml(f?.auditedArea||'')}" placeholder="${t('findings_areaPh')}">
             </div>
             <div class="form-group">
               <label class="form-label">Auditor</label>
-              <input id="fndAuditor" class="form-input" value="${escHtml(f?.auditor||'')}" placeholder="Name oder Kürzel">
+              <input id="fndAuditor" class="form-input" value="${escHtml(f?.auditor||'')}" placeholder="${t('findings_auditorPh')}">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Audit-Zeitraum von</label>
+              <label class="form-label">${t('findings_periodFrom')}</label>
               <input id="fndPeriodFrom" class="form-input" type="date" value="${f?.auditPeriodFrom||''}">
             </div>
             <div class="form-group">
-              <label class="form-label">bis</label>
+              <label class="form-label">${t('reports_to')}</label>
               <input id="fndPeriodTo" class="form-input" type="date" value="${f?.auditPeriodTo||''}">
             </div>
           </div>
         </div>
 
         <div class="training-form-section">
-          <h4 class="training-form-section-title"><i class="ph ph-clipboard-text"></i> Feststellungsdetails</h4>
+          <h4 class="training-form-section-title"><i class="ph ph-clipboard-text"></i> ${t('findings_detailSection')}</h4>
           <div class="form-group">
-            <label class="form-label" style="color:var(--warn)">📋 IST-Zustand (Beobachtung)</label>
+            <label class="form-label" style="color:var(--warn)">📋 ${t('findings_observation_field')}</label>
             <textarea id="fndObservation" class="form-input" rows="4"
-              placeholder="Was wurde gefunden? Stichprobengröße, konkrete Zahlen…">${escHtml(f?.observation||'')}</textarea>
+              placeholder="${t('findings_observationPh')}">${escHtml(f?.observation||'')}</textarea>
           </div>
           <div class="form-group">
-            <label class="form-label" style="color:#60a5fa">🎯 SOLL-Zustand (Anforderung)</label>
+            <label class="form-label" style="color:#60a5fa">🎯 ${t('findings_requirement')}</label>
             <textarea id="fndRequirement" class="form-input" rows="3"
-              placeholder="Was verlangt die Norm oder die interne Richtlinie?">${escHtml(f?.requirement||'')}</textarea>
+              placeholder="${t('findings_requirementPh')}">${escHtml(f?.requirement||'')}</textarea>
           </div>
           <div class="form-group">
-            <label class="form-label" style="color:${FINDING_SEVERITY_COLOR.high}">⚠ Risiko / Auswirkung</label>
+            <label class="form-label" style="color:${FINDING_SEVERITY_COLOR.high}">⚠ ${t('findings_impact')}</label>
             <textarea id="fndImpact" class="form-input" rows="3"
-              placeholder="Was kann passieren, wenn das nicht behoben wird?">${escHtml(f?.impact||'')}</textarea>
+              placeholder="${t('findings_impactPh')}">${escHtml(f?.impact||'')}</textarea>
           </div>
           <div class="form-group">
-            <label class="form-label" style="color:#4ade80">💡 Empfehlung</label>
+            <label class="form-label" style="color:#4ade80">💡 ${t('findings_recommendation')}</label>
             <textarea id="fndRecommendation" class="form-input" rows="3"
-              placeholder="Was sollte konkret getan werden?">${escHtml(f?.recommendation||'')}</textarea>
+              placeholder="${t('findings_recommendationPh')}">${escHtml(f?.recommendation||'')}</textarea>
           </div>
         </div>
 
         <div class="training-form-section">
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
             <button class="btn btn-primary" onclick="saveFinding(${id ? `'${id}'` : 'null'})">
-              <i class="ph ph-floppy-disk"></i> ${isEdit ? 'Speichern' : 'Feststellung anlegen'}
+              <i class="ph ph-floppy-disk"></i> ${isEdit ? t('save') : t('findings_create')}
             </button>
-            <button class="btn btn-secondary" onclick="switchReportsMainTab('findings')">Abbrechen</button>
+            <button class="btn btn-secondary" onclick="switchReportsMainTab('findings')">${t('cancel')}</button>
             ${isEdit ? `<button class="btn btn-secondary" onclick="openFindingDetail('${id}')">
-              <i class="ph ph-eye"></i> Detail-Ansicht
+              <i class="ph ph-eye"></i> ${t('findings_detailView')}
             </button>` : ''}
           </div>
           <p id="findingSaveMsg" style="margin-top:8px;font-size:13px;display:none"></p>
@@ -1959,7 +1959,7 @@ async function openFindingForm(id = null) {
 
 async function saveFinding(id) {
   const title = dom('fndTitle')?.value.trim()
-  if (!title) { dom('fndTitle')?.focus(); showToast('Titel ist Pflichtfeld', 'error'); return }
+  if (!title) { dom('fndTitle')?.focus(); showToast(t('findings_titleRequired'), 'error'); return }
   const payload = {
     title,
     severity:        dom('fndSeverity')?.value,
@@ -1981,19 +1981,19 @@ async function saveFinding(id) {
   const msg = dom('findingSaveMsg')
   if (r.ok) {
     const saved = await r.json()
-    if (msg) { msg.textContent = id ? 'Gespeichert.' : `Feststellung ${saved.ref} angelegt.`; msg.style.color = 'var(--success,#4ade80)'; msg.style.display = '' }
+    if (msg) { msg.textContent = id ? t('msg_saved') : t('findings_created', { ref: saved.ref }); msg.style.color = 'var(--success,#4ade80)'; msg.style.display = '' }
     setTimeout(() => { if (id) openFindingDetail(id); else switchReportsMainTab('findings') }, 1000)
   } else {
     const e = await r.json().catch(() => ({}))
-    if (msg) { msg.textContent = 'Fehler: ' + (e.error || r.status); msg.style.color = 'var(--danger-text,#f87171)'; msg.style.display = '' }
+    if (msg) { msg.textContent = t('err_generic') + ': ' + (e.error || r.status); msg.style.color = 'var(--danger-text,#f87171)'; msg.style.display = '' }
   }
 }
 
 async function deleteFinding(id) {
-  if (!confirm('Feststellung in den Papierkorb verschieben?')) return
+  if (!confirm(t('findings_trashConfirm'))) return
   const r = await fetch(`/findings/${id}`, { method: 'DELETE', headers: apiHeaders() })
-  if (r.ok) { showToast('Feststellung gelöscht', 'success'); switchReportsMainTab('findings') }
-  else showToast('Fehler beim Löschen', 'error')
+  if (r.ok) { showToast(t('findings_deleted'), 'success'); switchReportsMainTab('findings') }
+  else showToast(t('err_delete'), 'error')
 }
 
 // ── Ende Findings UI ──────────────────────────────────────────────────────────
