@@ -1142,7 +1142,7 @@ function renderReportResult(type, data, el) {
         <thead><tr><th>${t('reports_framework')}</th><th>${t('soa_kpiControls')}</th><th>${t('soa_applicable')}</th><th>n/a</th><th>${t('soa_implemented')}</th><th>${t('reports_rate')}</th></tr></thead>
         <tbody>${(Array.isArray(data) ? data : [data]).map(fw => `
           <tr>
-            <td><span class="fw-dot" style="background:${fw.color}"></span>${fw.label}</td>
+            <td><span class="fw-dot" style="background:${fw.color}"></span>${fwLabel(fw)}</td>
             <td>${fw.total}</td><td>${fw.applicable}</td><td>${fw.notApplicable}</td>
             <td>${(fw.byStatus?.implemented||0) + (fw.byStatus?.optimized||0)}</td>
             <td>${fw.implementationRate}%</td>
@@ -2359,6 +2359,14 @@ function getStatusLabels() {
   }
 }
 
+// Localized framework label — overrides server-side English fallbacks
+// for framework IDs that have an i18n key.
+function fwLabel(fw) {
+  if (!fw) return '?'
+  if (fw.id === 'CUSTOM') return t('soa_customFramework')
+  return fw.label || fw.id
+}
+
 let soaData = []
 let soaFrameworks = []
 let soaActiveFramework = 'ISO27001'
@@ -2425,7 +2433,7 @@ function renderSoaContent(container) {
     <button class="soa-fw-tab ${fw.id === soaActiveFramework ? 'active' : ''}"
             data-fw="${fw.id}"
             style="--fw-color:${fw.color}">
-      ${fw.label}
+      ${fwLabel(fw)}
     </button>
   `).join('')
 
@@ -3260,7 +3268,7 @@ async function renderDashboard() {
       <div class="fw-summary-grid">
         ${Object.values(soaSummary).map(fw => `
           <div class="fw-summary-item dash-link" data-nav="soa" data-fw="${fw.framework}" title="${t('dash_openOf', { label: fw.label })}" style="cursor:pointer">
-            <span class="fw-label" style="color:${fw.color}">${fw.label}</span>
+            <span class="fw-label" style="color:${fw.color}">${fwLabel(fw)}</span>
             <div class="fw-bar-track">
               <div class="fw-bar-fill" style="width:${fw.implementationRate}%; background:${fw.color}"></div>
             </div>
@@ -5049,7 +5057,7 @@ async function renderAdminModulesTab() {
           <div class="module-card ${enabled ? 'module-card-active' : 'module-card-inactive'}">
             <div class="module-card-header">
               <i class="ph ph-shield module-card-icon" style="color:${fw.color}"></i>
-              <div class="module-card-title" style="color:${fw.color}">${fw.label}</div>
+              <div class="module-card-title" style="color:${fw.color}">${fwLabel(fw)}</div>
               <label class="module-toggle">
                 <input type="checkbox" data-fw="${fw.id}" ${enabled ? 'checked' : ''} onchange="fwToggleChange(this)">
                 <span class="module-toggle-slider"></span>
