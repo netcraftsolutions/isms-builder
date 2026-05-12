@@ -722,6 +722,7 @@
     dash_alert_findingsOpen:   { de: '{n} offene Audit-Feststellung(en)', en: '{n} open audit finding(s)', fr: '{n} constatation(s) d\'audit ouverte(s)', nl: '{n} open auditbevinding(en)', cs: '{n} otevřených nálezů auditu' },
     dash_alert_findingsAct:    { de: '{n} überfällige Aktion(en) bei Feststellungen', en: '{n} overdue action(s) in findings', fr: '{n} action(s) en retard sur les constatations', nl: '{n} achterstallige actie(s) bij bevindingen', cs: '{n} opatření po termínu u nálezů' },
     dash_alert_scanRisks:      { de: '{n} Scan-Risiko(en) warten auf Freigabe', en: '{n} scan risk(s) awaiting approval', fr: '{n} risque(s) de scan en attente d\'approbation', nl: '{n} scan-risico(\'s) wachten op goedkeuring', cs: '{n} skenovaných rizik čeká na schválení' },
+    msg_savedModules:          { de: 'Gespeichert. Sidebar und SoA werden aktualisiert…', en: 'Saved. Sidebar and SoA are being updated…', fr: 'Enregistré. La barre latérale et la DdA sont mises à jour…', nl: 'Opgeslagen. Zijbalk en VvT worden bijgewerkt…', cs: 'Uloženo. Boční panel a SoA se aktualizují…' },
 
     // ── Admin — Language Configuration ───────────────────────────────────────
     admin_langConfig:    { de: 'Sprachkonfiguration',       en: 'Language Configuration',     fr: 'Configuration des langues', nl: 'Taalconfiguratie' , cs: 'Konfigurace jazyků' },

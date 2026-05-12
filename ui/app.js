@@ -2881,7 +2881,7 @@ async function saveSoaRow(id, container) {
     if (idx >= 0) soaData[idx] = updated
     row.classList.toggle('soa-row-na', !updated.applicable)
     const btn = row.querySelector('.soa-save-btn')
-    if (btn) { btn.textContent = '✓ Saved'; setTimeout(() => { btn.textContent = 'Save' }, 1500) }
+    if (btn) { btn.textContent = t('saved'); setTimeout(() => { btn.textContent = t('save') }, 1500) }
   } else {
     alert('Error saving')
   }
@@ -3949,7 +3949,7 @@ async function saveOrgSettings() {
   })
   const msg = document.getElementById('orgSaveMsg')
   if (res.ok) {
-    msg.textContent = 'Saved.'; msg.style.color = 'var(--success,#4ade80)'; msg.style.display = ''
+    msg.textContent = t('msg_saved'); msg.style.color = 'var(--success,#4ade80)'; msg.style.display = ''
     setTimeout(() => { msg.style.display = 'none' }, 3000)
   } else {
     const e = await res.json().catch(() => ({}))
@@ -5129,7 +5129,7 @@ async function saveModuleConfig() {
   if (modRes.ok && fwRes.ok) {
     MODULE_CONFIG    = { ...MODULE_CONFIG, ...modCfg }
     SOA_FW_CONFIG    = { ...SOA_FW_CONFIG,  ...fwCfg }
-    msg.textContent = 'Saved. Sidebar and SoA are being updated…'
+    msg.textContent = t('msg_savedModules')
     msg.style.color = 'var(--success,#4ade80)'
     setTimeout(() => { populateSectionNav(); msg.style.display = 'none' }, 1200)
   } else {
@@ -6488,7 +6488,7 @@ async function saveCisoSettings() {
   })
   const msg = document.getElementById('cisoSaveMsg')
   msg.style.display = ''
-  if (res.ok) { msg.textContent = 'Gespeichert.'; msg.style.color = 'var(--success,#4ade80)' }
+  if (res.ok) { msg.textContent = t('msg_saved'); msg.style.color = 'var(--success,#4ade80)' }
   else { msg.textContent = 'Error saving.'; msg.style.color = 'var(--danger-text)' }
   setTimeout(() => { msg.style.display = 'none' }, 3000)
 }
@@ -6507,7 +6507,7 @@ async function saveGdpoSettings() {
   })
   const msg = document.getElementById('gdpoSaveMsg')
   msg.style.display = ''
-  if (res.ok) { msg.textContent = 'Gespeichert.'; msg.style.color = 'var(--success,#4ade80)' }
+  if (res.ok) { msg.textContent = t('msg_saved'); msg.style.color = 'var(--success,#4ade80)' }
   else { msg.textContent = 'Error saving.'; msg.style.color = 'var(--danger-text)' }
   setTimeout(() => { msg.style.display = 'none' }, 3000)
 }
@@ -6528,7 +6528,7 @@ async function saveRevisionSettings() {
   })
   const msg = document.getElementById('revSaveMsg')
   msg.style.display = ''
-  if (res.ok) { msg.textContent = 'Gespeichert.'; msg.style.color = 'var(--success,#4ade80)'; renderSettingsPanel() }
+  if (res.ok) { msg.textContent = t('msg_saved'); msg.style.color = 'var(--success,#4ade80)'; renderSettingsPanel() }
   else { msg.textContent = 'Error saving.'; msg.style.color = 'var(--danger-text)' }
   setTimeout(() => { msg.style.display = 'none' }, 3000)
 }
@@ -6550,7 +6550,7 @@ async function saveQmSettings() {
   })
   const msg = document.getElementById('qmSaveMsg')
   msg.style.display = ''
-  if (res.ok) { msg.textContent = 'Gespeichert.'; msg.style.color = 'var(--success,#4ade80)'; renderSettingsPanel() }
+  if (res.ok) { msg.textContent = t('msg_saved'); msg.style.color = 'var(--success,#4ade80)'; renderSettingsPanel() }
   else { msg.textContent = 'Error saving.'; msg.style.color = 'var(--danger-text)' }
   setTimeout(() => { msg.style.display = 'none' }, 3000)
 }
@@ -6573,7 +6573,7 @@ async function saveIcsSettings() {
   })
   const msg = document.getElementById('icsSaveMsg')
   msg.style.display = ''
-  if (res.ok) { msg.textContent = 'Gespeichert.'; msg.style.color = 'var(--success,#4ade80)'; renderSettingsPanel() }
+  if (res.ok) { msg.textContent = t('msg_saved'); msg.style.color = 'var(--success,#4ade80)'; renderSettingsPanel() }
   else { msg.textContent = 'Error saving.'; msg.style.color = 'var(--danger-text)' }
   setTimeout(() => { msg.style.display = 'none' }, 3000)
 }
