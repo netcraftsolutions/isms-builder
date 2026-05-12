@@ -44,6 +44,32 @@ data/rbac_users.json.bak*
 data/.demo_reset_done
 data/.demo_lang_set
 
+# Customer state — generated on first run by stores' load() seed logic.
+# In this fork we keep them out of git to prevent accidental commits of
+# production data. The relevant store modules re-create these files with
+# seed defaults when missing.
+data/rbac_users.json
+data/org-settings.json
+data/public-incidents.json
+data/soa.json
+data/risks.json
+data/findings.json
+data/assets.json
+data/bcm.json
+data/goals.json
+data/governance.json
+data/suppliers.json
+data/training.json
+data/entities.json
+data/org-units.json
+data/policy-acks.json
+data/policy-distributions.json
+data/scan-import-state.json
+
+# GDPR runtime records — VVT, DSAR, DSB, DPIA, breaches, TOMs.
+# Highly sensitive customer data; never in repo.
+data/gdpr/
+
 # Uploaded binary files (not tracked in git)
 data/template-files/
 data/guidance/files/
