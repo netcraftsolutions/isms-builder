@@ -944,9 +944,15 @@ function removeAllDynamicPanels() {
 
 // ── Reports ─────────────────────────────────────────────────────────
 // ── Findings: Severity- und Status-Labels ─────────────────────────────────────
-const FINDING_SEVERITY_LABELS = { critical:'Kritisch', high:'Hoch', medium:'Mittel', low:'Niedrig', observation:'Hinweis' }
-const FINDING_STATUS_LABELS   = { open:'Offen', in_progress:'In Bearbeitung', resolved:'Behoben', accepted:'Akzeptiert' }
-const FINDING_ACT_STATUS_LABELS = { open:'Offen', in_progress:'In Bearbeitung', done:'Erledigt' }
+function getFindingSeverityLabels() {
+  return { critical: t('findings_critical'), high: t('findings_high'), medium: t('findings_medium'), low: t('findings_low'), observation: t('findings_observation') }
+}
+function getFindingStatusLabels() {
+  return { open: t('status_open'), in_progress: t('status_inProgress'), resolved: t('status_resolved'), accepted: t('status_accepted') }
+}
+function getFindingActStatusLabels() {
+  return { open: t('status_open'), in_progress: t('status_inProgress'), done: t('status_done') }
+}
 const FINDING_SEVERITY_COLOR  = { critical:'#f87171', high:'#fb923c', medium:'#fbbf24', low:'#4ade80', observation:'#60a5fa' }
 const FINDING_STATUS_COLOR    = { open:'#f87171', in_progress:'#fbbf24', resolved:'#4ade80', accepted:'#60a5fa' }
 
@@ -1362,13 +1368,13 @@ function exportReportPdf() {
 // ── Findings UI ───────────────────────────────────────────────────────────────
 
 function _findingSeverityBadge(sev) {
-  const label = FINDING_SEVERITY_LABELS[sev] || sev
+  const label = getFindingSeverityLabels()[sev] || sev
   const color = FINDING_SEVERITY_COLOR[sev]  || '#888'
   return `<span class="soa-status-badge" style="background:${color}22;color:${color};border-color:${color}44">${label}</span>`
 }
 
 function _findingStatusBadge(st) {
-  const label = FINDING_STATUS_LABELS[st] || st
+  const label = getFindingStatusLabels()[st] || st
   const color = FINDING_STATUS_COLOR[st]  || '#888'
   return `<span class="soa-status-badge" style="background:${color}22;color:${color};border-color:${color}44">${label}</span>`
 }
@@ -1773,13 +1779,13 @@ function _renderActionsList(actions, findingId, canEdit) {
         <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
           ${canEdit ? `<select class="select" style="font-size:11px;padding:2px 6px"
             onchange="updateActionStatus('${findingId}','${a.id}',this.value)">
-            ${Object.entries(FINDING_ACT_STATUS_LABELS).map(([v,l]) =>
+            ${Object.entries(getFindingActStatusLabels()).map(([v,l]) =>
               `<option value="${v}"${a.status===v?' selected':''}>${l}</option>`).join('')}
           </select>
           <button class="btn btn-sm" style="color:var(--danger)" title="${t('delete')}"
             onclick="deleteAction('${findingId}','${a.id}')">
             <i class="ph ph-trash-simple"></i>
-          </button>` : `<span style="color:${colAct};font-size:12px">${FINDING_ACT_STATUS_LABELS[a.status]||a.status}</span>`}
+          </button>` : `<span style="color:${colAct};font-size:12px">${getFindingActStatusLabels()[a.status]||a.status}</span>`}
         </div>
       </div>
     </div>`
@@ -1887,14 +1893,14 @@ async function openFindingForm(id = null) {
             <div class="form-group">
               <label class="form-label">${t('findings_severity')}</label>
               <select id="fndSeverity" class="select">
-                ${Object.entries(FINDING_SEVERITY_LABELS).map(([v,l]) =>
+                ${Object.entries(getFindingSeverityLabels()).map(([v,l]) =>
                   `<option value="${v}"${(f?.severity||'medium')===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label class="form-label">${t('soa_status')}</label>
               <select id="fndStatus" class="select">
-                ${Object.entries(FINDING_STATUS_LABELS).map(([v,l]) =>
+                ${Object.entries(getFindingStatusLabels()).map(([v,l]) =>
                   `<option value="${v}"${(f?.status||'open')===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
@@ -2135,8 +2141,12 @@ let INC_TYPE_LABELS = {
   social_engineering: 'CEO Fraud / Identity Abuse',
   other:              'Other',
 }
-const INC_CLEANED_LABELS = { yes: 'Yes, resolved', no: 'No – pending follow-up', partial: 'Partial' }
-const INC_STATUS_LABELS  = { new: 'New', in_review: 'Under Review', assigned: 'Assigned', closed: 'Closed' }
+function getIncCleanedLabels() {
+  return { yes: t('inc_cleanedYesShort'), no: t('inc_cleanedNoShort'), partial: t('inc_cleanedPartialShort') }
+}
+function getIncStatusLabels() {
+  return { new: t('status_new'), in_review: t('status_underReview'), assigned: t('status_assigned'), closed: t('status_closed') }
+}
 const INC_STATUS_CLS     = { new: 'risk-badge risk-l-high', in_review: 'risk-badge risk-l-medium', assigned: 'risk-badge risk-l-low', closed: 'risk-badge' }
 
 let _incidentDetail = null
@@ -2209,7 +2219,7 @@ async function loadIncidents() {
             <td style="white-space:nowrap">${new Date(i.createdAt).toLocaleDateString('en-GB')}</td>
             <td>${escHtml(i.entityName || '—')}</td>
             <td style="font-size:.78rem">${escHtml(INC_TYPE_LABELS[i.incidentType] || i.incidentType)}</td>
-            <td><span class="${INC_STATUS_CLS[i.status] || 'risk-badge'}">${INC_STATUS_LABELS[i.status] || i.status}</span></td>
+            <td><span class="${INC_STATUS_CLS[i.status] || 'risk-badge'}">${getIncStatusLabels()[i.status] || i.status}</span></td>
           </tr>`).join('')}
       </tbody>
     </table>`
@@ -2234,7 +2244,7 @@ async function openIncidentDetail(id) {
       <div class="incident-detail-topbar">
         <div>
           <span class="incident-ref">${escHtml(i.refNumber)}</span>
-          <span class="${INC_STATUS_CLS[i.status] || 'risk-badge'}" style="margin-left:8px">${INC_STATUS_LABELS[i.status] || i.status}</span>
+          <span class="${INC_STATUS_CLS[i.status] || 'risk-badge'}" style="margin-left:8px">${getIncStatusLabels()[i.status] || i.status}</span>
         </div>
         <span style="font-size:.78rem;color:var(--text-subtle)">${new Date(i.createdAt).toLocaleString('en-GB')}</span>
       </div>
@@ -2243,7 +2253,7 @@ async function openIncidentDetail(id) {
         <div class="inc-field"><div class="inc-field-label">Reporter E-Mail</div><div>${escHtml(i.email)}</div></div>
         <div class="inc-field"><div class="inc-field-label">Entity</div><div>${escHtml(i.entityName || '—')}</div></div>
         <div class="inc-field"><div class="inc-field-label">Incident Type</div><div>${escHtml(INC_TYPE_LABELS[i.incidentType] || i.incidentType)}</div></div>
-        <div class="inc-field"><div class="inc-field-label">Resolved?</div><div>${escHtml(INC_CLEANED_LABELS[i.cleanedUp] || i.cleanedUp)}</div></div>
+        <div class="inc-field"><div class="inc-field-label">Resolved?</div><div>${escHtml(getIncCleanedLabels()[i.cleanedUp] || i.cleanedUp)}</div></div>
         <div class="inc-field full"><div class="inc-field-label">Description</div><div class="inc-field-text">${escHtml(i.description)}</div></div>
         <div class="inc-field full"><div class="inc-field-label">Measures Already Taken</div><div class="inc-field-text">${escHtml(i.measuresTaken || '—')}</div></div>
         <div class="inc-field"><div class="inc-field-label">Local Contact</div><div>${escHtml(i.localContact || '—')}</div></div>
@@ -2255,7 +2265,7 @@ async function openIncidentDetail(id) {
           <div class="inc-field">
             <div class="inc-field-label">Set Status</div>
             <select class="select" id="incEditStatus" style="font-size:.82rem">
-              ${Object.entries(INC_STATUS_LABELS).map(([v,l]) =>
+              ${Object.entries(getIncStatusLabels()).map(([v,l]) =>
                 `<option value="${v}" ${i.status === v ? 'selected' : ''}>${l}</option>`).join('')}
             </select>
           </div>
@@ -4251,13 +4261,17 @@ async function saveEmailSettings() {
 
 // ── Admin: Audit-Log ──────────────────────────────────────────────────────────
 
-const AUDIT_ACTION_LABELS = {
-  create:'Created', update:'Updated', delete:'Deleted',
-  login:'Login', logout:'Logout', export:'Export', settings:'Settings',
+function getAuditActionLabels() {
+  return {
+    create: t('audit_actionCreate'), update: t('audit_actionUpdate'), delete: t('audit_actionDelete'),
+    login: t('audit_actionLogin'), logout: t('audit_actionLogout'), export: t('audit_actionExport'), settings: t('audit_actionSettings'),
+  }
 }
-const AUDIT_RESOURCE_LABELS = {
-  template:'Template', risk:'Risk', user:'User', incident:'Incident',
-  org:'Organisation', gdpr:'GDPR', soa:'SoA', list:'List', entity:'Entity', audit:'Audit Log',
+function getAuditResourceLabels() {
+  return {
+    template: t('audit_resTemplate'), risk: t('audit_resRisk'), user: t('audit_resUser'), incident: t('audit_resIncident'),
+    org: t('audit_resOrg'), gdpr: t('audit_resGdpr'), soa: t('audit_resSoa'), list: t('audit_resList'), entity: t('audit_resEntity'), audit: t('audit_resAudit'),
+  }
 }
 let _auditOffset = 0
 const _AUDIT_LIMIT = 50
@@ -4279,11 +4293,11 @@ async function renderAdminAuditTab() {
                oninput="loadAuditLog()">
         <select class="select" id="auditFilterAction" onchange="loadAuditLog()" style="width:140px">
           <option value="">All actions</option>
-          ${Object.entries(AUDIT_ACTION_LABELS).map(([v,l]) => `<option value="${v}">${l}</option>`).join('')}
+          ${Object.entries(getAuditActionLabels()).map(([v,l]) => `<option value="${v}">${l}</option>`).join('')}
         </select>
         <select class="select" id="auditFilterResource" onchange="loadAuditLog()" style="width:140px">
           <option value="">All resources</option>
-          ${Object.entries(AUDIT_RESOURCE_LABELS).map(([v,l]) => `<option value="${v}">${l}</option>`).join('')}
+          ${Object.entries(getAuditResourceLabels()).map(([v,l]) => `<option value="${v}">${l}</option>`).join('')}
         </select>
         <input class="input" id="auditFilterFrom" type="date" title="From" onchange="loadAuditLog()" style="width:140px">
         <input class="input" id="auditFilterTo"   type="date" title="To" onchange="loadAuditLog()" style="width:140px">
@@ -4336,8 +4350,8 @@ async function loadAuditLog() {
               <td style="font-size:12px;white-space:nowrap;color:var(--text-subtle)">
                 ${new Date(e.ts).toLocaleString('en-GB')}</td>
               <td style="font-size:12px">${escHtml(e.user)}</td>
-              <td><span class="badge audit-action-${e.action}">${escHtml(AUDIT_ACTION_LABELS[e.action]||e.action)}</span></td>
-              <td><span class="badge">${escHtml(AUDIT_RESOURCE_LABELS[e.resource]||e.resource)}</span></td>
+              <td><span class="badge audit-action-${e.action}">${escHtml(getAuditActionLabels()[e.action]||e.action)}</span></td>
+              <td><span class="badge">${escHtml(getAuditResourceLabels()[e.resource]||e.resource)}</span></td>
               <td style="font-size:12px;color:var(--text-subtle)">${escHtml(e.detail||e.resourceId||'')}</td>
             </tr>`).join('')}
         </tbody>
@@ -10709,12 +10723,24 @@ async function deleteTraining(id) {
 
 let _legalTab = 'contracts'
 
-const LEGAL_CONTRACT_STATUS_LABELS = { draft:'Draft', review:'Review', active:'Active', expired:'Expired', terminated:'Terminated' }
-const LEGAL_NDA_STATUS_LABELS      = { draft:'Draft', signed:'Signed', expired:'Expired', terminated:'Terminated' }
-const LEGAL_POLICY_STATUS_LABELS   = { draft:'Draft', review:'Review', published:'Published', archived:'Archived' }
-const LEGAL_CONTRACT_TYPE_LABELS   = { service:'Service', supply:'Supply', nda:'NDA', framework:'Framework Agreement', other:'Other' }
-const LEGAL_NDA_TYPE_LABELS        = { bilateral:'Bilateral', unilateral_recv:'Unilateral (Receiving)', unilateral_give:'Unilateral (Giving)' }
-const LEGAL_POLICY_TYPE_LABELS     = { privacy_notice:'Privacy Notice', cookie:'Cookie Policy', consent_form:'Consent Form', employee:'Employee', internal:'Internal', other:'Other' }
+function getLegalContractStatusLabels() {
+  return { draft: t('status_draft'), review: t('status_underReview'), active: t('status_active'), expired: t('status_expired'), terminated: t('status_terminated') }
+}
+function getLegalNdaStatusLabels() {
+  return { draft: t('status_draft'), signed: t('status_signed'), expired: t('status_expired'), terminated: t('status_terminated') }
+}
+function getLegalPolicyStatusLabels() {
+  return { draft: t('status_draft'), review: t('status_underReview'), published: t('status_published'), archived: t('status_archived') }
+}
+function getLegalContractTypeLabels() {
+  return { service: t('legal_typeContract'), supply: t('legal_typeSupply'), nda: t('legal_typeNda'), framework: t('legal_typeFramework'), other: t('legal_typeOther') }
+}
+function getLegalNdaTypeLabels() {
+  return { bilateral: t('legal_ndaBilateral'), unilateral_recv: t('legal_ndaUniRecv'), unilateral_give: t('legal_ndaUniGive') }
+}
+function getLegalPolicyTypeLabels() {
+  return { privacy_notice: t('legal_policyPrivacy'), cookie: t('legal_policyCookie'), consent_form: t('legal_policyConsent'), employee: t('legal_policyEmployee'), internal: t('legal_policyInternal'), other: t('legal_typeOther') }
+}
 
 async function renderLegal(startTab) {
   if (startTab) _legalTab = startTab
@@ -10808,9 +10834,9 @@ async function renderLegalContracts(el) {
       <tbody>${list.map(c => `
         <tr>
           <td><strong>${escHtml(c.title)}</strong></td>
-          <td>${LEGAL_CONTRACT_TYPE_LABELS[c.contractType]||c.contractType}</td>
+          <td>${getLegalContractTypeLabels()[c.contractType]||c.contractType}</td>
           <td>${escHtml(c.counterparty)}</td>
-          <td><span class="status-badge status-${c.status}">${LEGAL_CONTRACT_STATUS_LABELS[c.status]||c.status}</span></td>
+          <td><span class="status-badge status-${c.status}">${getLegalContractStatusLabels()[c.status]||c.status}</span></td>
           <td class="${c.endDate && new Date(c.endDate) < new Date(Date.now()+60*86400000) ? 'text-warning' : ''}">${fmtDate(c.endDate)}</td>
           <td>${escHtml(c.owner||'—')}</td>
           <td style="text-align:center">${c.attachments?.length ? `<span class="gdpr-filter-count" style="font-size:.75rem">${c.attachments.length}</span>` : '—'}</td>
@@ -10842,9 +10868,9 @@ async function renderLegalNdas(el) {
       <tbody>${list.map(n => `
         <tr>
           <td><strong>${escHtml(n.title)}</strong></td>
-          <td>${LEGAL_NDA_TYPE_LABELS[n.ndaType]||n.ndaType}</td>
+          <td>${getLegalNdaTypeLabels()[n.ndaType]||n.ndaType}</td>
           <td>${escHtml(n.counterparty)}</td>
-          <td><span class="status-badge status-${n.status}">${LEGAL_NDA_STATUS_LABELS[n.status]||n.status}</span></td>
+          <td><span class="status-badge status-${n.status}">${getLegalNdaStatusLabels()[n.status]||n.status}</span></td>
           <td>${fmtDate(n.signingDate)}</td>
           <td class="${n.expiryDate && new Date(n.expiryDate) < new Date(Date.now()+30*86400000) ? 'text-warning' : ''}">${fmtDate(n.expiryDate)}</td>
           <td style="text-align:center">${n.attachments?.length ? `<span class="gdpr-filter-count" style="font-size:.75rem">${n.attachments.length}</span>` : '—'}</td>
@@ -10876,8 +10902,8 @@ async function renderLegalPolicies(el) {
       <tbody>${list.map(p => `
         <tr>
           <td><strong>${escHtml(p.title)}</strong>${p.url ? ` <a href="${escHtml(p.url)}" target="_blank" style="font-size:.8rem"><i class="ph ph-link"></i></a>` : ''}</td>
-          <td>${LEGAL_POLICY_TYPE_LABELS[p.policyType]||p.policyType}</td>
-          <td><span class="status-badge status-${p.status}">${LEGAL_POLICY_STATUS_LABELS[p.status]||p.status}</span></td>
+          <td>${getLegalPolicyTypeLabels()[p.policyType]||p.policyType}</td>
+          <td><span class="status-badge status-${p.status}">${getLegalPolicyStatusLabels()[p.status]||p.status}</span></td>
           <td>v${p.version}</td>
           <td>${fmtDate(p.publishedAt)}</td>
           <td class="${p.nextReviewDate && new Date(p.nextReviewDate) < new Date() ? 'text-danger' : ''}">${fmtDate(p.nextReviewDate)}</td>
@@ -10942,7 +10968,7 @@ async function openLegalForm(type, id) {
           <div class="form-group">
             <label class="form-label">Type</label>
             <select id="lc_type" class="select">
-              ${Object.entries(LEGAL_CONTRACT_TYPE_LABELS).map(([v,l])=>`<option value="${v}"${item?.contractType===v?' selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getLegalContractTypeLabels()).map(([v,l])=>`<option value="${v}"${item?.contractType===v?' selected':''}>${l}</option>`).join('')}
             </select>
           </div>
         </div>
@@ -10954,7 +10980,7 @@ async function openLegalForm(type, id) {
           <div class="form-group">
             <label class="form-label">Status</label>
             <select id="lc_status" class="select">
-              ${Object.entries(LEGAL_CONTRACT_STATUS_LABELS).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getLegalContractStatusLabels()).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
             </select>
           </div>
         </div>
@@ -10992,13 +11018,13 @@ async function openLegalForm(type, id) {
           <div class="form-group">
             <label class="form-label">Type</label>
             <select id="ln_type" class="select">
-              ${Object.entries(LEGAL_NDA_TYPE_LABELS).map(([v,l])=>`<option value="${v}"${item?.ndaType===v?' selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getLegalNdaTypeLabels()).map(([v,l])=>`<option value="${v}"${item?.ndaType===v?' selected':''}>${l}</option>`).join('')}
             </select>
           </div>
           <div class="form-group">
             <label class="form-label">Status</label>
             <select id="ln_status" class="select">
-              ${Object.entries(LEGAL_NDA_STATUS_LABELS).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getLegalNdaStatusLabels()).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
             </select>
           </div>
         </div>
@@ -11032,13 +11058,13 @@ async function openLegalForm(type, id) {
           <div class="form-group">
             <label class="form-label">Type</label>
             <select id="lp_type" class="select">
-              ${Object.entries(LEGAL_POLICY_TYPE_LABELS).map(([v,l])=>`<option value="${v}"${item?.policyType===v?' selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getLegalPolicyTypeLabels()).map(([v,l])=>`<option value="${v}"${item?.policyType===v?' selected':''}>${l}</option>`).join('')}
             </select>
           </div>
           <div class="form-group">
             <label class="form-label">Status</label>
             <select id="lp_status" class="select">
-              ${Object.entries(LEGAL_POLICY_STATUS_LABELS).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getLegalPolicyStatusLabels()).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
             </select>
           </div>
         </div>
@@ -11229,37 +11255,58 @@ const ASSET_TYPES_MAP = {
   facility_production: 'Production Site / Plant', facility_other: 'Facility (Other)',
 }
 
-const ASSET_CAT_LABELS = {
-  hardware: 'Hardware',
-  software: 'Software',
-  data:     'Data / Information',
-  service:  'Services',
-  facility: 'Facilities',
+function getAssetCatLabels() {
+  return {
+    hardware: t('asset_catHardware'),
+    software: t('asset_catSoftware'),
+    data:     t('asset_catData'),
+    service:  t('asset_catService'),
+    facility: t('asset_catFacility'),
+  }
 }
 
-const ASSET_CLASS = {
-  public:               { label: 'Public',               color: '#4ade80' },
-  internal:             { label: 'Internal',             color: '#60a5fa' },
-  confidential:         { label: 'Confidential',         color: '#f0b429' },
-  strictly_confidential:{ label: 'Strictly Confidential', color: '#f87171' },
+// Static colors + localized labels via getter (badges read .label as needed)
+const ASSET_CLASS_COLOR = {
+  public:                '#4ade80',
+  internal:              '#60a5fa',
+  confidential:          '#f0b429',
+  strictly_confidential: '#f87171',
+}
+function getAssetClass() {
+  return {
+    public:               { label: t('asset_classPublic'),               color: ASSET_CLASS_COLOR.public },
+    internal:             { label: t('asset_classInternal'),             color: ASSET_CLASS_COLOR.internal },
+    confidential:         { label: t('asset_classConfidential'),         color: ASSET_CLASS_COLOR.confidential },
+    strictly_confidential:{ label: t('asset_classStrictlyConfidential'), color: ASSET_CLASS_COLOR.strictly_confidential },
+  }
 }
 
-const ASSET_CRIT = {
-  low:      { label: 'Low',      color: '#4ade80' },
-  medium:   { label: 'Medium',   color: '#60a5fa' },
-  high:     { label: 'High',     color: '#f0b429' },
-  critical: { label: 'Critical', color: '#f87171' },
+const ASSET_CRIT_COLOR = {
+  low:      '#4ade80',
+  medium:   '#60a5fa',
+  high:     '#f0b429',
+  critical: '#f87171',
+}
+function getAssetCrit() {
+  return {
+    low:      { label: t('priority_low'),      color: ASSET_CRIT_COLOR.low },
+    medium:   { label: t('priority_medium'),   color: ASSET_CRIT_COLOR.medium },
+    high:     { label: t('priority_high'),     color: ASSET_CRIT_COLOR.high },
+    critical: { label: t('priority_critical'), color: ASSET_CRIT_COLOR.critical },
+  }
 }
 
-const ASSET_STATUS_LABELS = { active: 'Active', planned: 'Planned', decommissioned: 'Decommissioned' }
+function getAssetStatusLabels() {
+  return { active: t('status_active'), planned: t('status_planned'), decommissioned: t('status_decommissioned') }
+}
 
 function assetClassBadge(cls) {
-  const c = ASSET_CLASS[cls] || { label: cls || '—', color: '#8C9BAB' }
+  const c = getAssetClass()[cls] || { label: cls || '—', color: '#8C9BAB' }
   return `<span class="asset-badge" style="color:${c.color};border-color:${c.color}">${c.label}</span>`
 }
 
 function assetCritBadge(crit) {
-  const c = ASSET_CRIT[crit] || { label: crit || '—', color: '#8C9BAB' }
+  const c = getAssetCrit()[crit] || { label: crit || '—', color: '#8C9BAB' }
   return `<span class="asset-badge" style="color:${c.color};border-color:${c.color}">${c.label}</span>`
 }
 
@@ -11334,19 +11381,19 @@ async function renderAssetsList(el) {
       ${canEdit ? `<button class="btn btn-primary btn-sm" onclick="openAssetForm()"><i class="ph ph-plus"></i> ${t('assets_new')}</button>` : ''}
       <select id="assetFilterCat" onchange="_filterAssets()" title="Category">
         <option value="">${t('filter_allCats')}</option>
-        ${Object.entries(ASSET_CAT_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getAssetCatLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
       <select id="assetFilterClass" onchange="_filterAssets()" title="Classification">
         <option value="">${t('assets_allClass')}</option>
-        ${Object.entries(ASSET_CLASS).map(([v,c])=>`<option value="${v}">${c.label}</option>`).join('')}
+        ${Object.entries(getAssetClass()).map(([v,c])=>`<option value="${v}">${c.label}</option>`).join('')}
       </select>
       <select id="assetFilterCrit" onchange="_filterAssets()" title="Criticality">
         <option value="">${t('assets_allCrit')}</option>
-        ${Object.entries(ASSET_CRIT).map(([v,c])=>`<option value="${v}">${c.label}</option>`).join('')}
+        ${Object.entries(getAssetCrit()).map(([v,c])=>`<option value="${v}">${c.label}</option>`).join('')}
       </select>
       <select id="assetFilterStatus" onchange="_filterAssets()" title="Status">
         <option value="">${t('filter_allStatuses')}</option>
-        ${Object.entries(ASSET_STATUS_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getAssetStatusLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
       <input id="assetSearch" placeholder="Search…" oninput="_filterAssets()" style="flex:1;min-width:140px">
     </div>
@@ -11371,12 +11418,12 @@ function _renderAssetsTable(list, canEdit, isAdmin, entMap) {
           const eolDays = a.endOfLifeDate ? Math.ceil((new Date(a.endOfLifeDate) - now) / 86400000) : null
           const eolStr  = a.endOfLifeDate ? (eolDays < 0 ? `<span style="color:#f87171">Expired</span>` : eolDays <= 90 ? `<span style="color:#f0b429">${a.endOfLifeDate}</span>` : a.endOfLifeDate) : '—'
           return `<tr>
-            <td><strong>${escHtml(a.name)}</strong><br><span style="font-size:.75rem;color:var(--text-subtle)">${escHtml(ASSET_CAT_LABELS[a.category]||a.category)}</span></td>
+            <td><strong>${escHtml(a.name)}</strong><br><span style="font-size:.75rem;color:var(--text-subtle)">${escHtml(getAssetCatLabels()[a.category]||a.category)}</span></td>
             <td style="font-size:.78rem;color:var(--text-subtle)">${escHtml(ASSET_TYPES_MAP[a.type]||a.type||'—')}</td>
             <td>${assetClassBadge(a.classification)}</td>
             <td>${assetCritBadge(a.criticality)}</td>
             <td style="font-size:.78rem">${escHtml(a.owner||'—')}</td>
-            <td style="font-size:.78rem">${escHtml(ASSET_STATUS_LABELS[a.status]||a.status)}</td>
+            <td style="font-size:.78rem">${escHtml(getAssetStatusLabels()[a.status]||a.status)}</td>
             <td style="font-size:.78rem">${eolStr}</td>
             ${canEdit ? `<td>
               <button class="btn btn-secondary btn-xs" onclick="openAssetForm('${a.id}')"><i class="ph ph-pencil"></i></button>
@@ -11428,7 +11475,7 @@ async function renderAssetsByCategory(el) {
   const list = Array.isArray(raw) ? raw : []
 
   const grouped = {}
-  for (const [catKey, catLabel] of Object.entries(ASSET_CAT_LABELS)) {
+  for (const [catKey, catLabel] of Object.entries(getAssetCatLabels())) {
     grouped[catKey] = { label: catLabel, items: list.filter(a => a.category === catKey) }
   }
 
@@ -11449,7 +11496,7 @@ async function renderAssetsByCategory(el) {
                 <td style="font-size:.78rem;color:var(--text-subtle)">${escHtml(ASSET_TYPES_MAP[a.type]||a.type||'—')}</td>
                 <td>${assetClassBadge(a.classification)}</td>
                 <td>${assetCritBadge(a.criticality)}</td>
-                <td style="font-size:.78rem">${escHtml(ASSET_STATUS_LABELS[a.status]||a.status)}</td>
+                <td style="font-size:.78rem">${escHtml(getAssetStatusLabels()[a.status]||a.status)}</td>
               </tr>`).join('')}
             </tbody>
           </table>`}
@@ -11469,7 +11516,7 @@ async function renderAssetsByClass(el) {
 
   const kpiHtml = `
     <div class="asset-summary-grid">
-      ${Object.entries(ASSET_CLASS).map(([k, c]) => `
+      ${Object.entries(getAssetClass()).map(([k, c]) => `
         <div class="asset-summary-card">
           <div class="assc-value" style="color:${c.color}">${summary.byClassification?.[k] || 0}</div>
           <div class="assc-label">${c.label}</div>
@@ -11487,7 +11534,7 @@ async function renderAssetsByClass(el) {
   `
 
   const groupedByClass = {}
-  for (const [k, c] of Object.entries(ASSET_CLASS)) {
+  for (const [k, c] of Object.entries(getAssetClass())) {
     groupedByClass[k] = { label: c.label, color: c.color, items: list.filter(a => a.classification === k) }
   }
 
@@ -11504,10 +11551,10 @@ async function renderAssetsByClass(el) {
             <tbody>
               ${g.items.map(a => `<tr>
                 <td><strong>${escHtml(a.name)}</strong></td>
-                <td style="font-size:.78rem;color:var(--text-subtle)">${escHtml(ASSET_CAT_LABELS[a.category]||a.category)}</td>
+                <td style="font-size:.78rem;color:var(--text-subtle)">${escHtml(getAssetCatLabels()[a.category]||a.category)}</td>
                 <td>${assetCritBadge(a.criticality)}</td>
                 <td style="font-size:.78rem">${escHtml(a.owner||'—')}</td>
-                <td style="font-size:.78rem">${escHtml(ASSET_STATUS_LABELS[a.status]||a.status)}</td>
+                <td style="font-size:.78rem">${escHtml(getAssetStatusLabels()[a.status]||a.status)}</td>
               </tr>`).join('')}
             </tbody>
           </table>`}
@@ -11536,7 +11583,7 @@ async function openAssetForm(id) {
 
   document.querySelectorAll('.training-tab').forEach(b => b.classList.remove('active'))
 
-  const catOptions = Object.entries(ASSET_CAT_LABELS).map(([v,l]) =>
+  const catOptions = Object.entries(getAssetCatLabels()).map(([v,l]) =>
     `<option value="${v}"${item?.category===v?' selected':''}>${l}</option>`
   ).join('')
 
@@ -11544,15 +11591,15 @@ async function openAssetForm(id) {
     `<option value="${v}"${item?.type===v?' selected':''}>${l}</option>`
   ).join('')
 
-  const classOptions = Object.entries(ASSET_CLASS).map(([v,c]) =>
+  const classOptions = Object.entries(getAssetClass()).map(([v,c]) =>
     `<option value="${v}"${item?.classification===v?' selected':''}>${c.label}</option>`
   ).join('')
 
-  const critOptions = Object.entries(ASSET_CRIT).map(([v,c]) =>
+  const critOptions = Object.entries(getAssetCrit()).map(([v,c]) =>
     `<option value="${v}"${item?.criticality===v?' selected':''}>${c.label}</option>`
   ).join('')
 
-  const statusOptions = Object.entries(ASSET_STATUS_LABELS).map(([v,l]) =>
+  const statusOptions = Object.entries(getAssetStatusLabels()).map(([v,l]) =>
     `<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`
   ).join('')
 
@@ -11801,15 +11848,27 @@ async function switchGovTab(tab) {
   }
 }
 
-const GOV_REVIEW_TYPE_LABELS = { annual: 'Annual', interim: 'Interim Review', extraordinary: 'Extraordinary' }
-const GOV_REVIEW_STATUS_LABELS = { planned: 'Planned', completed: 'Completed', approved: 'Approved' }
+function getGovReviewTypeLabels() {
+  return { annual: t('gov_typeAnnual'), interim: t('gov_typeInterim'), extraordinary: t('gov_typeExtraordinary') }
+}
+function getGovReviewStatusLabels() {
+  return { planned: t('status_planned'), completed: t('status_completed'), approved: t('status_approved') }
+}
 const GOV_REVIEW_STATUS_COLORS = { planned: '#888', completed: '#60a5fa', approved: '#4ade80' }
-const GOV_PRIORITY_LABELS = { low: 'Low', medium: 'Medium', high: 'High', critical: 'Critical' }
+function getGovPriorityLabels() {
+  return { low: t('priority_low'), medium: t('priority_medium'), high: t('priority_high'), critical: t('priority_critical') }
+}
 const GOV_PRIORITY_COLORS = { low: '#4ade80', medium: '#f0b429', high: '#fb923c', critical: '#f87171' }
-const GOV_ACTION_STATUS_LABELS = { open: 'Open', in_progress: 'In Progress', completed: 'Completed', cancelled: 'Cancelled' }
+function getGovActionStatusLabels() {
+  return { open: t('status_open'), in_progress: t('status_inProgress'), completed: t('status_completed'), cancelled: t('status_cancelled') }
+}
 const GOV_ACTION_STATUS_COLORS = { open: '#888', in_progress: '#60a5fa', completed: '#4ade80', cancelled: '#555' }
-const GOV_SOURCE_LABELS = { management_review: 'Management Review', internal_audit: 'Internal Audit', external_audit: 'External Audit', incident: 'Incident', other: 'Other' }
-const GOV_COMMITTEE_LABELS = { isms_committee: 'ISMS Committee', ciso_meeting: 'CISO Meeting', risk_committee: 'Risk Committee', management: 'Management', other: 'Other' }
+function getGovSourceLabels() {
+  return { management_review: t('gov_sourceMgmtReview'), internal_audit: t('gov_sourceIntAudit'), external_audit: t('gov_sourceExtAudit'), incident: t('gov_sourceIncident'), other: t('gov_sourceOther') }
+}
+function getGovCommitteeLabels() {
+  return { isms_committee: t('gov_committeeIsms'), ciso_meeting: t('gov_committeeCiso'), risk_committee: t('gov_committeeRisk'), management: t('gov_committeeMgmt'), other: t('gov_committeeOther') }
+}
 
 function govBadge(label, color) {
   return `<span class="gov-badge" style="color:${color};border-color:${color}">${escHtml(label)}</span>`
@@ -11837,9 +11896,9 @@ async function renderGovReviews(el) {
       <tbody>
         ${reviews.map(r => `<tr>
           <td><strong>${escHtml(r.title)}</strong></td>
-          <td>${govBadge(GOV_REVIEW_TYPE_LABELS[r.type]||r.type, '#a78bfa')}</td>
+          <td>${govBadge(getGovReviewTypeLabels()[r.type]||r.type, '#a78bfa')}</td>
           <td>${r.date ? new Date(r.date).toLocaleDateString('en-GB') : '—'}</td>
-          <td>${govBadge(GOV_REVIEW_STATUS_LABELS[r.status]||r.status, GOV_REVIEW_STATUS_COLORS[r.status]||'#888')}</td>
+          <td>${govBadge(getGovReviewStatusLabels()[r.status]||r.status, GOV_REVIEW_STATUS_COLORS[r.status]||'#888')}</td>
           <td style="font-size:.82rem">${escHtml(r.chair||'—')}</td>
           <td style="white-space:nowrap">
             <button class="btn btn-secondary btn-sm" onclick="openGovReviewForm('${r.id}')"><i class="ph ph-pencil"></i></button>
@@ -11866,15 +11925,15 @@ async function renderGovActions(el) {
     <div class="gov-filter-bar">
       <select id="govActStatusFilter" onchange="filterGovActions()">
         <option value="">All statuses</option>
-        ${Object.entries(GOV_ACTION_STATUS_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getGovActionStatusLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
       <select id="govActPrioFilter" onchange="filterGovActions()">
         <option value="">All priorities</option>
-        ${Object.entries(GOV_PRIORITY_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getGovPriorityLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
       <select id="govActSourceFilter" onchange="filterGovActions()">
         <option value="">All sources</option>
-        ${Object.entries(GOV_SOURCE_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getGovSourceLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
       <input id="govActSearch" type="text" placeholder="Search…" oninput="filterGovActions()" style="flex:1;min-width:120px">
       ${canEdit ? `<button class="btn btn-primary btn-sm" onclick="openGovActionForm()"><i class="ph ph-plus"></i> ${t('gov_newAction')}</button>` : ''}
@@ -11913,11 +11972,11 @@ function filterGovActions() {
         const overdue = (a.status==='open'||a.status==='in_progress') && a.dueDate && a.dueDate < today
         return `<tr class="${overdue?'overdue':''}">
           <td><strong>${escHtml(a.title)}</strong>${a.notes?`<br><span style="font-size:.75rem;color:var(--text-subtle)">${escHtml(a.notes.slice(0,60))}${a.notes.length>60?'…':''}</span>`:''}</td>
-          <td style="font-size:.8rem">${escHtml(GOV_SOURCE_LABELS[a.source]||a.source)}</td>
+          <td style="font-size:.8rem">${escHtml(getGovSourceLabels()[a.source]||a.source)}</td>
           <td style="font-size:.82rem">${escHtml(a.owner||'—')}</td>
           <td style="font-size:.82rem;${overdue?'color:#f87171;font-weight:600':''}">${a.dueDate?new Date(a.dueDate).toLocaleDateString('en-GB'):'—'}</td>
-          <td>${govBadge(GOV_PRIORITY_LABELS[a.priority]||a.priority, GOV_PRIORITY_COLORS[a.priority]||'#888')}</td>
-          <td>${govBadge(GOV_ACTION_STATUS_LABELS[a.status]||a.status, GOV_ACTION_STATUS_COLORS[a.status]||'#888')}</td>
+          <td>${govBadge(getGovPriorityLabels()[a.priority]||a.priority, GOV_PRIORITY_COLORS[a.priority]||'#888')}</td>
+          <td>${govBadge(getGovActionStatusLabels()[a.status]||a.status, GOV_ACTION_STATUS_COLORS[a.status]||'#888')}</td>
           <td>
             <div style="background:var(--border);border-radius:2px;height:6px;width:80px">
               <div style="width:${a.progress||0}%;background:var(--brand);height:6px;border-radius:2px"></div>
@@ -11956,7 +12015,7 @@ async function renderGovMeetings(el) {
       <tbody>
         ${meetings.map(m => `<tr>
           <td><strong>${escHtml(m.title)}</strong></td>
-          <td style="font-size:.82rem">${escHtml(GOV_COMMITTEE_LABELS[m.committee]||m.committee)}</td>
+          <td style="font-size:.82rem">${escHtml(getGovCommitteeLabels()[m.committee]||m.committee)}</td>
           <td>${m.date ? new Date(m.date).toLocaleDateString('en-GB') : '—'}</td>
           <td style="font-size:.82rem">${escHtml(m.chair||'—')}</td>
           <td>${m.approved
@@ -12134,19 +12193,19 @@ async function openGovActionForm(id = null) {
           <div>
             <label class="form-label">Source</label>
             <select id="gaSource" class="select">
-              ${Object.entries(GOV_SOURCE_LABELS).map(([v,l])=>`<option value="${v}" ${action.source===v?'selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getGovSourceLabels()).map(([v,l])=>`<option value="${v}" ${action.source===v?'selected':''}>${l}</option>`).join('')}
             </select>
           </div>
           <div>
             <label class="form-label">Priority</label>
             <select id="gaPrio" class="select">
-              ${Object.entries(GOV_PRIORITY_LABELS).map(([v,l])=>`<option value="${v}" ${action.priority===v?'selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getGovPriorityLabels()).map(([v,l])=>`<option value="${v}" ${action.priority===v?'selected':''}>${l}</option>`).join('')}
             </select>
           </div>
           <div>
             <label class="form-label">Status</label>
             <select id="gaStatus" class="select">
-              ${Object.entries(GOV_ACTION_STATUS_LABELS).map(([v,l])=>`<option value="${v}" ${action.status===v?'selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getGovActionStatusLabels()).map(([v,l])=>`<option value="${v}" ${action.status===v?'selected':''}>${l}</option>`).join('')}
             </select>
           </div>
         </div>
@@ -12253,7 +12312,7 @@ async function openGovMeetingForm(id = null) {
           <div>
             <label class="form-label">Committee</label>
             <select id="gmCommittee" class="select">
-              ${Object.entries(GOV_COMMITTEE_LABELS).map(([v,l])=>`<option value="${v}" ${meeting.committee===v?'selected':''}>${l}</option>`).join('')}
+              ${Object.entries(getGovCommitteeLabels()).map(([v,l])=>`<option value="${v}" ${meeting.committee===v?'selected':''}>${l}</option>`).join('')}
             </select>
           </div>
           <div>
@@ -12359,20 +12418,30 @@ async function deleteGovMeeting(id) {
 
 let _bcmTab = 'bia'
 
-const BCM_CRIT_LABELS = { critical:'Critical', high:'High', medium:'Medium', low:'Low' }
-const BCM_STATUS_LABELS = { draft:'Draft', reviewed:'Reviewed', approved:'Approved', tested:'Tested', review:'Under Review' }
-const BCM_PLAN_TYPE_LABELS = { bcp:'BCP', drp:'DRP', itp:'ITP', crisis_communication:'Crisis Communication' }
-const BCM_RESULT_LABELS = { pass:'Pass', fail:'Fail', partial:'Partial', planned:'Planned', not_tested:'Not Tested' }
-const BCM_EXERCISE_TYPE_LABELS = { tabletop:'Tabletop', simulation:'Simulation', full_drill:'Full Drill', walkthrough:'Walkthrough' }
+function getBcmCritLabels() {
+  return { critical: t('priority_critical'), high: t('priority_high'), medium: t('priority_medium'), low: t('priority_low') }
+}
+function getBcmStatusLabels() {
+  return { draft: t('status_draft'), reviewed: t('status_reviewed'), approved: t('status_approved'), tested: t('status_tested'), review: t('status_underReview') }
+}
+function getBcmPlanTypeLabels() {
+  return { bcp: t('bcm_planBcp'), drp: t('bcm_planDrp'), itp: t('bcm_planItp'), crisis_communication: t('bcm_planCrisis') }
+}
+function getBcmResultLabels() {
+  return { pass: t('status_passed'), fail: t('status_failed'), partial: t('status_partial'), planned: t('status_planned'), not_tested: t('status_notTested') }
+}
+function getBcmExerciseTypeLabels() {
+  return { tabletop: t('bcm_exerciseTabletop'), simulation: t('bcm_exerciseSim'), full_drill: t('bcm_exerciseFullDrill'), walkthrough: t('bcm_exerciseWalkthrough') }
+}
 
 function bcmCritBadge(v) {
-  return `<span class="bcm-badge ${v}">${BCM_CRIT_LABELS[v] || v}</span>`
+  return `<span class="bcm-badge ${v}">${getBcmCritLabels()[v] || v}</span>`
 }
 function bcmStatusBadge(v) {
-  return `<span class="bcm-badge ${v}">${BCM_STATUS_LABELS[v] || v}</span>`
+  return `<span class="bcm-badge ${v}">${getBcmStatusLabels()[v] || v}</span>`
 }
 function bcmResultBadge(v) {
-  return `<span class="bcm-badge ${v||'not_tested'}">${BCM_RESULT_LABELS[v] || v || 'Not Tested'}</span>`
+  return `<span class="bcm-badge ${v||'not_tested'}">${getBcmResultLabels()[v] || v || 'Not Tested'}</span>`
 }
 
 async function renderBcm() {
@@ -12483,11 +12552,11 @@ async function renderBcmBia(el) {
       ${canEdit ? `<button class="btn btn-primary btn-sm" onclick="openBiaForm()"><i class="ph ph-plus"></i> New BIA</button>` : ''}
       <select id="bcmBiaCrit" class="select" style="max-width:150px">
         <option value="">${t('assets_allCrit')}</option>
-        ${Object.entries(BCM_CRIT_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getBcmCritLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
       <select id="bcmBiaStatus" class="select" style="max-width:150px">
         <option value="">${t('filter_allStatuses')}</option>
-        ${Object.entries(BCM_STATUS_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getBcmStatusLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
     </div>
     <div id="bcmBiaTable">${renderTable()}</div>
@@ -12549,13 +12618,13 @@ async function openBiaForm(id = null) {
             <div class="form-group">
               <label class="form-label">Criticality</label>
               <select id="biaCrit" class="select">
-                ${Object.entries(BCM_CRIT_LABELS).map(([v,l])=>`<option value="${v}"${item?.criticality===v?' selected':''}>${l}</option>`).join('')}
+                ${Object.entries(getBcmCritLabels()).map(([v,l])=>`<option value="${v}"${item?.criticality===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label class="form-label">Status</label>
               <select id="biaStatus" class="select">
-                ${Object.entries(BCM_STATUS_LABELS).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
+                ${Object.entries(getBcmStatusLabels()).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
           </div>
@@ -12695,8 +12764,8 @@ async function renderBcmPlans(el) {
           ${rows.length ? rows.map(p => {
             const overdue = p.nextTest && p.nextTest < today
             return `<tr class="${overdue?'overdue':''}">
-              <td><strong>${escHtml(p.title)}</strong><br><small style="color:var(--text-subtle)">${BCM_PLAN_TYPE_LABELS[p.type]||p.type} · v${escHtml(p.version||'1.0')}</small></td>
-              <td>${BCM_PLAN_TYPE_LABELS[p.type]||p.type}</td>
+              <td><strong>${escHtml(p.title)}</strong><br><small style="color:var(--text-subtle)">${getBcmPlanTypeLabels()[p.type]||p.type} · v${escHtml(p.version||'1.0')}</small></td>
+              <td>${getBcmPlanTypeLabels()[p.type]||p.type}</td>
               <td>${escHtml(p.planOwner)}</td>
               <td>${bcmStatusBadge(p.status)}</td>
               <td>${p.lastTested||'—'}</td>
@@ -12718,11 +12787,11 @@ async function renderBcmPlans(el) {
       ${canEdit ? `<button class="btn btn-primary btn-sm" onclick="openPlanForm()"><i class="ph ph-plus"></i> New Plan</button>` : ''}
       <select id="bcmPlanType" class="select" style="max-width:180px">
         <option value="">All Types</option>
-        ${Object.entries(BCM_PLAN_TYPE_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getBcmPlanTypeLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
       <select id="bcmPlanStatus" class="select" style="max-width:160px">
         <option value="">${t('filter_allStatuses')}</option>
-        ${Object.entries(BCM_STATUS_LABELS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getBcmStatusLabels()).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
       </select>
     </div>
     <div id="bcmPlansTable">${renderTable()}</div>
@@ -12774,13 +12843,13 @@ async function openPlanForm(id = null) {
             <div class="form-group">
               <label class="form-label">Type</label>
               <select id="planType" class="select">
-                ${Object.entries(BCM_PLAN_TYPE_LABELS).map(([v,l])=>`<option value="${v}"${item?.type===v?' selected':''}>${l}</option>`).join('')}
+                ${Object.entries(getBcmPlanTypeLabels()).map(([v,l])=>`<option value="${v}"${item?.type===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label class="form-label">Status</label>
               <select id="planStatus" class="select">
-                ${Object.entries(BCM_STATUS_LABELS).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
+                ${Object.entries(getBcmStatusLabels()).map(([v,l])=>`<option value="${v}"${item?.status===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
@@ -12813,7 +12882,7 @@ async function openPlanForm(id = null) {
             <div class="form-group">
               <label class="form-label">Test Result</label>
               <select id="planTestResult" class="select">
-                ${Object.entries(BCM_RESULT_LABELS).map(([v,l])=>`<option value="${v}"${item?.testResult===v?' selected':''}>${l}</option>`).join('')}
+                ${Object.entries(getBcmResultLabels()).map(([v,l])=>`<option value="${v}"${item?.testResult===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
           </div>
@@ -12823,7 +12892,7 @@ async function openPlanForm(id = null) {
           <div class="form-group">
             <label class="form-label">BIAs (multi-select with Ctrl/Cmd)</label>
             <select id="planBias" class="select" multiple style="height:120px">
-              ${biaList.map(b=>`<option value="${b.id}"${(item?.linkedBiaIds||[]).includes(b.id)?' selected':''}>${escHtml(b.title)} (${BCM_CRIT_LABELS[b.criticality]||b.criticality})</option>`).join('')}
+              ${biaList.map(b=>`<option value="${b.id}"${(item?.linkedBiaIds||[]).includes(b.id)?' selected':''}>${escHtml(b.title)} (${getBcmCritLabels()[b.criticality]||b.criticality})</option>`).join('')}
             </select>
           </div>
         </div>
@@ -12914,7 +12983,7 @@ async function renderBcmExercises(el) {
         ${list.length ? list.map(e => `
           <tr>
             <td><strong>${escHtml(e.title)}</strong></td>
-            <td>${BCM_EXERCISE_TYPE_LABELS[e.type]||e.type}</td>
+            <td>${getBcmExerciseTypeLabels()[e.type]||e.type}</td>
             <td>${e.date||'—'}</td>
             <td>${escHtml(e.conductor)}</td>
             <td>${bcmResultBadge(e.result)}</td>
@@ -12965,7 +13034,7 @@ async function openExerciseForm(id = null) {
             <div class="form-group">
               <label class="form-label">Exercise Type</label>
               <select id="exType" class="select">
-                ${Object.entries(BCM_EXERCISE_TYPE_LABELS).map(([v,l])=>`<option value="${v}"${item?.type===v?' selected':''}>${l}</option>`).join('')}
+                ${Object.entries(getBcmExerciseTypeLabels()).map(([v,l])=>`<option value="${v}"${item?.type===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
@@ -12975,7 +13044,7 @@ async function openExerciseForm(id = null) {
             <div class="form-group">
               <label class="form-label">Result</label>
               <select id="exResult" class="select">
-                ${Object.entries(BCM_RESULT_LABELS).map(([v,l])=>`<option value="${v}"${item?.result===v?' selected':''}>${l}</option>`).join('')}
+                ${Object.entries(getBcmResultLabels()).map(([v,l])=>`<option value="${v}"${item?.result===v?' selected':''}>${l}</option>`).join('')}
               </select>
             </div>
           </div>
@@ -13068,26 +13137,34 @@ async function deleteExercise(id) {
 
 let _suppliersTab = 'list'
 
-const SUP_TYPE_LABELS = {
-  software:    'Software',
-  hardware:    'Hardware',
-  service:     'Service',
-  cloud:       'Cloud',
-  consulting:  'Consulting',
-  other:       'Other',
+function getSupTypeLabels() {
+  return {
+    software:   t('sup_typeSoftware'),
+    hardware:   t('sup_typeHardware'),
+    service:    t('sup_typeService'),
+    cloud:      t('sup_typeCloud'),
+    consulting: t('sup_typeConsulting'),
+    other:      t('sup_typeOther'),
+  }
 }
-const SUP_CRIT_LABELS = { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low' }
-const SUP_STATUS_LABELS = {
-  active:       'Active',
-  under_review: 'Under Review',
-  inactive:     'Inactive',
-  terminated:   'Terminated',
+function getSupCritLabels() {
+  return { critical: t('priority_critical'), high: t('priority_high'), medium: t('priority_medium'), low: t('priority_low') }
 }
-const SUP_AUDIT_LABELS = {
-  passed:        'Passed',
-  failed:        'Failed',
-  pending:       'Pending',
-  not_scheduled: 'Not Scheduled',
+function getSupStatusLabels() {
+  return {
+    active:       t('status_active'),
+    under_review: t('status_underReview'),
+    inactive:     t('status_inactive'),
+    terminated:   t('status_terminated'),
+  }
+}
+function getSupAuditLabels() {
+  return {
+    passed:        t('status_passed'),
+    failed:        t('status_failed'),
+    pending:       t('status_pending'),
+    not_scheduled: t('status_notScheduled'),
+  }
 }
 
 function _supplierCritColor(c) {
@@ -13096,11 +13173,11 @@ function _supplierCritColor(c) {
 }
 
 function supCritBadge(v) {
-  return `<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:.75rem;font-weight:700;background:${_supplierCritColor(v)}22;color:${_supplierCritColor(v)};border:1px solid ${_supplierCritColor(v)}44">${SUP_CRIT_LABELS[v] || v}</span>`
+  return `<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:.75rem;font-weight:700;background:${_supplierCritColor(v)}22;color:${_supplierCritColor(v)};border:1px solid ${_supplierCritColor(v)}44">${getSupCritLabels()[v] || v}</span>`
 }
 function supStatusBadge(v) {
   const cls = { active: 'var(--success-text,#4ade80)', under_review: 'var(--warning-text,#f0b429)', inactive: 'var(--text-subtle)', terminated: 'var(--danger-text,#f87171)' }
-  return `<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:.75rem;font-weight:600;color:${cls[v]||'var(--text-subtle)'};">${SUP_STATUS_LABELS[v] || v}</span>`
+  return `<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:.75rem;font-weight:600;color:${cls[v]||'var(--text-subtle)'};">${getSupStatusLabels()[v] || v}</span>`
 }
 
 async function renderSuppliers() {
@@ -13212,12 +13289,12 @@ async function switchSuppliersTab(tab) {
                 <strong>${escHtml(s.name)}</strong>
                 ${s.dataAccess ? '<br><small style="color:var(--warning-text)"><i class="ph ph-database"></i> Data Access</small>' : ''}
               </td>
-              <td>${escHtml(SUP_TYPE_LABELS[s.type] || s.type)}</td>
+              <td>${escHtml(getSupTypeLabels()[s.type] || s.type)}</td>
               <td>${supCritBadge(s.criticality)}</td>
               <td>${supStatusBadge(s.status)}</td>
               <td>${escHtml(s.country || '—')}</td>
               <td class="${overdue ? 'bcm-overdue' : ''}">${s.nextAuditDate || '—'}${overdue ? ' <i class="ph ph-warning-circle" title="Overdue!"></i>' : ''}</td>
-              <td>${escHtml(SUP_AUDIT_LABELS[s.auditResult] || s.auditResult || '—')}</td>
+              <td>${escHtml(getSupAuditLabels()[s.auditResult] || s.auditResult || '—')}</td>
               <td style="white-space:nowrap">
                 ${canEdit ? `<button class="btn btn-secondary btn-xs" onclick="openSupplierForm('${s.id}')"><i class="ph ph-pencil"></i></button>` : ''}
                 ${isAdmin ? `<button class="btn btn-danger btn-xs" onclick="deleteSupplier('${s.id}')"><i class="ph ph-trash"></i></button>` : ''}
@@ -13234,15 +13311,15 @@ async function switchSuppliersTab(tab) {
       ${canEdit ? `<button class="btn btn-primary btn-sm" onclick="openSupplierForm()"><i class="ph ph-plus"></i> New Supplier</button>` : ''}
       <select id="supFilterType" class="select" style="max-width:160px">
         <option value="">All Types</option>
-        ${Object.entries(SUP_TYPE_LABELS).map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getSupTypeLabels()).map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}
       </select>
       <select id="supFilterCrit" class="select" style="max-width:160px">
         <option value="">${t('assets_allCrit')}</option>
-        ${Object.entries(SUP_CRIT_LABELS).map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getSupCritLabels()).map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}
       </select>
       <select id="supFilterStatus" class="select" style="max-width:160px">
         <option value="">${t('filter_allStatuses')}</option>
-        ${Object.entries(SUP_STATUS_LABELS).map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}
+        ${Object.entries(getSupStatusLabels()).map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}
       </select>
     </div>
     <div id="suppliersTable">${renderTable()}</div>
@@ -13299,19 +13376,19 @@ async function openSupplierForm(id = null) {
             <div class="form-group">
               <label class="form-label">Type</label>
               <select id="supType" class="select">
-                ${Object.entries(SUP_TYPE_LABELS).map(([v, l]) => `<option value="${v}"${item?.type === v ? ' selected' : ''}>${l}</option>`).join('')}
+                ${Object.entries(getSupTypeLabels()).map(([v, l]) => `<option value="${v}"${item?.type === v ? ' selected' : ''}>${l}</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label class="form-label">Criticality</label>
               <select id="supCrit" class="select">
-                ${Object.entries(SUP_CRIT_LABELS).map(([v, l]) => `<option value="${v}"${item?.criticality === v ? ' selected' : ''}>${l}</option>`).join('')}
+                ${Object.entries(getSupCritLabels()).map(([v, l]) => `<option value="${v}"${item?.criticality === v ? ' selected' : ''}>${l}</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label class="form-label">Status</label>
               <select id="supStatus" class="select">
-                ${Object.entries(SUP_STATUS_LABELS).map(([v, l]) => `<option value="${v}"${item?.status === v ? ' selected' : ''}>${l}</option>`).join('')}
+                ${Object.entries(getSupStatusLabels()).map(([v, l]) => `<option value="${v}"${item?.status === v ? ' selected' : ''}>${l}</option>`).join('')}
               </select>
             </div>
           </div>
@@ -13390,7 +13467,7 @@ async function openSupplierForm(id = null) {
             <div class="form-group">
               <label class="form-label">Audit Result</label>
               <select id="supAuditResult" class="select">
-                ${Object.entries(SUP_AUDIT_LABELS).map(([v, l]) => `<option value="${v}"${item?.auditResult === v ? ' selected' : ''}>${l}</option>`).join('')}
+                ${Object.entries(getSupAuditLabels()).map(([v, l]) => `<option value="${v}"${item?.auditResult === v ? ' selected' : ''}>${l}</option>`).join('')}
               </select>
             </div>
           </div>
