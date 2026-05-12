@@ -252,16 +252,16 @@
     admin_deleteUser:    { de: 'Benutzer "[NAME]" wirklich löschen?', en: 'Really delete user "[NAME]"?', fr: 'Supprimer vraiment l\'utilisateur « [NAME] » ?', nl: 'Gebruiker "[NAME]" echt verwijderen?' , cs: 'Opravdu smazat uživatele „[NAME]"?' },
 
     // Admin audit log
-    auditLog_clear:      { de: 'Log leeren',                en: 'Clear Log',                  fr: 'Vider le journal',          nl: 'Log leegmaken' },
-    auditLog_allActions: { de: 'Alle Aktionen',             en: 'All Actions',                fr: 'Toutes les actions',        nl: 'Alle acties' },
-    auditLog_allRes:     { de: 'Alle Ressourcen',           en: 'All Resources',              fr: 'Toutes les ressources',     nl: 'Alle bronnen' },
-    auditLog_time:       { de: 'Zeitpunkt',                 en: 'Timestamp',                  fr: 'Horodatage',                nl: 'Tijdstip' },
-    auditLog_action:     { de: 'Aktion',                    en: 'Action',                     fr: 'Action',                    nl: 'Actie' },
-    auditLog_resource:   { de: 'Ressource',                 en: 'Resource',                   fr: 'Ressource',                 nl: 'Bron' },
-    auditLog_detail:     { de: 'Detail',                    en: 'Detail',                     fr: 'Détail',                    nl: 'Detail' },
-    auditLog_noEntries:  { de: 'Keine Einträge.',           en: 'No entries.',                fr: 'Aucune entrée.',            nl: 'Geen vermeldingen.' },
-    auditLog_total:      { de: 'Einträge gesamt',           en: 'Total entries',              fr: 'Entrées totales',           nl: 'Totaal vermeldingen' },
-    auditLog_confirm:    { de: 'Audit-Log wirklich leeren? Diese Aktion kann nicht rückgängig gemacht werden.', en: 'Really clear the audit log? This action cannot be undone.', fr: 'Vider vraiment le journal d\'audit ? Cette action est irréversible.', nl: 'Auditlogboek echt leegmaken? Deze actie kan niet ongedaan worden gemaakt.' },
+    auditLog_clear:      { de: 'Log leeren',                en: 'Clear Log',                  fr: 'Vider le journal',          nl: 'Log leegmaken' , cs: 'Vymazat log' },
+    auditLog_allActions: { de: 'Alle Aktionen',             en: 'All Actions',                fr: 'Toutes les actions',        nl: 'Alle acties' , cs: 'Všechny akce' },
+    auditLog_allRes:     { de: 'Alle Ressourcen',           en: 'All Resources',              fr: 'Toutes les ressources',     nl: 'Alle bronnen' , cs: 'Všechny zdroje' },
+    auditLog_time:       { de: 'Zeitpunkt',                 en: 'Timestamp',                  fr: 'Horodatage',                nl: 'Tijdstip' , cs: 'Časové razítko' },
+    auditLog_action:     { de: 'Aktion',                    en: 'Action',                     fr: 'Action',                    nl: 'Actie' , cs: 'Akce' },
+    auditLog_resource:   { de: 'Ressource',                 en: 'Resource',                   fr: 'Ressource',                 nl: 'Bron' , cs: 'Zdroj' },
+    auditLog_detail:     { de: 'Detail',                    en: 'Detail',                     fr: 'Détail',                    nl: 'Detail' , cs: 'Detail' },
+    auditLog_noEntries:  { de: 'Keine Einträge.',           en: 'No entries.',                fr: 'Aucune entrée.',            nl: 'Geen vermeldingen.' , cs: 'Žádné záznamy.' },
+    auditLog_total:      { de: 'Einträge gesamt',           en: 'Total entries',              fr: 'Entrées totales',           nl: 'Totaal vermeldingen' , cs: 'Záznamů celkem' },
+    auditLog_confirm:    { de: 'Audit-Log wirklich leeren? Diese Aktion kann nicht rückgängig gemacht werden.', en: 'Really clear the audit log? This action cannot be undone.', fr: 'Vider vraiment le journal d\'audit ? Cette action est irréversible.', nl: 'Auditlogboek echt leegmaken? Deze actie kan niet ongedaan worden gemaakt.' , cs: 'Opravdu vymazat auditní log? Tuto akci nelze vrátit.' },
 
     // Admin org settings
     org_general:         { de: 'Allgemeine Informationen',  en: 'General Information',        fr: 'Informations générales',    nl: 'Algemene informatie' , cs: 'Obecné informace' },
@@ -277,12 +277,12 @@
     org_save:            { de: 'Speichern',                 en: 'Save',                       fr: 'Enregistrer',               nl: 'Opslaan' , cs: 'Uložit' },
 
     // Admin maintenance
-    maint_backend:       { de: 'Speicher-Backend',          en: 'Storage Backend',            fr: 'Stockage back-end',         nl: 'Opslagbackend' },
-    maint_backup:        { de: 'Datensicherung & Export',   en: 'Data Backup & Export',       fr: 'Sauvegarde & Export',       nl: 'Gegevensback-up & Export' },
-    maint_download:      { de: 'Vollexport herunterladen',  en: 'Download Full Export',       fr: 'Télécharger l\'export complet', nl: 'Volledige export downloaden' },
-    maint_cleanup:       { de: 'Bereinigung starten',       en: 'Start Cleanup',              fr: 'Démarrer le nettoyage',     nl: 'Opschonen starten' },
-    maint_demoReset:     { de: 'Demo-Reset durchführen',    en: 'Perform Demo Reset',         fr: 'Effectuer la réinitialisation démo', nl: 'Demomodus resetten' },
-    maint_demoImport:    { de: 'Demo-Daten importieren',    en: 'Import Demo Data',           fr: 'Importer les données démo', nl: 'Demogegevens importeren' },
+    maint_backend:       { de: 'Speicher-Backend',          en: 'Storage Backend',            fr: 'Stockage back-end',         nl: 'Opslagbackend' , cs: 'Datový backend' },
+    maint_backup:        { de: 'Datensicherung & Export',   en: 'Data Backup & Export',       fr: 'Sauvegarde & Export',       nl: 'Gegevensback-up & Export' , cs: 'Záloha a export dat' },
+    maint_download:      { de: 'Vollexport herunterladen',  en: 'Download Full Export',       fr: 'Télécharger l\'export complet', nl: 'Volledige export downloaden' , cs: 'Stáhnout úplný export' },
+    maint_cleanup:       { de: 'Bereinigung starten',       en: 'Start Cleanup',              fr: 'Démarrer le nettoyage',     nl: 'Opschonen starten' , cs: 'Spustit čištění' },
+    maint_demoReset:     { de: 'Demo-Reset durchführen',    en: 'Perform Demo Reset',         fr: 'Effectuer la réinitialisation démo', nl: 'Demomodus resetten' , cs: 'Provést reset demo režimu' },
+    maint_demoImport:    { de: 'Demo-Daten importieren',    en: 'Import Demo Data',           fr: 'Importer les données démo', nl: 'Demogegevens importeren' , cs: 'Importovat demo data' },
 
     // ── Incident inbox ──────────────────────────────────────────────────────
     inc_title:           { de: 'Incident Inbox – CISO-Bearbeitung', en: 'Incident Inbox – CISO Processing', fr: 'Boîte incidents – Traitement RSSI', nl: 'Incidentenpostbus – CISO-verwerking' , cs: 'Schránka incidentů – zpracování CISO' },
@@ -305,18 +305,18 @@
     inc_deleteConfirm:   { de: 'Vorfall wirklich löschen?\nDieser Schritt kann nicht rückgängig gemacht werden.', en: 'Really delete this incident?\nThis action cannot be undone.', fr: 'Supprimer vraiment cet incident ?\nCette action est irréversible.', nl: 'Dit incident echt verwijderen?\nDeze actie kan niet ongedaan worden gemaakt.' , cs: 'Opravdu chcete incident smazat?\nTento krok nelze vrátit.' },
 
     // ── Under construction ──────────────────────────────────────────────────
-    uc_title:            { de: 'Im Aufbau',                 en: 'Under Construction',         fr: 'En construction',           nl: 'In aanbouw' },
-    uc_text:             { de: 'Dieses Modul wird in einer der nächsten Versionen verfügbar sein.', en: 'This module will be available in a future release.', fr: 'Ce module sera disponible dans une prochaine version.', nl: 'Deze module zal beschikbaar zijn in een toekomstige versie.' },
+    uc_title:            { de: 'Im Aufbau',                 en: 'Under Construction',         fr: 'En construction',           nl: 'In aanbouw' , cs: 'V přípravě' },
+    uc_text:             { de: 'Dieses Modul wird in einer der nächsten Versionen verfügbar sein.', en: 'This module will be available in a future release.', fr: 'Ce module sera disponible dans une prochaine version.', nl: 'Deze module zal beschikbaar zijn in een toekomstige versie.' , cs: 'Tento modul bude k dispozici v některé z příštích verzí.' },
 
     // ── Common table columns ─────────────────────────────────────────────────
-    col_date:            { de: 'Datum',       en: 'Date',      fr: 'Date',           nl: 'Datum' },
-    col_title:           { de: 'Titel',       en: 'Title',     fr: 'Titre',          nl: 'Titel' },
-    col_status:          { de: 'Status',      en: 'Status',    fr: 'Statut',         nl: 'Status' },
-    col_owner:           { de: 'Owner',       en: 'Owner',     fr: 'Responsable',    nl: 'Eigenaar' },
-    col_type:            { de: 'Typ',         en: 'Type',      fr: 'Type',           nl: 'Type' },
-    col_version:         { de: 'Version',     en: 'Version',   fr: 'Version',        nl: 'Versie' },
-    col_name:            { de: 'Name',        en: 'Name',      fr: 'Nom',            nl: 'Naam' },
-    col_actions:         { de: 'Aktionen',    en: 'Actions',   fr: 'Actions',        nl: 'Acties' },
+    col_date:            { de: 'Datum',       en: 'Date',      fr: 'Date',           nl: 'Datum' , cs: 'Datum' },
+    col_title:           { de: 'Titel',       en: 'Title',     fr: 'Titre',          nl: 'Titel' , cs: 'Název' },
+    col_status:          { de: 'Status',      en: 'Status',    fr: 'Statut',         nl: 'Status' , cs: 'Stav' },
+    col_owner:           { de: 'Owner',       en: 'Owner',     fr: 'Responsable',    nl: 'Eigenaar' , cs: 'Vlastník' },
+    col_type:            { de: 'Typ',         en: 'Type',      fr: 'Type',           nl: 'Type' , cs: 'Typ' },
+    col_version:         { de: 'Version',     en: 'Version',   fr: 'Version',        nl: 'Versie' , cs: 'Verze' },
+    col_name:            { de: 'Name',        en: 'Name',      fr: 'Nom',            nl: 'Naam' , cs: 'Jméno' },
+    col_actions:         { de: 'Aktionen',    en: 'Actions',   fr: 'Actions',        nl: 'Acties' , cs: 'Akce' },
 
     // ── Sidebar / template types ─────────────────────────────────────────────
     sidebar_create:      { de: 'Erstellen',                 en: 'Create',                     fr: 'Créer',                     nl: 'Aanmaken' , cs: 'Vytvořit' },
@@ -341,9 +341,9 @@
     soa_linkedBadge:     { de: 'Template(s)',                en: 'Template(s)',                fr: 'Modèle(s)',                 nl: 'Sjablo(o)n(en)' , cs: 'šablon' },
 
     // ── 2FA banner in topbar ─────────────────────────────────────────────────
-    tfa_hint:            { de: '2FA nicht aktiv',           en: '2FA not active',             fr: '2FA non actif',             nl: '2FA niet actief' },
-    tfa_banner:          { de: 'Sie haben noch keine 2FA aktiviert. Für mehr Sicherheit empfehlen wir, 2FA einzurichten.', en: 'You have not enabled 2FA yet. We recommend setting up 2FA for better security.', fr: 'Vous n\'avez pas encore activé la 2FA. Nous recommandons de configurer la 2FA pour une meilleure sécurité.', nl: 'U heeft 2FA nog niet geactiveerd. Wij raden aan 2FA in te stellen voor betere beveiliging.' },
-    tfa_setup:           { de: 'Jetzt einrichten',          en: 'Setup now',                  fr: 'Configurer maintenant',     nl: 'Nu instellen' },
+    tfa_hint:            { de: '2FA nicht aktiv',           en: '2FA not active',             fr: '2FA non actif',             nl: '2FA niet actief' , cs: '2FA není aktivní' },
+    tfa_banner:          { de: 'Sie haben noch keine 2FA aktiviert. Für mehr Sicherheit empfehlen wir, 2FA einzurichten.', en: 'You have not enabled 2FA yet. We recommend setting up 2FA for better security.', fr: 'Vous n\'avez pas encore activé la 2FA. Nous recommandons de configurer la 2FA pour une meilleure sécurité.', nl: 'U heeft 2FA nog niet geactiveerd. Wij raden aan 2FA in te stellen voor betere beveiliging.' , cs: 'Ještě jste neaktivovali 2FA. Pro lepší zabezpečení doporučujeme jeho nastavení.' },
+    tfa_setup:           { de: 'Jetzt einrichten',          en: 'Setup now',                  fr: 'Configurer maintenant',     nl: 'Nu instellen' , cs: 'Nastavit nyní' },
 
     // ── Error / success messages ─────────────────────────────────────────────
     err_saveFailed:      { de: 'Fehler beim Speichern',     en: 'Error saving',               fr: 'Erreur lors de l\'enregistrement', nl: 'Fout bij opslaan' , cs: 'Chyba při ukládání' },
@@ -424,15 +424,15 @@
     risk_linkedControls: { de: 'Verknüpfte SoA-Controls',   en: 'Linked SoA Controls',       fr: 'Contrôles DdA liés',        nl: 'Gekoppelde VvT-beheersmaatregelen' , cs: 'Propojená opatření SoA' },
     risk_openBtn:        { de: 'Zum Risiko',                en: 'Open Risk',                  fr: 'Ouvrir le risque',          nl: 'Risico openen' , cs: 'Otevřít riziko' },
     risk_selectFirst:    { de: 'Bitte zuerst ein Risiko auswählen.', en: 'Please select a risk first.', fr: 'Veuillez d\'abord sélectionner un risque.', nl: 'Selecteer eerst een risico.' , cs: 'Nejprve prosím vyberte riziko.' },
-    risk_openMeasures:   { de: 'Offene Maßnahmen',          en: 'Open Measures',              fr: 'Mesures ouvertes',          nl: 'Openstaande maatregelen' },
+    risk_openMeasures:   { de: 'Offene Maßnahmen',          en: 'Open Measures',              fr: 'Mesures ouvertes',          nl: 'Openstaande maatregelen' , cs: 'Otevřená opatření' },
 
     // ── Goals module ─────────────────────────────────────────────────────────
-    goals_new:           { de: 'Neues Ziel',                en: 'New Goal',                   fr: 'Nouvel objectif',           nl: 'Nieuw doel' },
-    goals_loading:       { de: 'Lade Sicherheitsziele…',    en: 'Loading Security Goals…',    fr: 'Chargement des objectifs de sécurité…', nl: 'Beveiligingsdoelen laden…' },
-    goals_achieved:      { de: 'Erreicht',                  en: 'Achieved',                   fr: 'Atteint',                   nl: 'Bereikt' },
-    goals_avgProgress:   { de: 'Ø Fortschritt',             en: 'Avg. Progress',              fr: 'Progression moy.',          nl: 'Gem. voortgang' },
-    goals_count:         { de: 'Ziel(e)',                   en: 'Goal(s)',                    fr: 'Objectif(s)',               nl: 'Doel(en)' },
-    goals_empty:         { de: 'Keine Sicherheitsziele vorhanden.', en: 'No security goals found.', fr: 'Aucun objectif de sécurité trouvé.', nl: 'Geen beveiligingsdoelen gevonden.' },
+    goals_new:           { de: 'Neues Ziel',                en: 'New Goal',                   fr: 'Nouvel objectif',           nl: 'Nieuw doel' , cs: 'Nový cíl' },
+    goals_loading:       { de: 'Lade Sicherheitsziele…',    en: 'Loading Security Goals…',    fr: 'Chargement des objectifs de sécurité…', nl: 'Beveiligingsdoelen laden…' , cs: 'Načítání bezpečnostních cílů…' },
+    goals_achieved:      { de: 'Erreicht',                  en: 'Achieved',                   fr: 'Atteint',                   nl: 'Bereikt' , cs: 'Dosaženo' },
+    goals_avgProgress:   { de: 'Ø Fortschritt',             en: 'Avg. Progress',              fr: 'Progression moy.',          nl: 'Gem. voortgang' , cs: 'Ø Postup' },
+    goals_count:         { de: 'Ziel(e)',                   en: 'Goal(s)',                    fr: 'Objectif(s)',               nl: 'Doel(en)' , cs: 'cílů' },
+    goals_empty:         { de: 'Keine Sicherheitsziele vorhanden.', en: 'No security goals found.', fr: 'Aucun objectif de sécurité trouvé.', nl: 'Geen beveiligingsdoelen gevonden.' , cs: 'Žádné bezpečnostní cíle nenalezeny.' },
 
     // ── Legal module ─────────────────────────────────────────────────────────
     legal_activeContracts: { de: 'Verträge aktiv',          en: 'Active Contracts',           fr: 'Contrats actifs',           nl: 'Actieve contracten' , cs: 'Aktivní smlouvy' },
@@ -448,68 +448,68 @@
     legal_noPolicies:    { de: 'Keine Privacy Policies vorhanden.', en: 'No privacy policies found.', fr: 'Aucune politique de confidentialité trouvée.', nl: 'Geen privacybeleid gevonden.' , cs: 'Žádné politiky ochrany osobních údajů nenalezeny.' },
 
     // ── Training module ──────────────────────────────────────────────────────
-    training_tabOverview:   { de: 'Übersicht',              en: 'Overview',                   fr: 'Vue d\'ensemble',           nl: 'Overzicht' },
-    training_tabPlan:       { de: 'Schulungsplan',          en: 'Training Plan',              fr: 'Plan de formation',         nl: 'Opleidingsplan' },
-    training_tabEvidence:   { de: 'Nachweise',              en: 'Evidence',                   fr: 'Preuves',                   nl: 'Bewijsstukken' },
-    training_completionRate:{ de: 'Abschlussrate',          en: 'Completion Rate',            fr: 'Taux d\'achèvement',        nl: 'Voltooiingspercentage' },
-    training_overdueUpcoming:{ de: 'Überfällige & bald fällige Schulungen', en: 'Overdue & Upcoming Trainings', fr: 'Formations en retard et à venir', nl: 'Achterstallige en aankomende opleidingen' },
-    training_overdueSince:  { de: 'Überfällig seit',        en: 'Overdue since',              fr: 'En retard depuis',          nl: 'Achterstallig sinds' },
-    training_noUrgent:      { de: 'Keine dringenden Schulungen.', en: 'No urgent trainings.', fr: 'Aucune formation urgente.',  nl: 'Geen urgente opleidingen.' },
-    training_evidenceHeading:{ de: 'Abgeschlossene Schulungen mit Nachweisen', en: 'Completed Training with Evidence', fr: 'Formations terminées avec preuves', nl: 'Afgeronde opleidingen met bewijsstukken' },
-    training_noEvidence:    { de: 'Noch keine abgeschlossenen Schulungen.', en: 'No completed training yet.', fr: 'Aucune formation terminée pour l\'instant.', nl: 'Nog geen afgeronde opleidingen.' },
+    training_tabOverview:   { de: 'Übersicht',              en: 'Overview',                   fr: 'Vue d\'ensemble',           nl: 'Overzicht' , cs: 'Přehled' },
+    training_tabPlan:       { de: 'Schulungsplan',          en: 'Training Plan',              fr: 'Plan de formation',         nl: 'Opleidingsplan' , cs: 'Plán školení' },
+    training_tabEvidence:   { de: 'Nachweise',              en: 'Evidence',                   fr: 'Preuves',                   nl: 'Bewijsstukken' , cs: 'Doklady' },
+    training_completionRate:{ de: 'Abschlussrate',          en: 'Completion Rate',            fr: 'Taux d\'achèvement',        nl: 'Voltooiingspercentage' , cs: 'Míra absolvování' },
+    training_overdueUpcoming:{ de: 'Überfällige & bald fällige Schulungen', en: 'Overdue & Upcoming Trainings', fr: 'Formations en retard et à venir', nl: 'Achterstallige en aankomende opleidingen' , cs: 'Po termínu a nadcházející školení' },
+    training_overdueSince:  { de: 'Überfällig seit',        en: 'Overdue since',              fr: 'En retard depuis',          nl: 'Achterstallig sinds' , cs: 'Po termínu od' },
+    training_noUrgent:      { de: 'Keine dringenden Schulungen.', en: 'No urgent trainings.', fr: 'Aucune formation urgente.',  nl: 'Geen urgente opleidingen.' , cs: 'Žádná naléhavá školení.' },
+    training_evidenceHeading:{ de: 'Abgeschlossene Schulungen mit Nachweisen', en: 'Completed Training with Evidence', fr: 'Formations terminées avec preuves', nl: 'Afgeronde opleidingen met bewijsstukken' , cs: 'Dokončená školení s doklady' },
+    training_noEvidence:    { de: 'Noch keine abgeschlossenen Schulungen.', en: 'No completed training yet.', fr: 'Aucune formation terminée pour l\'instant.', nl: 'Nog geen afgeronde opleidingen.' , cs: 'Zatím žádná dokončená školení.' },
 
     // ── BCM module ───────────────────────────────────────────────────────────
-    bcm_tabBia:          { de: 'BIA-Register',              en: 'BIA Register',               fr: 'Registre BIA',              nl: 'BIA-register' },
-    bcm_tabPlans:        { de: 'Kontinuitätspläne',         en: 'Continuity Plans',           fr: 'Plans de continuité',       nl: 'Continuïteitsplannen' },
-    bcm_tabExercises:    { de: 'Übungen & Tests',           en: 'Exercises & Tests',          fr: 'Exercices & Tests',         nl: 'Oefeningen & Tests' },
-    bcm_subtitle:        { de: 'BIA-Register · Kontinuitätspläne (BCP/DRP/ITP) · Übungen & Tests | ISO 22301', en: 'BIA Register · Continuity Plans (BCP/DRP/ITP) · Exercises & Tests | ISO 22301', fr: 'Registre BIA · Plans de continuité (BCP/DRP/ITP) · Exercices & Tests | ISO 22301', nl: 'BIA-register · Continuïteitsplannen (BCP/DRP/ITP) · Oefeningen & Tests | ISO 22301' },
-    bcm_rto:             { de: 'RTO (h)',                   en: 'RTO (h)',                    fr: 'RTO (h)',                   nl: 'RTO (u)' },
-    bcm_rpo:             { de: 'RPO (h)',                   en: 'RPO (h)',                    fr: 'RPO (h)',                   nl: 'RPO (u)' },
-    bcm_noBia:           { de: 'Keine BIA-Einträge vorhanden', en: 'No BIA entries found',   fr: 'Aucune entrée BIA trouvée', nl: 'Geen BIA-vermeldingen gevonden' },
+    bcm_tabBia:          { de: 'BIA-Register',              en: 'BIA Register',               fr: 'Registre BIA',              nl: 'BIA-register' , cs: 'Registr BIA' },
+    bcm_tabPlans:        { de: 'Kontinuitätspläne',         en: 'Continuity Plans',           fr: 'Plans de continuité',       nl: 'Continuïteitsplannen' , cs: 'Plány kontinuity' },
+    bcm_tabExercises:    { de: 'Übungen & Tests',           en: 'Exercises & Tests',          fr: 'Exercices & Tests',         nl: 'Oefeningen & Tests' , cs: 'Cvičení a testy' },
+    bcm_subtitle:        { de: 'BIA-Register · Kontinuitätspläne (BCP/DRP/ITP) · Übungen & Tests | ISO 22301', en: 'BIA Register · Continuity Plans (BCP/DRP/ITP) · Exercises & Tests | ISO 22301', fr: 'Registre BIA · Plans de continuité (BCP/DRP/ITP) · Exercices & Tests | ISO 22301', nl: 'BIA-register · Continuïteitsplannen (BCP/DRP/ITP) · Oefeningen & Tests | ISO 22301' , cs: 'Registr BIA · Plány kontinuity (BCP/DRP/ITP) · Cvičení a testy' },
+    bcm_rto:             { de: 'RTO (h)',                   en: 'RTO (h)',                    fr: 'RTO (h)',                   nl: 'RTO (u)' , cs: 'RTO (h)' },
+    bcm_rpo:             { de: 'RPO (h)',                   en: 'RPO (h)',                    fr: 'RPO (h)',                   nl: 'RPO (u)' , cs: 'RPO (h)' },
+    bcm_noBia:           { de: 'Keine BIA-Einträge vorhanden', en: 'No BIA entries found',   fr: 'Aucune entrée BIA trouvée', nl: 'Geen BIA-vermeldingen gevonden' , cs: 'Žádné záznamy BIA nenalezeny.' },
 
     // ── Assets module ────────────────────────────────────────────────────────
-    assets_new:          { de: 'Neues Asset',               en: 'New Asset',                  fr: 'Nouvel actif',              nl: 'Nieuw bedrijfsmiddel' },
-    assets_tabAll:       { de: 'Alle Assets',               en: 'All Assets',                 fr: 'Tous les actifs',           nl: 'Alle bedrijfsmiddelen' },
-    assets_tabByCat:     { de: 'Nach Kategorie',            en: 'By Category',                fr: 'Par catégorie',             nl: 'Op categorie' },
-    assets_tabByClass:   { de: 'Nach Klassifizierung',      en: 'By Classification',          fr: 'Par classification',        nl: 'Op classificatie' },
-    assets_allClass:     { de: 'Alle Klassifizierungen',    en: 'All Classifications',        fr: 'Toutes les classifications', nl: 'Alle classificaties' },
-    assets_allCrit:      { de: 'Alle Kritikalitäten',       en: 'All Criticalities',          fr: 'Toutes les criticités',     nl: 'Alle kritiekheden' },
+    assets_new:          { de: 'Neues Asset',               en: 'New Asset',                  fr: 'Nouvel actif',              nl: 'Nieuw bedrijfsmiddel' , cs: 'Nové aktivum' },
+    assets_tabAll:       { de: 'Alle Assets',               en: 'All Assets',                 fr: 'Tous les actifs',           nl: 'Alle bedrijfsmiddelen' , cs: 'Všechna aktiva' },
+    assets_tabByCat:     { de: 'Nach Kategorie',            en: 'By Category',                fr: 'Par catégorie',             nl: 'Op categorie' , cs: 'Podle kategorie' },
+    assets_tabByClass:   { de: 'Nach Klassifizierung',      en: 'By Classification',          fr: 'Par classification',        nl: 'Op classificatie' , cs: 'Podle klasifikace' },
+    assets_allClass:     { de: 'Alle Klassifizierungen',    en: 'All Classifications',        fr: 'Toutes les classifications', nl: 'Alle classificaties' , cs: 'Všechny klasifikace' },
+    assets_allCrit:      { de: 'Alle Kritikalitäten',       en: 'All Criticalities',          fr: 'Toutes les criticités',     nl: 'Alle kritiekheden' , cs: 'Všechny úrovně kritičnosti' },
 
     // ── Suppliers module ─────────────────────────────────────────────────────
-    suppliers_tabList:   { de: 'Liste',                     en: 'List',                       fr: 'Liste',                     nl: 'Lijst' },
-    suppliers_tabData:   { de: 'Datenverarbeitung',         en: 'Data Processing',            fr: 'Traitement des données',    nl: 'Gegevensverwerking' },
-    suppliers_title:     { de: 'Lieferkettenmanagement',    en: 'Supply Chain Management',    fr: 'Gestion de la chaîne d\'approvisionnement', nl: 'Leveranciersketenbeheer' },
-    suppliers_total:     { de: 'Lieferanten gesamt',        en: 'Total Suppliers',            fr: 'Fournisseurs totaux',       nl: 'Totaal leveranciers' },
+    suppliers_tabList:   { de: 'Liste',                     en: 'List',                       fr: 'Liste',                     nl: 'Lijst' , cs: 'Seznam' },
+    suppliers_tabData:   { de: 'Datenverarbeitung',         en: 'Data Processing',            fr: 'Traitement des données',    nl: 'Gegevensverwerking' , cs: 'Zpracování osobních údajů' },
+    suppliers_title:     { de: 'Lieferkettenmanagement',    en: 'Supply Chain Management',    fr: 'Gestion de la chaîne d\'approvisionnement', nl: 'Leveranciersketenbeheer' , cs: 'Správa dodavatelského řetězce' },
+    suppliers_total:     { de: 'Lieferanten gesamt',        en: 'Total Suppliers',            fr: 'Fournisseurs totaux',       nl: 'Totaal leveranciers' , cs: 'Dodavatelé celkem' },
 
     // ── GDPR module ──────────────────────────────────────────────────────────
-    gdpr_title:          { de: 'GDPR & Datenschutz',        en: 'GDPR & Privacy',             fr: 'RGPD & Confidentialité',   nl: 'AVG & Privacy' },
+    gdpr_title:          { de: 'GDPR & Datenschutz',        en: 'GDPR & Privacy',             fr: 'RGPD & Confidentialité',   nl: 'AVG & Privacy' , cs: 'GDPR a ochrana osobních údajů' },
 
     // ── Calendar module ──────────────────────────────────────────────────────
-    cal_riskDue:         { de: 'Risiko fällig',             en: 'Risk Due',                   fr: 'Risque dû',                nl: 'Risico vervalt' },
-    cal_riskReview:      { de: 'Risiko Review',             en: 'Risk Review',                fr: 'Révision du risque',       nl: 'Risicoherziening' },
-    cal_measureDue:      { de: 'Maßnahme fällig',           en: 'Measure Due',                fr: 'Mesure due',               nl: 'Maatregel vervalt' },
-    cal_templateReview:  { de: 'Template Prüfung',          en: 'Template Review',            fr: 'Révision du modèle',       nl: 'Sjabloonbeoordeling' },
-    cal_templateDue:     { de: 'Template Review',           en: 'Template Due',               fr: 'Modèle dû',                nl: 'Sjabloon vervalt' },
-    cal_overdue:         { de: 'Überfällig',                en: 'Overdue',                    fr: 'En retard',                nl: 'Achterstallig' },
-    cal_dueSoon:         { de: 'Bald fällig',               en: 'Due Soon',                   fr: 'Bientôt dû',              nl: 'Binnenkort vervallen' },
-    cal_openRisk:        { de: 'Zum Risiko',                en: 'Open Risk',                  fr: 'Ouvrir le risque',         nl: 'Risico openen' },
-    cal_upcoming:        { de: 'Upcoming Events',           en: 'Upcoming Events',            fr: 'Événements à venir',       nl: 'Aankomende evenementen' },
+    cal_riskDue:         { de: 'Risiko fällig',             en: 'Risk Due',                   fr: 'Risque dû',                nl: 'Risico vervalt' , cs: 'Termín rizika' },
+    cal_riskReview:      { de: 'Risiko Review',             en: 'Risk Review',                fr: 'Révision du risque',       nl: 'Risicoherziening' , cs: 'Přezkum rizika' },
+    cal_measureDue:      { de: 'Maßnahme fällig',           en: 'Measure Due',                fr: 'Mesure due',               nl: 'Maatregel vervalt' , cs: 'Termín opatření' },
+    cal_templateReview:  { de: 'Template Prüfung',          en: 'Template Review',            fr: 'Révision du modèle',       nl: 'Sjabloonbeoordeling' , cs: 'Přezkum šablony' },
+    cal_templateDue:     { de: 'Template Review',           en: 'Template Due',               fr: 'Modèle dû',                nl: 'Sjabloon vervalt' , cs: 'Termín šablony' },
+    cal_overdue:         { de: 'Überfällig',                en: 'Overdue',                    fr: 'En retard',                nl: 'Achterstallig' , cs: 'Po termínu' },
+    cal_dueSoon:         { de: 'Bald fällig',               en: 'Due Soon',                   fr: 'Bientôt dû',              nl: 'Binnenkort vervallen' , cs: 'Brzy' },
+    cal_openRisk:        { de: 'Zum Risiko',                en: 'Open Risk',                  fr: 'Ouvrir le risque',         nl: 'Risico openen' , cs: 'Otevřené riziko' },
+    cal_upcoming:        { de: 'Upcoming Events',           en: 'Upcoming Events',            fr: 'Événements à venir',       nl: 'Aankomende evenementen' , cs: 'Nadcházející události' },
 
     // ── Governance module ────────────────────────────────────────────────────
-    gov_tabReviews:      { de: 'Management-Reviews',        en: 'Management Reviews',         fr: 'Revues de direction',      nl: 'Directiebeoordelingen' },
-    gov_tabActions:      { de: 'Maßnahmen',                 en: 'Actions',                    fr: 'Actions',                  nl: 'Acties' },
-    gov_tabMeetings:     { de: 'Sitzungsprotokolle',        en: 'Meeting Minutes',            fr: 'Procès-verbaux',           nl: 'Vergadernotulen' },
-    gov_newReview:       { de: 'Neuer Review',              en: 'New Review',                 fr: 'Nouvelle révision',        nl: 'Nieuwe beoordeling' },
-    gov_newAction:       { de: 'Neue Maßnahme',             en: 'New Action',                 fr: 'Nouvelle action',          nl: 'Nieuwe actie' },
-    gov_newMeeting:      { de: 'Neues Protokoll',           en: 'New Meeting',                fr: 'Nouveau procès-verbal',    nl: 'Nieuw vergaderverslag' },
+    gov_tabReviews:      { de: 'Management-Reviews',        en: 'Management Reviews',         fr: 'Revues de direction',      nl: 'Directiebeoordelingen' , cs: 'Přezkoumání vedením' },
+    gov_tabActions:      { de: 'Maßnahmen',                 en: 'Actions',                    fr: 'Actions',                  nl: 'Acties' , cs: 'Úkoly' },
+    gov_tabMeetings:     { de: 'Sitzungsprotokolle',        en: 'Meeting Minutes',            fr: 'Procès-verbaux',           nl: 'Vergadernotulen' , cs: 'Zápisy z jednání' },
+    gov_newReview:       { de: 'Neuer Review',              en: 'New Review',                 fr: 'Nouvelle révision',        nl: 'Nieuwe beoordeling' , cs: 'Nový přezkum' },
+    gov_newAction:       { de: 'Neue Maßnahme',             en: 'New Action',                 fr: 'Nouvelle action',          nl: 'Nieuwe actie' , cs: 'Nový úkol' },
+    gov_newMeeting:      { de: 'Neues Protokoll',           en: 'New Meeting',                fr: 'Nouveau procès-verbal',    nl: 'Nieuw vergaderverslag' , cs: 'Nové jednání' },
 
     // ── Admin lists ──────────────────────────────────────────────────────────
-    list_templateTypes:  { de: 'Template-Typen',            en: 'Template Types',             fr: 'Types de modèles',         nl: 'Sjabloontypes' },
-    list_riskCats:       { de: 'Risikokategorien',          en: 'Risk Categories',            fr: 'Catégories de risques',    nl: 'Risicocategorieën' },
-    list_riskTreatments: { de: 'Risikobehandlung',          en: 'Risk Treatments',            fr: 'Traitements des risques',  nl: 'Risicobehandeling' },
-    list_gdprDataCats:   { de: 'GDPR Datenkategorien',      en: 'GDPR Data Categories',       fr: 'Catégories de données RGPD', nl: 'AVG-gegevenscategorieën' },
-    list_gdprSubjects:   { de: 'GDPR Betroffenengruppen',   en: 'GDPR Subject Groups',        fr: 'Groupes de personnes concernées RGPD', nl: 'AVG-betrokkenengroepen' },
-    list_incidentTypes:  { de: 'Vorfallsarten',             en: 'Incident Types',             fr: 'Types d\'incidents',       nl: 'Incidenttypen' },
+    list_templateTypes:  { de: 'Template-Typen',            en: 'Template Types',             fr: 'Types de modèles',         nl: 'Sjabloontypes' , cs: 'Typy šablon' },
+    list_riskCats:       { de: 'Risikokategorien',          en: 'Risk Categories',            fr: 'Catégories de risques',    nl: 'Risicocategorieën' , cs: 'Kategorie rizik' },
+    list_riskTreatments: { de: 'Risikobehandlung',          en: 'Risk Treatments',            fr: 'Traitements des risques',  nl: 'Risicobehandeling' , cs: 'Způsoby zvládání rizik' },
+    list_gdprDataCats:   { de: 'GDPR Datenkategorien',      en: 'GDPR Data Categories',       fr: 'Catégories de données RGPD', nl: 'AVG-gegevenscategorieën' , cs: 'Kategorie údajů (GDPR)' },
+    list_gdprSubjects:   { de: 'GDPR Betroffenengruppen',   en: 'GDPR Subject Groups',        fr: 'Groupes de personnes concernées RGPD', nl: 'AVG-betrokkenengroepen' , cs: 'Skupiny subjektů údajů (GDPR)' },
+    list_incidentTypes:  { de: 'Vorfallsarten',             en: 'Incident Types',             fr: 'Types d\'incidents',       nl: 'Incidenttypen' , cs: 'Druhy incidentů' },
 
     // ── Reports ──────────────────────────────────────────────────────────────
     reports_createBtn:   { de: 'Bericht erstellen',         en: 'Create Report',              fr: 'Créer un rapport',         nl: 'Rapport aanmaken' , cs: 'Vytvořit report' },
@@ -517,9 +517,9 @@
     reports_toLabel:     { de: 'Bis',                       en: 'To',                         fr: 'À',                        nl: 'Tot' , cs: 'Do' },
 
     // ── Trash ────────────────────────────────────────────────────────────────
-    trash_deletedBy:     { de: 'Gelöscht von',              en: 'Deleted By',                 fr: 'Supprimé par',             nl: 'Verwijderd door' },
-    trash_deletedAt:     { de: 'Gelöscht am',               en: 'Deleted At',                 fr: 'Supprimé le',              nl: 'Verwijderd op' },
-    trash_expires:       { de: 'Läuft ab',                  en: 'Expires',                    fr: 'Expire le',                nl: 'Vervalt' },
+    trash_deletedBy:     { de: 'Gelöscht von',              en: 'Deleted By',                 fr: 'Supprimé par',             nl: 'Verwijderd door' , cs: 'Smazal' },
+    trash_deletedAt:     { de: 'Gelöscht am',               en: 'Deleted At',                 fr: 'Supprimé le',              nl: 'Verwijderd op' , cs: 'Smazáno dne' },
+    trash_expires:       { de: 'Läuft ab',                  en: 'Expires',                    fr: 'Expire le',                nl: 'Vervalt' , cs: 'Vyprší' },
 
     // ── Findings / Audit module ──────────────────────────────────────────────
     findings_title:      { de: 'Audit-Feststellungen',      en: 'Audit Findings',             fr: 'Constatations d\'audit',   nl: 'Auditbevindingen' , cs: 'Nálezy auditu' },
