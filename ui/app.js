@@ -3744,17 +3744,17 @@ async function renderAdminOrgTab() {
           for users without a stored preference.
         </p>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:14px">
-          ${[{code:'de',label:'🇩🇪 Deutsch'},{code:'en',label:'🇬🇧 English'},{code:'fr',label:'🇫🇷 Français'},{code:'nl',label:'🇳🇱 Nederlands'}].map(l => `
+          ${[{code:'cs',label:'🇨🇿 Čeština'},{code:'de',label:'🇩🇪 Deutsch'},{code:'en',label:'🇬🇧 English'},{code:'fr',label:'🇫🇷 Français'},{code:'nl',label:'🇳🇱 Nederlands'}].map(l => `
             <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;cursor:pointer">
-              <input type="checkbox" id="langAvail_${l.code}" ${(_langConfig?.available||['de','en','fr','nl']).includes(l.code)?'checked':''}>
+              <input type="checkbox" id="langAvail_${l.code}" ${(_langConfig?.available||['cs','de','en','fr','nl']).includes(l.code)?'checked':''}>
               <span style="font-size:.9rem">${l.label}</span>
             </label>`).join('')}
         </div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
           <label style="font-size:.85rem;color:var(--text-muted);flex-shrink:0">Default language:</label>
           <select id="langDefault" style="padding:5px 10px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem">
-            ${[{code:'de',label:'Deutsch'},{code:'en',label:'English'},{code:'fr',label:'Français'},{code:'nl',label:'Nederlands'}].map(l =>
-              `<option value="${l.code}" ${(_langConfig?.default||'en')===l.code?'selected':''}>${l.label}</option>`
+            ${[{code:'cs',label:'Čeština'},{code:'de',label:'Deutsch'},{code:'en',label:'English'},{code:'fr',label:'Français'},{code:'nl',label:'Nederlands'}].map(l =>
+              `<option value="${l.code}" ${(_langConfig?.default||'cs')===l.code?'selected':''}>${l.label}</option>`
             ).join('')}
           </select>
         </div>
@@ -6146,12 +6146,13 @@ async function renderSettingsPanel() {
           <p class="settings-desc">${t('settings_langDesc')}</p>
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">
             ${[
+              {code:'cs', key:'settings_langCs'},
               {code:'de', key:'settings_langDe'},
               {code:'en', key:'settings_langEn'},
               {code:'fr', key:'settings_langFr'},
               {code:'nl', key:'settings_langNl'},
-            ].filter(l => (_langConfig?.available||['de','en','fr','nl']).includes(l.code)).map(l =>
-              `<button class="btn ${(window.LANG||'en')===l.code ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchAppLang('${l.code}')">
+            ].filter(l => (_langConfig?.available||['cs','de','en','fr','nl']).includes(l.code)).map(l =>
+              `<button class="btn ${(window.LANG||'cs')===l.code ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchAppLang('${l.code}')">
                 <i class="ph ph-flag"></i> ${t(l.key)}
               </button>`
             ).join('')}
